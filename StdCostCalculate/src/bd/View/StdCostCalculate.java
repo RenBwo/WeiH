@@ -23,7 +23,7 @@ import bd.DAO.*;
 import bd.connection.getcon;
 import bd.connection.verifyVersion;
 
-public class salePrice 
+public class StdCostCalculate 
 {
 	JFrame frame;
 	private JInternalFrame internalFrame; 
@@ -137,7 +137,7 @@ public class salePrice
 					checkVer.Verifyframe.setVisible(true);					
 					if (checkVer.verifyVer==1) 
 					{
-						salePrice window = new salePrice();
+						StdCostCalculate window = new StdCostCalculate();
 						if (auto.equals("auto")) 
 						{
 							checkVer.Verifyframe.setVisible(false);	
@@ -171,7 +171,7 @@ public class salePrice
 	 */
 
     
-	public salePrice()  
+	public StdCostCalculate()  
 	{
 		frame = new JFrame();
 		frame.setTitle("标准成本计算");
