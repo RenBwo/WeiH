@@ -29,6 +29,9 @@ public class getcon {
     	kingdee();
     	state.executeUpdate(sql);
     }
+    public void close() throws SQLException {
+    	con.close();
+    }
     //fields
     Connection con;
 	public Statement state;

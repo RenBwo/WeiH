@@ -16,7 +16,7 @@ public class verifyVersion {
     /*
      * 程序版本
      */
-    private int v1=1 ,v2=0 ,v3=0 ,v4=0;
+    private int v1=1 ,v2=0 ,v3=0 ,v4=4;
 	
 	
 	public verifyVersion() throws SQLException {
@@ -35,8 +35,9 @@ public class verifyVersion {
 		public void crTab() throws SQLException {
 	
 		rsver = conver.query("",";select count(*) from sysobjects where type = 'u' and name like 'BDStdCostProgVersion'");
-		rsver.next();
+		if (rsver.next()) {
 		exit = rsver.getInt(1);
+		}
 		if (exit ==0)
 		{ 
 			String CrTVerVerify = ";CREATE TABLE BDStdCostProgVersion"

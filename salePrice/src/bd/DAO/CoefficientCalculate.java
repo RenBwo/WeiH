@@ -37,7 +37,7 @@ public class CoefficientCalculate {
 	public String exchangerate() throws SQLException{
 		
 		String sqlcomments = ";select fexchangerate from t_exchangerateentry where fexchangeratetype = 4 "
-				+ " and fcyfor = 1 and fcyto = 1000 and fbegdate < getdate()  and fenddate > getdate() "
+				+ " and fcyfor = 1 and fcyto = 1000 and fbegdate <= getdate()  and getdate()< dateadd(day,1,fenddate) "
 				+ " and isnull(fchkuserid,0)<>0 and isnull(fchkdate,'1999-01-01') <> '1999-01-01' "
 				+ " order by fentryid desc ";
 			ResultSet   rs = conn.query("",sqlcomments);

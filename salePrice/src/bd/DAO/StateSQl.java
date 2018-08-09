@@ -238,7 +238,7 @@ public class StateSQl {
 			+" union select  19 as no, 	'三.产品利润' as item1,					'' as item2,	'' as item3,								'三.产品利润' as item4,					''as item5,	'冷凝器20%，油冷器30%'as item6 " 
 			+" union select  20 as no, 	'四.核价=（1+2+3+4+5) ' as item1,			'' as item2,	'    /' as item3,								'四.FOB青岛核价=（1+2+3+4+5)' as item4,	''as item5,	''as item6 " 
 			+" union select  21 as no, 	'五.增值税' as item1,					'' as item2,	'' as item3,								'/' as item4,							'/'as item5,'/'as item6 " 
-			+" union select  22 as no, 	'六.出厂核价/含税：' as item1,				'' as item2,	'账期30/天核算' as item3,						'五.FOB青岛核价：' as item4,				''as item5,	'提单日60/天核算，现贷款年利率： 4.785%'as item6 " 
+			+" union select  22 as no, 	'六.出厂核价_含税RMB：' as item1,				'' as item2,	'账期30/天核算' as item3,						'五.FOB青岛核价_USD：' as item4,				''as item5,	'提单日60/天核算，现贷款年利率： 4.785%'as item6 " 
 			; 
 	
 	sqlBOM = "; select a.flevel0,a.FParentID,a.FItemID,b.fnumber,b.fname ,b.fmodel"
@@ -247,15 +247,14 @@ public class StateSQl {
 			+ ",a.fbomnumber,a.sn"
 			+ " from BDBomMulExpose 	a"
 			+ " join t_icitem b on a.fitemid = b.fitemid and a.firstitemid ="+firstitemid
-			+"  and a.finterid="+finterid
-			+ " join t_measureunit 		c on a.funitid = c.fitemid "			
-			+ " left join t_submessage 	d on d.finterid = b.ferpclsid"
+			+ " and a.finterid="+finterid
+			+ " join t_measureunit 		c on c.fitemid  = a.funitid"			
+			+ " left join t_submessage 	d on d.finterid = a.maketype"
+			+ " left join t_submessage  e on e.finterid = a.bomskip "
 			+ " left join t_submessage 	f on f.finterid = a.fusestatus"
-			+ " left join icbom			g on a.fitemid = g.fitemid and g.fusestatus = 1072 and g.fstatus = 1"
-			+ " left join t_submessage  e on e.finterid = g.fbomskip "
 			+ " order by a.sn";	
 	
-	sqlProductDevRpt = ";select a.fbillno,a.fcombobox3,b.fname as proname,a.ftext8,a.ftext1,a.ftext2"
+	sqlProductDevRpt = "; select a.fbillno,a.fcombobox3,b.fname as proname,a.ftext8,a.ftext1,a.ftext2"
 			+ ",a.ftext,a.ftext3,a.ftext4,a.ftext5,a.fcombobox1,convert(varchar(10),a.fdate1,120) as fdate1"
 			+ ",convert(varchar(10),a.fdate2,120) as fdate2,convert(varchar(10),a.fdate3,120) as fdate3"
 			+ ",e.fname as fbiller,a.fcombobox4,c.fname as itemclass,a.ftext10,a.ftext6,a.finteger1"
@@ -278,7 +277,7 @@ public class StateSQl {
 	if (sqlname =="sqlAdi")  				{   export = "";export = sqlAdi;			}
 	if (sqlname =="sqlModel")  				{   export = "";export = sqlModel;			}
 	if (sqlname =="sqlBOM")  				{   export = "";export = sqlBOM;			}
-	if (sqlname =="sqlProductDevRpt")  		{   export = "";export = sqlProductDevRpt;	}
+	if (sqlname =="sqlProdDevRpt")  		{   export = "";export = sqlProductDevRpt;	}
 	//,,,,
 	 return export;
 		
