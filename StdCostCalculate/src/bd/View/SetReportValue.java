@@ -33,12 +33,12 @@ public class SetReportValue
 							).toString()) 
 						+ Double.parseDouble(tableCalculate.getValueAt(
 								tableCalculate.getRowCount() - 1,8).toString())
-						+ Double.parseDouble(frame.textFK14.getText())  ),2,2);
+						+ Double.parseDouble(StdCostCalculate.mainFrame.textFK14.getText())  ),2,2);
 				/*
 			     * 3-1.间接人工
 			     */
 				tableReport.setValueAt(	df2.format(Double.parseDouble(
-						frame.textFK2.getText())),4,3);
+						StdCostCalculate.mainFrame.textFK2.getText())),4,3);
 				tableReport.setValueAt(	df4.format(Double.parseDouble(
 						tableCalculate.getValueAt(
 						tableCalculate.getRowCount() - 1,9).toString()))
@@ -73,16 +73,16 @@ public class SetReportValue
 			     * 3-6.制造费用--其他成本
 			     */
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK18.getText())),9,3);
+						StdCostCalculate.mainFrame.textFK18.getText())),9,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK18.getText())),9,2);
+						StdCostCalculate.mainFrame.textFK18.getText())),9,2);
 				/*
 				 * 3-7.厂房折旧 = K3	
 				 */			
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK3.getText())),10,3);
+						StdCostCalculate.mainFrame.textFK3.getText())),10,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK3.getText())),10,2);
+						StdCostCalculate.mainFrame.textFK3.getText())),10,2);
 				/*
 			     * 3.制造费用合计
 			     */
@@ -107,47 +107,47 @@ public class SetReportValue
 				 * 成品不良成本
 				 */
 				tableReport.setValueAt(df2.format(Double.parseDouble(
-						frame.textFK4.getText())),12,3);/*成品不良成本k4*/
+						StdCostCalculate.mainFrame.textFK4.getText())),12,3);/*成品不良成本k4*/
 				tableReport.setValueAt(df4.format(Double.parseDouble(
 						tableReport.getValueAt(0, 2).toString())
-						*Double.parseDouble(frame.textFK4.getText())),12,2);
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK4.getText())),12,2);
 				/*
 				 * 财务费用
 				 */
 				tableReport.setValueAt(df2.format(Double.parseDouble(
-						frame.textFK5.getText())),13,3);
+						StdCostCalculate.mainFrame.textFK5.getText())),13,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
 						tableReport.getValueAt(0, 2).toString())
-						*Double.parseDouble(frame.textFK5.getText())),13,2);
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK5.getText())),13,2);
 				/*
 				 * 销售费用
 				 */
 				tableReport.setValueAt(df2.format(Double.parseDouble(
-						frame.textFK7.getText())),14,3);
+						StdCostCalculate.mainFrame.textFK7.getText())),14,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
 						tableReport.getValueAt(0, 2).toString())
-						*Double.parseDouble(frame.textFK7.getText())),14,2);
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK7.getText())),14,2);
 				/*
 				 * 管理费用
 				 */
 				tableReport.setValueAt(df2.format(Double.parseDouble(
-						frame.textFK6.getText())),15,3);
+						StdCostCalculate.mainFrame.textFK6.getText())),15,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
 						tableReport.getValueAt(0, 2).toString())
-						*Double.parseDouble(frame.textFK6.getText())),15,2);
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK6.getText())),15,2);
 				/*
 				 * 管理费用--土地摊销
 				 */
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK15.getText())),16,3);
+						StdCostCalculate.mainFrame.textFK15.getText())),16,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK15.getText())),16,2);
+						StdCostCalculate.mainFrame.textFK15.getText())),16,2);
 				/*
 				 * 新开模具工装费用 
 				 */
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK16.getText())
-						/Double.parseDouble(frame.textFK17.getText())),17,2);
+						StdCostCalculate.mainFrame.textFK16.getText())
+						/Double.parseDouble(StdCostCalculate.mainFrame.textFK17.getText())),17,2);
 				/*
 				 * 外贸项目
 				 */
@@ -162,18 +162,18 @@ public class SetReportValue
 				 * 运输费用
 				 */
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK8.getText())),18,2);
+						StdCostCalculate.mainFrame.textFK8.getText())),18,2);
 				/*
 				 * FOB青岛费用
 				 */
 				tableReport.setValueAt(df4.format(Double.parseDouble(
-						frame.textFK20.getText())
-						/Double.parseDouble(frame.textFK21.getText())
+						StdCostCalculate.mainFrame.textFK20.getText())
+						/Double.parseDouble(StdCostCalculate.mainFrame.textFK21.getText())
 						*packagesize),18,5);
 				tableReport.setValueAt("FOB青岛费用="+Double.parseDouble(
-						frame.textFK20.getText())
+						StdCostCalculate.mainFrame.textFK20.getText())
 				+"（整柜 BY FCL,40HQ/GP,45HQ/GP）/"+Double.parseDouble(
-						frame.textFK21.getText())
+						StdCostCalculate.mainFrame.textFK21.getText())
 				+"立方米*单只产品体积 "+packagesize,18,6);
 				/*
 				 * 二、期间费用合计
@@ -241,10 +241,10 @@ public class SetReportValue
 				 * 五、增值税额
 				 */
 				tableReport.setValueAt(df2.format(Double.parseDouble(
-						frame.textFK10.getText())),21,3);
+						StdCostCalculate.mainFrame.textFK10.getText())),21,3);
 				tableReport.setValueAt(df4.format(Double.parseDouble(
 						tableReport.getValueAt(20, 2).toString())
-						*Double.parseDouble(frame.textFK10.getText())),21,2); 
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK10.getText())),21,2); 
 				/*
 				 * 六、出厂核价_含税RMB=(四、核价+五、增值税额)+(四、核价+五、增值税额
 				 * )*货款年利率/365*内贸账期
@@ -254,13 +254,13 @@ public class SetReportValue
 						tableReport.getValueAt(20, 2).toString())
 						+Double.parseDouble(tableReport.getValueAt(21, 
 								2).toString()))
-						*(1+Double.parseDouble(frame.textFK13.getText())
-						*Double.parseDouble(frame.textFK11.getText())/365)),
+						*(1+Double.parseDouble(StdCostCalculate.mainFrame.textFK13.getText())
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK11.getText())/365)),
 						22,2);
 				tableReport.setValueAt("货款年利率： "+df2.format(
-						Double.parseDouble(frame.textFK13.getText()))
+						Double.parseDouble(StdCostCalculate.mainFrame.textFK13.getText()))
 						+";账期： "+df0.format(Double.parseDouble(
-								frame.textFK11.getText()))+"天",22,3);
+								StdCostCalculate.mainFrame.textFK11.getText()))+"天",22,3);
 				/*
 				 * 六、FOB青岛核价_USD=(四、核价/预算汇率）+（四、核价/预算
 				 * 汇率）*货款年利率/365*外贸账期
@@ -268,9 +268,9 @@ public class SetReportValue
 				 */
 			tableReport.setValueAt(df4.format(Double.parseDouble(
 					tableReport.getValueAt(20, 5).toString())
-						/Double.parseDouble(frame.textFK12.getText())*(
-								1+Double.parseDouble(frame.textFK13.getText())
-						*Double.parseDouble(frame.textFK22.getText())/365
+						/Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText())*(
+								1+Double.parseDouble(StdCostCalculate.mainFrame.textFK13.getText())
+						*Double.parseDouble(StdCostCalculate.mainFrame.textFK22.getText())/365
 						)), 22, 5);
 				
 				/*
@@ -278,11 +278,10 @@ public class SetReportValue
 				 * Double.parseDouble(textFK13.getText())),19,5);
 				 */
 				tableReport.setValueAt("货款年利率： "+df2.format(
-						Double.parseDouble(frame.textFK13.getText()))
+						Double.parseDouble(StdCostCalculate.mainFrame.textFK13.getText()))
 						+";账期： "+df0.format(Double.parseDouble(
-								frame.textFK11.getText()))+"天;"
-						+"预算汇率： "+frame.textFK12.getText(),22,6);
+								StdCostCalculate.mainFrame.textFK11.getText()))+"天;"
+						+"预算汇率： "+StdCostCalculate.mainFrame.textFK12.getText(),22,6);
 		}
 	private DecimalFormat df0,df2,df4;
-	private MainFrame frame =new MainFrame();;
 }
