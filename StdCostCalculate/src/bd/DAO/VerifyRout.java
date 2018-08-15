@@ -7,8 +7,6 @@ import bd.connection.GetDBConnect;
 
 public class VerifyRout 
 {
-	private GetDBConnect conn =new GetDBConnect();
-	private ResultSet 	rs0;	
 	/*
 	 * Routing integrity Verify	自制品并且不跳层的物料必须有工艺路线
 	 * 1058 跳层,1059 不跳层
@@ -32,4 +30,6 @@ public class VerifyRout
 	
 	}
 
+	private GetDBConnect conn =new GetDBConnect();
+	private ResultSet 	rs0;
 }

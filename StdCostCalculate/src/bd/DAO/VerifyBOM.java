@@ -5,10 +5,6 @@ import java.sql.SQLException;
 import bd.connection.GetDBConnect;
 
 public class VerifyBOM {
-	private GetDBConnect conn =new GetDBConnect();
-	private ResultSet 	rs0;
-	//private int verifyResult=0;
-	
 	/*
 	 * BOM integrity Verify	 最终物料并且加工类型为自制的，说明BOM不完整
 	 */
@@ -28,4 +24,6 @@ public class VerifyBOM {
 		
 	}
 
+	private GetDBConnect conn =new GetDBConnect();
+	private ResultSet 	rs0;
 }

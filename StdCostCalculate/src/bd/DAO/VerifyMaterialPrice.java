@@ -6,9 +6,6 @@ import java.sql.SQLException;
 import bd.connection.GetDBConnect;
 
 public class VerifyMaterialPrice {
-
-	private GetDBConnect conn =new GetDBConnect();
-	private ResultSet 	rs0;
 	/*
 	 * verify direct_material price验证直接材料价格
 	 */
@@ -30,4 +27,7 @@ public class VerifyMaterialPrice {
 		}
 	}
 
+	private GetDBConnect conn =new GetDBConnect();
+	private ResultSet 	rs0;
+	
 }

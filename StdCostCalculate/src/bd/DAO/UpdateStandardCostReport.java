@@ -4,8 +4,6 @@ import java.sql.SQLException;
 import bd.connection.GetDBConnect;
 
 public class UpdateStandardCostReport {
-	private GetDBConnect conn=new GetDBConnect();
-	
 	/*
 	 * update StdCostRPT
 	 */
@@ -91,6 +89,5 @@ public class UpdateStandardCostReport {
 		conn.close();
 	}
 	
-	
-
+	private GetDBConnect conn=new GetDBConnect();
 }
