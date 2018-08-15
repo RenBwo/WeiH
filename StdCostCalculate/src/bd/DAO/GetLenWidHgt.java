@@ -26,7 +26,7 @@ public class GetLenWidHgt {
 			{
 				length=0.0;
 			}
-			conn.close();
+			rs0.close();
 			return length;
 	}
 
@@ -45,7 +45,7 @@ public class GetLenWidHgt {
 				{
 					width=0.0;
 				}
-				conn.close();
+				rs0.close();
 				return  width;
 			}
 	public double Hgt(int firstitemid,int finterid) throws SQLException
@@ -63,7 +63,7 @@ public class GetLenWidHgt {
 				{
 					height= 0.0;
 				}
-				conn.close();
+				rs0.close();
 				return height;
 		}
 	private GetDBConnect conn =new GetDBConnect();

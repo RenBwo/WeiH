@@ -16,13 +16,13 @@ public class GetModel {
 		if (rs0.next()) 
 		{
 			model = rs0.getString(1);
-			conn.close();
-			return model;
 		}
 		else
 		{
-			return "";
+			model = "";
 		}
+		conn.close();
+		return model;
 	}
 	
 	private GetDBConnect conn=new GetDBConnect();

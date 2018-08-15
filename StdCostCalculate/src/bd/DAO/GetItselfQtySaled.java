@@ -15,13 +15,13 @@ public class GetItselfQtySaled {
 		if (rs0.next())	
 		{
 			itselfQtySaled = rs0.getDouble(1); 	
-			conn.close();
-			return itselfQtySaled;
 		}
 		else 
 		{
-			return -9999.9; 
+			itselfQtySaled = -9999.1111; 
 		}
+		conn.close();
+		return itselfQtySaled;
 	}
 	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;

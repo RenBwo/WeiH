@@ -13,12 +13,16 @@ public class GetCurrentMonth {
 	    {
 		currentperiod = rs0.getString(1);
 	    }
+	    else 
+	    {
+	    	currentperiod="";
+	    }
 	    conn.close();
 		return currentperiod;
 	}
 	private GetDBConnect conn =new GetDBConnect();
 	private ResultSet rs0;
-	static public String currentperiod="";
+	static public String currentperiod;
 	
 	
 	

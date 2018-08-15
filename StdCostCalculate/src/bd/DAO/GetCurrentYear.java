@@ -13,13 +13,17 @@ public class GetCurrentYear
 				+ " where fkey like 'currentyear' and fcategory = 'GL'");
         if(rs0.next())
         {
-	    currentyear = rs0.getString(1);
+        	currentyear = rs0.getString(1);
+        }
+        else 
+        {
+        	currentyear="";
         }
         conn.close();
 	    return currentyear;
 	}
 	private GetDBConnect conn =new GetDBConnect();
 	private ResultSet rs0;
-	public static String currentyear="";
+	public static String currentyear;
 	
 }

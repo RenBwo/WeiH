@@ -9,20 +9,20 @@ public class GetOEM {
 
 	public String getOEM(String fnumber) throws SQLException
 	{
-		String cmdGetOEM=";select a.f_131 from t_icitem a "
+		String cmdGetOEM=";select left(a.f_131,30) from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
 	  			+ " and b.fstatus = 1 and a.fnumber like '"+fnumber+ "'";
    		rs0 = conn.query("",cmdGetOEM);
 		if (rs0.next()) 
 		{
-			OEM = rs0.getString(1);
-			conn.close();
-			return OEM;
+			 rs0.getString(1);
 		}
 		else
 		{
-			return "";
+			OEM = "";
 		}
+		conn.close();
+		return OEM;
 	}
 	
 	private GetDBConnect conn=new GetDBConnect();

@@ -19,14 +19,14 @@ public class GetModelQtySaled {
 		rs0 = conn.query("",cmdModelQtySaled );
 		if (rs0.next())	
 		{
-			modelQtySaled = rs0.getDouble(1);
-			conn.close();
-			return modelQtySaled;
+			rs0.getDouble(1);
 		}	 	
 		else 
 		{
-			return -9999.9 ;
-		} 	
+			modelQtySaled =  -9999.9 ;
+		} 
+		conn.close();
+		return modelQtySaled;
 	}
 	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;

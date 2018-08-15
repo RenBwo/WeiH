@@ -16,13 +16,13 @@ public class GetPackageSize {
 		if (rs0.next()) 
 		{
 			size = rs0.getDouble(1);
-			conn.close();
-			return size;
 		}
 		else
 		{
-			return 0.0;
+			size = 0.0;
 		}
+		conn.close();
+		return size;
 	}
 	
 	private GetDBConnect conn=new GetDBConnect();
