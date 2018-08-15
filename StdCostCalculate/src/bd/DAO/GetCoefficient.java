@@ -7,11 +7,11 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
-public class CoefficientCalculate {
+public class GetCoefficient {
   	private String returnv;
-  	private getcon conn = new getcon();
+  	private GetDBConnect conn = new GetDBConnect();
   //标准成本核算系数
 	public String CoeValue(String k) throws SQLException{
 		

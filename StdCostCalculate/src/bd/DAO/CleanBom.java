@@ -2,10 +2,10 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class CleanBom {
-	private getcon conn =new getcon();
+	private GetDBConnect conn =new GetDBConnect();
    	/*
    	 * clean bomExpose
    	 */

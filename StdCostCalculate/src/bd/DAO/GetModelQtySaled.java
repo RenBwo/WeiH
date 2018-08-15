@@ -5,7 +5,7 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetModelQtySaled {
 	public double getModelQtySaled(String model) throws SQLException
@@ -28,8 +28,8 @@ public class GetModelQtySaled {
 			return -9999.9 ;
 		} 	
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private double modelQtySaled ;
+	public static double modelQtySaled ;
 
 }

@@ -2,7 +2,7 @@ package bd.DAO;
 /*
  * itselfitselfQtySaled
  */
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
@@ -23,8 +23,8 @@ public class GetItselfQtySaled {
 			return -9999.9; 
 		}
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private double itselfQtySaled ;
+	public static double itselfQtySaled ;
 	
 }

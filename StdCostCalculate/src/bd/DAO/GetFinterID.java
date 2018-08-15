@@ -2,7 +2,7 @@ package bd.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetFinterID {
 	public int getFinterID(int firstitemid) throws SQLException
@@ -24,8 +24,8 @@ public class GetFinterID {
 			return 0;
 		}
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private int finterid;
+	public static int finterid;
 
 }

@@ -2,7 +2,7 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class UpdateCompanyPricePolicy {
 	/*
@@ -35,6 +35,6 @@ public class UpdateCompanyPricePolicy {
 		conn.close();
 		//System.out.println("更新公司价格体系！"+upComPrcPly+upComPrcSpec);
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 
 }

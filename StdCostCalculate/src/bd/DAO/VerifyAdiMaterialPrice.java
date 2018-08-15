@@ -2,7 +2,7 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 /*
  * verify adi price
  */
@@ -35,5 +35,5 @@ public class VerifyAdiMaterialPrice {
 		}
 	}
 	private ResultSet rs0;
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 }

@@ -3,7 +3,7 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetModel {
 
@@ -25,7 +25,7 @@ public class GetModel {
 		}
 	}
 	
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private String model ;
+	public static String model ;
 }

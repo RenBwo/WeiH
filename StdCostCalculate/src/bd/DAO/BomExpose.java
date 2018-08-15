@@ -2,11 +2,11 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class BomExpose {
 
-	 private getcon conn =new getcon();
+	 private GetDBConnect conn =new GetDBConnect();
  	/* 
    	 * BOM EXPOSE 
    	 */

@@ -1,7 +1,7 @@
 package bd.DAO;
 import java.sql.*;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class CostLabourAndMake {
 /* 
@@ -303,7 +303,7 @@ public class CostLabourAndMake {
      	 conn.update("",cleanLabourAndMake);
      	 conn.close();
      	 }
-	private getcon conn =new getcon();
+	private GetDBConnect conn =new GetDBConnect();
 
 
 }

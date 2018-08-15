@@ -14,7 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class tableData {
 
@@ -30,7 +30,7 @@ public class tableData {
 				for (int j = count ; j > 0 ; j--) {
 					dataModel.removeRow(j - 1);	
 					}		
-		getcon getcon =  new getcon();
+		GetDBConnect getcon =  new GetDBConnect();
 	    ResultSet 	rs	=	getcon.query("",sqlstr); 
 	    ResultSetMetaData 	rsmd 	= rs.getMetaData(); 
 		int 	numberOfColumns 	= rsmd.getColumnCount();

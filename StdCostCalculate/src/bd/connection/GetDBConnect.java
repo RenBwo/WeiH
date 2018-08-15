@@ -2,7 +2,7 @@ package bd.connection;
 
 import java.sql.*;
 
-public class getcon {
+public class GetDBConnect {
 	//constructor
     public void  kingdee() throws SQLException
 	{    	

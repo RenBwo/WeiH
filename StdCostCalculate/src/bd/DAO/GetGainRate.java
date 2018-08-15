@@ -5,7 +5,7 @@ package bd.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetGainRate 
 {
@@ -24,8 +24,8 @@ public class GetGainRate
 			return -900.0;
 		}
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private double gainrate ;
+	static public double gainrate ;
 
 }

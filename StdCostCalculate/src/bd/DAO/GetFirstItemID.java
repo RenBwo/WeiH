@@ -1,7 +1,7 @@
 package bd.DAO;
 
 import java.sql.ResultSet;
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 import java.sql.SQLException;
 
 public class GetFirstItemID {
@@ -23,8 +23,8 @@ public class GetFirstItemID {
 		}
 	}
 	
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private int firstitemid ;
+	public static int firstitemid ;
 
 }

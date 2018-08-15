@@ -3,13 +3,10 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetCurrentYear 
 {
-	private getcon conn =new getcon();
-	private ResultSet rs0;
-	private String currentyear="";
 	public String getCurrentYear() throws SQLException
 	{
 		rs0 = conn.query("",";select  fvalue from t_Systemprofile "
@@ -21,4 +18,8 @@ public class GetCurrentYear
         conn.close();
 	    return currentyear;
 	}
+	private GetDBConnect conn =new GetDBConnect();
+	private ResultSet rs0;
+	public static String currentyear="";
+	
 }

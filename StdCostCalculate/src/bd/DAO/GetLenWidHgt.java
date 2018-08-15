@@ -3,11 +3,9 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetLenWidHgt {
-	private getcon conn =new getcon();
-	private ResultSet 	rs0;	
 	/* 
 	 * 芯体长宽 单位 米	
 	 * 长：喷锌扁管'30.%' 下级物料扁管盘料 --03.a18.%--的坯料尺寸
@@ -19,16 +17,17 @@ public class GetLenWidHgt {
 					+ " from t_icitemcustom a join BDBomMulExpose b on a.fitemid = b.fitemid"
 					+ " and b.firstitemid = "+firstitemid+ " and b.finterid = "+finterid
 					+ " join t_icitemcore c on a.fitemid = c.fitemid and c.fnumber like '13.%'"
-					+ " ");
+					);
 			if(rs0.next()) 
 			{
-				return rs0.getDouble(1);
-				}
+				length=rs0.getDouble(1);
+			}
 			else
 			{
-				conn.close();
-				return 0;
+				length=0.0;
 			}
+			conn.close();
+			return length;
 	}
 
 	public double Wid(int firstitemid,int finterid) throws SQLException
@@ -40,14 +39,15 @@ public class GetLenWidHgt {
 						+ " ");
 				if(rs0.next()) 
 				{
-					return rs0.getDouble(1);
+					width=rs0.getDouble(1);					
 				}
 				else 
 				{
-					conn.close();
-					return 0.0;
+					width=0.0;
 				}
-				}
+				conn.close();
+				return  width;
+			}
 	public double Hgt(int firstitemid,int finterid) throws SQLException
 	{
 				rs0= conn.query("","; select isnull(a.f_177 ,0) as height "
@@ -57,14 +57,18 @@ public class GetLenWidHgt {
 						+ " ");
 				if(rs0.next()) 
 				{
-					return rs0.getDouble(1);
+					height= rs0.getDouble(1);
 				}
 				else
 				{
-					conn.close();
-					return 0.0;
+					height= 0.0;
 				}
+				conn.close();
+				return height;
 		}
+	private GetDBConnect conn =new GetDBConnect();
+	private ResultSet 	rs0;
+	public static Double length,width,height;
 }
 /*
  * 

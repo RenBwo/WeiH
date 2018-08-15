@@ -2,7 +2,7 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class UpdateAdiMaterialPrice {
 	/*
@@ -28,7 +28,7 @@ public class UpdateAdiMaterialPrice {
 		conn.close();
 		
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	
 
 }

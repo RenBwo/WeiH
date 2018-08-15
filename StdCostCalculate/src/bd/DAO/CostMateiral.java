@@ -2,10 +2,10 @@ package bd.DAO;
 
 
 import java.sql.SQLException;
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class CostMateiral {
-	 private getcon conn =new getcon();
+	 private GetDBConnect conn =new GetDBConnect();
 /*
 * 直接材料成本
 * 价格：1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税,否则，取物料计划价格 未含税 

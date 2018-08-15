@@ -3,7 +3,7 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class GetItemName {
 
@@ -25,8 +25,8 @@ public class GetItemName {
 		}
 	}
 	
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 	private ResultSet rs0;
-	private String itemname ;
+	static public String itemname ;
 
 }

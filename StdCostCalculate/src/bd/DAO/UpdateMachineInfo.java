@@ -1,7 +1,7 @@
 package bd.DAO;
 
 import java.sql.SQLException;
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 
 public class UpdateMachineInfo {
 	/*
@@ -24,6 +24,6 @@ public class UpdateMachineInfo {
 		//System.out.println("升级设备折旧信息："+sql1);
 		conn.close();
 	}
-	private getcon conn=new getcon();
+	private GetDBConnect conn=new GetDBConnect();
 
 }

@@ -1,14 +1,10 @@
 package bd.DAO;
 
-import bd.connection.getcon;
+import bd.connection.GetDBConnect;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GetCurrentMonth {
-	private getcon conn =new getcon();
-	private ResultSet rs0;
-	private String currentperiod="";
-	
 	public String getCurrentMonth() throws SQLException
 	{
 		rs0 = conn.query("",";select fvalue from t_Systemprofile "
@@ -20,6 +16,11 @@ public class GetCurrentMonth {
 	    conn.close();
 		return currentperiod;
 	}
+	private GetDBConnect conn =new GetDBConnect();
+	private ResultSet rs0;
+	static public String currentperiod="";
+	
+	
 	
 
 }
