@@ -11,11 +11,8 @@ public class ActListenerBtnSave implements ActionListener
 	{
 		try 
 		{
-			udateStandardCostReport.udateStandardCostReport(
-					GetCurrentYear.currentyear
-					,GetFirstItemID.firstitemid
-					,GetFinterID.finterid
-					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(0,2).toString()) 			/*一.生产成本合计（1+2+3）*/
+			stdCostReport.udateStdCostReport(
+					 Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(0,2).toString()) 			/*一.生产成本合计（1+2+3）*/
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(1,2).toString()) 		/*1.直接材料成本*/
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(2,2).toString())		/*2.直接人工*/
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableCalculate.getValueAt(StdCostCalculate.mainFrame.tableCalculate.getRowCount() 
@@ -38,8 +35,8 @@ public class ActListenerBtnSave implements ActionListener
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(15,2).toString())		/*管理费用 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(16,2).toString())		/*管理费用--土地摊销 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(17,2).toString())		/*新开模具工装费用 */
-					, GetItselfQtySaled.itselfQtySaled													/*产品自身历史销售数量 */	
-					, GetModelQtySaled.modelQtySaled														/*产品型号历史销售数量 */
+					, ProductInfo.itselfQtySaled													/*产品自身历史销售数量 */	
+					, ProductInfo.modelQtySaled														/*产品型号历史销售数量 */
 					, 0.0																/*新开模具摊销数量 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(18,2).toString())		/*运输费用 （内贸） */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(18,5).toString())		/*运输费用（FOB青岛） */
@@ -63,7 +60,7 @@ public class ActListenerBtnSave implements ActionListener
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK5.getText().toString())					/*产品不良系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK6.getText().toString())					/*财务费用系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK7.getText().toString())					/*管理费用系数 */
-					, GetGainRate.gainrate															/*产品利润率 */
+					, ProductInfo.gainrate															/*产品利润率 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK10.getText().toString())					/*销售费用系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK11.getText().toString())					/*国内增值税率 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK22.getText().toString())					/*国内账期 */
@@ -72,16 +69,14 @@ public class ActListenerBtnSave implements ActionListener
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK14.getText().toString())					/*贷款利率 */
 					+Double.parseDouble(StdCostCalculate.mainFrame.textFK141.getText().toString())
 					);
-			delStandardCostReport.delHistPrice(GetFirstItemID.firstitemid, GetFinterID.finterid);
-			updateProductStdCost.updateProductStdCost(
-					GetFirstItemID.firstitemid
-					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(0,5).toString())
+			stdCostReport.clean();
+			stdCostReport.setProductStdCost( Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(0,5).toString())
 					+Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(11,5).toString())
 					-Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(18,5).toString())
 					);
-			cleanBom.cleanBom(GetFirstItemID.firstitemid, GetFinterID.finterid);;
-			updateCompanyPricePolicy.updateCompanyPricePolicy(GetFirstItemID.firstitemid
-					,Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(22,2).toString())	
+			bom.clean();
+			updateCompanyPricePolicy.update(
+					Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(22,2).toString())	
 					,Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(22,5).toString())	
 					);
 			StdCostCalculate.mainFrame.lblstatus.setText(" 标准成本保存成功！客户价格体系更新完成。");
@@ -92,10 +87,8 @@ public class ActListenerBtnSave implements ActionListener
 		}
 	}
 	
-	private CleanBom cleanBom=new CleanBom();
-	private DelStandardCostReport delStandardCostReport=new DelStandardCostReport(); 
-	private UpdateProductStdCost updateProductStdCost=new UpdateProductStdCost();
-    private UpdateStandardCostReport udateStandardCostReport=new UpdateStandardCostReport();
-    private UpdateCompanyPricePolicy updateCompanyPricePolicy = new UpdateCompanyPricePolicy();
+	private BOM bom=new BOM();
+	private StdCostReport stdCostReport=new StdCostReport(); 
+	private CompanyPricePolicy updateCompanyPricePolicy = new CompanyPricePolicy();
     
 }

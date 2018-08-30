@@ -1,11 +1,10 @@
 package bd.DAO;
 
-public class StateSQl {
+public class SQlStatement {
 	String export,sqlMaterial,sqlLabourAndMake,sqlPriceRPTform,sqlEnergy,sqlAdi,sqlModel,sqlBOM,sqlProductDevRpt;
 
-	public String getSQLStatement(String sqlname,String currentyear,String currentperiod
-			,int firstitemid,int finterid,double capacity0,double length,double width
-			,double powerprice) {
+	public String getSQLStatement(String sqlname,double powerprice) 
+	{
 	export = "";
 
 	sqlMaterial = ";select a.fnumber,b.fname,b.fmodel,c.fname,a.fqtyper,a.fqty,a.fprice,a.famtmaterial"
@@ -20,7 +19,7 @@ public class StateSQl {
 					+ " and isnull(b.fqty , 0)<> 0 and isnull(b.fstdamount ,0) <> 0 and a.fstatus = 1 "
 					+ " and a.frob =1 and (isnull(fheadselfi0252,0) =0 or isnull(fheadselfi0349,0 ) = 0) "
 					+ " group by b.fitemid) w 		on w.fitemid = a.fitemid "
-			+ " where a.fproditemid = "+firstitemid+" and a.finterid = "+finterid
+			+ " where a.fproditemid = "+ProductInfo.firstitemid+" and a.finterid = "+ProductInfo.finterid
 			+ " order by b.fnumber";
 
 	
@@ -32,14 +31,14 @@ public class StateSQl {
 			+" t6.fmanName,t6.fpower,"
 			
 			/*产能*/					
-			+"isnull((case t4.foperid when 40336 then " + capacity0   
+			+"isnull((case t4.foperid when 40336 then " +  MachineInfo.capacity   
 			/*钎焊炉工艺 40336*/
-			+ " when 40494 then round(t11.fpressrate*60/"+length+",4)" 
+			+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+",4)" 
 			/*扁管压出工艺40494*/
-			+ " when 40495 then (case  when " + length*1000 +" < 400 then 7800 " 
-															+ " when " + length*1000 +">=400 and "+length*1000 +"< 600 then 6600" 
-															+ " when " + length*1000 +">=600 and "+length*1000 +"< 800 then 5400"
-															+ " when " + length*1000 +">=800 and "+length*1000 +"< 1000 then 4200" 
+			+ " when 40495 then (case  when " + ProductInfo.length*1000 +" < 400 then 7800 " 
+															+ " when " + ProductInfo.length*1000 +">=400 and "+ProductInfo.length*1000 +"< 600 then 6600" 
+															+ " when " + ProductInfo.length*1000 +">=600 and "+ProductInfo.length*1000 +"< 800 then 5400"
+															+ " when " + ProductInfo.length*1000 +">=800 and "+ProductInfo.length*1000 +"< 1000 then 4200" 
 															+ " else  2400 end )" 
 			/*扁管切断工艺 40495*/
 			+ " else round(t6.fcapacity/(case  when isnull(t4.fentryselfz0236,0)>0 then t4.fentryselfz0236 else 1 end),4) end) "
@@ -53,14 +52,14 @@ public class StateSQl {
 			+" when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) else t1.fqty end)"
 			+ "*t4.fentryselfz0237*t6.fpower*0.4*"+powerprice+"/"
 			/*钎焊炉工艺 40336*/
-			+ "(case t4.foperid when 40336 then " + capacity0   
+			+ "(case t4.foperid when 40336 then " +  MachineInfo.capacity   
 			/*扁管压出工艺40494*/
-			+ " when 40494 then round(t11.fpressrate*60/"+length+",4)" 
+			+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+",4)" 
 			/*扁管切断工艺 40495*/
-			+ " when 40495 then (case  when " + length*1000 +" < 400 then 7800 "
-									+ " when " + length*1000 +">=400 and "+length*1000 +"< 600 then 6600" 
-									+ " when " + length*1000 +">=600 and "+length*1000 +"< 800 then 5400"
-									+ " when " + length*1000 +">=800 and "+length*1000 +"< 1000 then 4200" 
+			+ " when 40495 then (case  when " + ProductInfo.length*1000 +" < 400 then 7800 "
+									+ " when " + ProductInfo.length*1000 +">=400 and "+ProductInfo.length*1000 +"< 600 then 6600" 
+									+ " when " + ProductInfo.length*1000 +">=600 and "+ProductInfo.length*1000 +"< 800 then 5400"
+									+ " when " + ProductInfo.length*1000 +">=800 and "+ProductInfo.length*1000 +"< 1000 then 4200" 
 									+ " else  2400 end )" 								
 			/*其余工艺*/
 			+ " else round(t6.fcapacity/(case  when isnull(t4.fentryselfz0236,0)>0 then t4.fentryselfz0236 else 1 end),4) end) "
@@ -75,22 +74,22 @@ public class StateSQl {
 			+" when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) else t1.fqty end)"
 			+ "*t4.fentryselfz0237*t6.fdepreciation/( t101.fnum*30*8*"
 			/*钎焊炉工艺 40336*/
-			+ "(case t4.foperid when 40336 then " + capacity0        
+			+ "(case t4.foperid when 40336 then " +  MachineInfo.capacity        
 			/*扁管压出工艺40494*/
-			+ " when 40494 then round(t11.fpressrate*60/"+length+",4)" 
+			+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+",4)" 
 			/*扁管切断工艺 40495*/
 			+ " when 40495 then (case "														 
-			 		+ " when " + length*1000 +" < 400 then 7800 "  
-			 		+ " when " + length*1000 +">=400 and "+length*1000 +"< 600 then 6600" 
-			 		+ " when " + length*1000 +">=600 and "+length*1000 +"< 800 then 5400"  
-			 		+ " when " + length*1000 +">=800 and "+length*1000 +"< 1000 then 4200"  
+			 		+ " when " + ProductInfo.length*1000 +" < 400 then 7800 "  
+			 		+ " when " + ProductInfo.length*1000 +">=400 and "+ProductInfo.length*1000 +"< 600 then 6600" 
+			 		+ " when " + ProductInfo.length*1000 +">=600 and "+ProductInfo.length*1000 +"< 800 then 5400"  
+			 		+ " when " + ProductInfo.length*1000 +">=800 and "+ProductInfo.length*1000 +"< 1000 then 4200"  
 			 		+ " else  2400 end )" 								
 			/*其余工艺*/
 			+ " else round(t6.fcapacity/(case  when isnull(t4.fentryselfz0236,0)>0 then t4.fentryselfz0236 else 1 end),4) end) "
 			+ "),0) as fdepr, " 
-			+" t6.fassetInterId,t101.fassetnumber,"+length+","+width
+			+" t6.fassetInterId,t101.fassetnumber,"+ProductInfo.length+","+ProductInfo.width
 			+" from BDBomMulExpose t1  "
-			+" join t_icitem t2 on t1.fitemid = t2.fitemid and t1.firstitemid = "+firstitemid+" and t1.finterid = "+finterid
+			+" join t_icitem t2 on t1.fitemid = t2.fitemid and t1.firstitemid = "+ProductInfo.firstitemid+" and t1.finterid = "+ProductInfo.finterid
 			+" join t_Routing t3 on t3.finterid = t1.froutingid"
 			+" join t_routingoper t4 on t3.finterid = t4.finterid "		
 			+" left join t_submessage t5 on t5.finterid = t4.foperid	and t5.fparentid = 61 "		
@@ -105,10 +104,10 @@ public class StateSQl {
 			+" where t2.ferpclsid <> 1 "
 			+ " and t1.fqty > 0 "
 			+ " and  t1.sn not in (select a.sn  from BDBomMulExpose 	a  "
-					+ "	join t_icitem b on a.fitemid = b.fitemid  and b.ferpclsid <> 1 and a.firstitemid = "+firstitemid
-					+ " and a.finterid = "+finterid
+					+ "	join t_icitem b on a.fitemid = b.fitemid  and b.ferpclsid <> 1 and a.firstitemid = "+ProductInfo.firstitemid
+					+ " and a.finterid = "+ProductInfo.finterid
 					+ " join (select a.sn from BDBomMulExpose  a join icbom b  "
-						+ " on a.fitemid = b.fitemid  and a.firstitemid = "+firstitemid+" and a.finterid = "+finterid
+						+ " on a.fitemid = b.fitemid  and a.firstitemid = "+ProductInfo.firstitemid+" and a.finterid = "+ProductInfo.finterid
 						+" and b.fbomskip = 1058 "
 						+ " and b.fusestatus = 1072 )   a0 	on a.sn  like a0.sn+'%')  " 
 			+" order by t2.fnumber ,t4.fopersn "	;
@@ -123,13 +122,13 @@ public class StateSQl {
 				+ " when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) else t1.fqty end)"
 				+ "*t4.fentryselfz0237*t6.Fprice*(case "
 				+ " when (t4.foperid = 40336 and (t6.faidname like '%钎剂%' or  t6.faidname like'%液氮%')) "
-				+ " then t6.fqty/"+capacity0	
-				+ " when (t4.foperid = 40494 and t6.faidname like '%锌丝%' ) then t11.fqtyzn/1000*"+length
-				+ " when (t4.foperid = 40142 and "+length +"<=0.2 ) then t6.fqty/2 else t6.fqty end),0) as famtAdi, "
-	        + "w.avrprice,t110.fplanprice,"+length+","+width 
+				+ " then t6.fqty/"+ MachineInfo.capacity	
+				+ " when (t4.foperid = 40494 and t6.faidname like '%锌丝%' ) then t11.fqtyzn/1000*"+ProductInfo.length
+				+ " when (t4.foperid = 40142 and "+ProductInfo.length +"<=0.2 ) then t6.fqty/2 else t6.fqty end),0) as famtAdi, "
+	        + "w.avrprice,t110.fplanprice,"+ProductInfo.length+","+ProductInfo.width 
 	        + " from BDBomMulExpose 				t1  "
-			+ " join t_icitem 						t2 		on t1.fitemid = t2.fitemid and t1.firstitemid ="+firstitemid
-			+ " and t1.finterid = "+finterid
+			+ " join t_icitem 						t2 		on t1.fitemid = t2.fitemid and t1.firstitemid ="+ProductInfo.firstitemid
+			+ " and t1.finterid = "+ProductInfo.finterid
 	        + " join t_Routing 						t3 		on t3.finterid = t1.froutingid"
 	        + " join t_routingoper 					t4 		on t3.finterid = t4.finterid "		
 	        + " left join t_submessage 				t5 		on t5.finterid = t4.foperid	and t5.fparentid = 61 "		
@@ -139,7 +138,7 @@ public class StateSQl {
 	        + " and (t6.fcolor = 0 or (t6.fcolor = t2.f_135"
 	        		+ " and t2.fitemid = (select t34.fitemid from t_icitemcore 	t33 "
 	        			+ " join BDBomMulExpose t34 on t34.fitemid = t33.fitemid "
-	        			+ " and t34.firstitemid = "+firstitemid+" and t34.finterid="+finterid+" and t33.fnumber like '13.%' ))) "		
+	        			+ " and t34.firstitemid = "+ProductInfo.firstitemid+" and t34.finterid="+ProductInfo.finterid+" and t33.fnumber like '13.%' ))) "		
 	        + " left join t_costcalculate_flatpipe  t11		on t11.fpipenumber = t1.fitemid  and t11.fcheckbox = 0"
 	        + " left join  (select b.fitemid,sum(b.fstdamount) as funtaxamount, sum(b.fqty) as fqty"
 					+ ",case  when sum(b.fqty)>0 then round(sum(b.fstdamount)/sum(b.fqty),4) else 0 end as avrprice "
@@ -156,9 +155,9 @@ public class StateSQl {
 		    + " and t1.fqty > 0  "
 		    + " and  t1.sn not in (select a.sn  from BDBomMulExpose 	a  "
 		   	+ "	join t_icitem b on a.fitemid = b.fitemid  and b.ferpclsid <> 1 and"
-		   	+ " a.firstitemid = "+firstitemid+" and a.finterid="+finterid
+		   	+ " a.firstitemid = "+ProductInfo.firstitemid+" and a.finterid="+ProductInfo.finterid
 		   	+ " join (select a.sn from BDBomMulExpose  a join icbom b  "
-		   		+ " on a.fitemid = b.fitemid  and a.firstitemid = "+firstitemid+" and a.finterid="+finterid
+		   		+ " on a.fitemid = b.fitemid  and a.firstitemid = "+ProductInfo.firstitemid+" and a.finterid="+ProductInfo.finterid
 		   		+" and b.fbomskip = 1058 "
 		   		+ " and b.fusestatus = 1072 )   a0 	on a.sn  like a0.sn+'%')  "
 		   + " order by t2.fnumber ,t4.fopersn "	;	
@@ -172,13 +171,13 @@ public class StateSQl {
 			+" (case isnull((select 1 from t_icitem where fitemid = t1.fitemid and fname like '扁管盘料'),0) "
 			+" when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) else t1.fqty end)"
 			+ "*t4.fentryselfz0237*"
-			+ "(case t4.foperid when 40494 then round(t11.famtmodel*"+length+"*1000*t13.f_140/t11.cap,10)"/* 扁管压出工艺40494模具产能：模具最大使用量/(扁管长度*米克重)*/
+			+ "(case t4.foperid when 40494 then round(t11.famtmodel*"+ProductInfo.length+"*1000*t13.f_140/t11.cap,10)"/* 扁管压出工艺40494模具产能：模具最大使用量/(扁管长度*米克重)*/
 			+ " else round(t6.famtperoper,10) end),0 ) as famtmodel "
 			+ ",t13.f_140,t11.cap/1000 ,"
 			+ "(case t4.foperid when 40494 then t11.famtmodel else t6.famtmodel end) as famtmodel0,"
-			+length+","+width		
+			+ProductInfo.length+","+ProductInfo.width		
 			+" from BDBomMulExpose t1  "
-			+" join t_icitem t2 on t1.fitemid = t2.fitemid and t1.firstitemid = "+firstitemid+" and t1.finterid="+finterid		
+			+" join t_icitem t2 on t1.fitemid = t2.fitemid and t1.firstitemid = "+ProductInfo.firstitemid+" and t1.finterid="+ProductInfo.finterid		
 			+" join t_Routing t3 on t3.finterid = t1.froutingid"		
 			+" join t_routingoper t4 on t3.finterid = t4.finterid "		
 			+" left join t_submessage t5 on t5.finterid = t4.foperid	and t5.fparentid = 61 "		
@@ -201,9 +200,9 @@ public class StateSQl {
 			+ " and t1.fqty > 0 "
 			+ " and  t1.sn not in (select a.sn  from BDBomMulExpose 	a  "
 		   	+ "	join t_icitem b on a.fitemid = b.fitemid  and b.ferpclsid <> 1 and"
-		   	+ " a.firstitemid = "+firstitemid+" and a.finterid="+finterid
+		   	+ " a.firstitemid = "+ProductInfo.firstitemid+" and a.finterid="+ProductInfo.finterid
 		   	+ " join (select a.sn from BDBomMulExpose  a join icbom b  "
-		   		+ " on a.fitemid = b.fitemid  and a.firstitemid = "+firstitemid+" and a.finterid="+finterid
+		   		+ " on a.fitemid = b.fitemid  and a.firstitemid = "+ProductInfo.firstitemid+" and a.finterid="+ProductInfo.finterid
 		   		+" and b.fbomskip = 1058 "
 		   		+ " and b.fusestatus = 1072 )   a0 	on a.sn  like a0.sn+'%')  "
 			+" order by t2.fnumber ,t4.fopersn "	;
@@ -212,7 +211,7 @@ public class StateSQl {
 			+ " fmakeqty,isnull(amtpay,0),isnull(amtassure,0),isnull(costworker,0),isnull(fmatpower,0),"
 			+ "isnull(fdepr,0),isnull(famtadi,0),isnull(famtmodel,0) "
 			+ " from t_BDLabourAndMake "
-			+ " where fproditemid = "+firstitemid+" and finterid = "+finterid
+			+ " where fproditemid = "+ProductInfo.firstitemid+" and finterid = "+ProductInfo.finterid
 			+ " order by fnumber,fopersn";
 	
 	
@@ -246,8 +245,8 @@ public class StateSQl {
 			+ ",a.fitemsize,a.fstatus,f.fname,e.fname,a.froutingid,a.fbominterid"
 			+ ",a.fbomnumber,a.sn"
 			+ " from BDBomMulExpose 	a"
-			+ " join t_icitem b on a.fitemid = b.fitemid and a.firstitemid ="+firstitemid
-			+ " and a.finterid="+finterid
+			+ " join t_icitem b on a.fitemid = b.fitemid and a.firstitemid ="+ProductInfo.firstitemid
+			+ " and a.finterid="+ProductInfo.finterid
 			+ " join t_measureunit 		c on c.fitemid  = a.funitid"			
 			+ " left join t_submessage 	d on d.finterid = a.maketype"
 			+ " left join t_submessage  e on e.finterid = a.bomskip "
@@ -268,7 +267,7 @@ public class StateSQl {
 			+ " left join t_user e on a.fbiller = e.fuserid "
 			+ " left join t_user f on a.fuser = f.fuserid "
 			+ " join t_icitem g on g.fnumber = a.ftext8 "
-			+ " where g.fitemid = "+firstitemid;
+			+ " where g.fitemid = "+ProductInfo.firstitemid;
 	
 	if (sqlname =="sqlMaterial")  			{   export = "";export = sqlMaterial;		}
 	if (sqlname =="sqlLabourAndMake")  		{   export = "";export = sqlLabourAndMake;	}

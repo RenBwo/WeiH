@@ -1,10 +1,10 @@
 package bd.DAO;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.connection.GetDBConnect;
-
-public class UpdateAdiMaterialPrice {
+public class MaterialAdi {
+	
 	/*
 	 * 	升级辅料单价
 	 * 1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税
@@ -25,10 +25,40 @@ public class UpdateAdiMaterialPrice {
 				+ ") 								w	on w.fitemid = a.faidnumber ";
 		//System.out.println("升级辅料单价：" + sql0);
 		conn.update("",sql0);
-		conn.close();
-		
+		conn.close();		
 	}
-	private GetDBConnect conn=new GetDBConnect();
-	
+
+	/*
+	 * verify adiMaterial's price
+	 */
+	public int verifyAdiPrice() throws SQLException 
+	{
+		String cmdverify=";select count(*) "
+				+ " from 	BDBomMulExpose 			t1"
+				+ " join 	t_Routing 					t2 	"
+				+ " on 		t1.fitemid = t2.fitemid  "
+				+ " and 	t1.firstitemid ="+ProductInfo.firstitemid
+				+ " and 	t1.finterid = "+ProductInfo.finterid
+				+ " and 	t2.finterid = t1.froutingid"
+				+ " join 	t_routingoper 				t3 	"
+				+ " on 		t2.finterid = t3.finterid "
+				+ " join 	t_CostCalculateBD 			t4 "
+				+ "	on 		t4.foperno = t3.foperid "
+				+ " join 	t_costcalculatebd_entry1 	t5 "
+				+ "	on 		t4.fid = t5.fid "
+				+ " and 	isnull(t5.fprice,0) = 0 "
+				+ " and 	isnull(t5.fqty,0) <> 0 ";
+		rs0=conn.query("", cmdverify);
+		if(rs0.next() && rs0.getInt(1) > 0 ) 
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	private ResultSet rs0;
+	private DBConnect conn=new DBConnect();
 
 }

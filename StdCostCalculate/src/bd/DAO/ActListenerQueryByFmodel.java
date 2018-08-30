@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import javax.swing.table.DefaultTableModel;
 import bd.View.StdCostCalculate;
-import bd.connection.GetDBConnect;
 
 public class ActListenerQueryByFmodel implements ActionListener
 {
@@ -47,7 +46,7 @@ public class ActListenerQueryByFmodel implements ActionListener
 		}
 		catch(SQLException e1) {}
 	}
-	private GetDBConnect conn=new GetDBConnect();
+	private DBConnect conn=new DBConnect();
 	
 
 

@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import bd.View.StdCostCalculate;
-import bd.connection.GetDBConnect;
 
 public class ActListenerQueryByFnumber implements ActionListener
 {
@@ -46,7 +45,7 @@ public class ActListenerQueryByFnumber implements ActionListener
 		}
 		catch(SQLException e1) {} 
 	}
-	private GetDBConnect conn=new GetDBConnect();
+	private DBConnect conn=new DBConnect();
 	
 
 }

@@ -7,36 +7,51 @@ package bd.View;
  * 同一固定资产编号的设备卡片取最近日期
  */
 import java.awt.*;
-import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import bd.DAO.*;
-import bd.connection.*;
 
 public class StdCostCalculate 
 {
-	public 		static MainFrame mainFrame=new MainFrame();	
-	private  	static ActListenerBtnGenerate actListenerGenerate=new ActListenerBtnGenerate(); 
+	public 		static MainFrame mainFrame=new MainFrame();
+	private 	static VersionCompare verCompare=new VersionCompare();
+	private 	static CurrentPeriod  currentPeriod=new CurrentPeriod();
+    private  	static ActListenerBtnGenerate actListenerGenerate=new ActListenerBtnGenerate(); 
     private  	static ActListenerBtnSave actListenerBtnSave=new ActListenerBtnSave(); 
     private  	static ActListenerBtnQuery actListenerBtnQuery=new  ActListenerBtnQuery();
 	private  	static ActListenserSelected actListenserSelected=new ActListenserSelected();
 	private  	static ActListenerQueryByFmodel actListenerQueryByFmodel=new ActListenerQueryByFmodel();
     private  	static ActListenerQueryByFnumber actListenerQueryByFnumber=new ActListenerQueryByFnumber();
-    public 		static CompareVersion compareVersion=new CompareVersion();
-    public 		static String auto,programName="standCostCal";
-    public 		static int v1=1,v2=0,v3=0,v4=4,verifyVersionOK;
+    public 		static String programName="standCostCal",localVer="1.0.0.4"
+    		,autoFlag;
+    public 		static int versionOK,autoRun;
+    private 	static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+	
+	
 	  
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) 
 	{
-		if (args.length > 0) 
+		
+		mainFrame.lblVersionInfo.setText("Version:"+localVer);
+		autoFlag=dateFormat.format(new Date()).toString();
+		
+		if (args.length>0 && args[0].equals("auto"))
 		{
-			auto = args[0];
+			autoRun=1;
 		}
-		else 
+		else
 		{
-			auto="";
+			autoRun=0;
 		}
+		
+		//System.out.println(autoFlag);
+		verCompare.createTableVersionControl();
+		verCompare.get();
+		versionOK=verCompare.versionCompare();	
 		
 		EventQueue.invokeLater(new Runnable() 
 		{
@@ -44,40 +59,34 @@ public class StdCostCalculate
 			{
 				try 
 				{
-					VerifyFrame verifyFrame = new VerifyFrame();
-					verifyFrame.Verifyframe.setVisible(true);
-					verifyVersionOK=compareVersion.compareVersion(programName,v1,v2,v3,v4);
-					if (verifyVersionOK==1) 
+					currentPeriod.getYear();
+					currentPeriod.getMonth();					
+					if (versionOK !=1)
 					{
-						if (auto.equals("auto")) 
-						{
-							verifyFrame.Verifyframe.setVisible(false);	
-							mainFrame.frame.setVisible(false);
-							mainFrame.tableQueResult.getTableHeader().addMouseListener(actListenserSelected);
-							mainFrame.texFmodel.addActionListener(actListenerQueryByFmodel);
-							mainFrame.texFnum.addActionListener(actListenerQueryByFnumber);
-							mainFrame.btnQuery.addActionListener(actListenerBtnQuery);
-							mainFrame.btnGenerate.addActionListener(actListenerGenerate);
-							mainFrame.btnR2Save.addActionListener(actListenerBtnSave);
-							mainFrame.btnGenerate.doClick();
-							System.exit(0);
-						}
-						else 
-						{
-							verifyFrame.Verifyframe.setVisible(false);
-							mainFrame.frame.setVisible(true);
-							mainFrame.tableQueResult.getTableHeader().addMouseListener(actListenserSelected);
-							mainFrame.texFmodel.addActionListener(actListenerQueryByFmodel);
-							mainFrame.texFnum.addActionListener(actListenerQueryByFnumber);
-							mainFrame.btnQuery.addActionListener(actListenerBtnQuery);
-							mainFrame.btnGenerate.addActionListener(actListenerGenerate);
-							mainFrame.btnR2Save.setVisible(false);
-							mainFrame.btnR2Save.addActionListener(actListenerBtnSave);
-						}
+						mainFrame.frame.setVisible(false);
+						ProgramUpdate programUpdate=new ProgramUpdate();
+						programUpdate.setVisible(true);
 					}
-					else 
+					if (versionOK==1 && autoRun==1 )
 					{
-						JOptionPane.showMessageDialog(verifyFrame.Verifyframe,"程序版本错误，请使用最新版本"); 
+						mainFrame.frame.setVisible(false);
+						mainFrame.btnGenerate.addActionListener(actListenerGenerate);
+						mainFrame.btnR2Save.addActionListener(actListenerBtnSave);
+						mainFrame.btnGenerate.doClick();
+						System.exit(0);
+					}
+					
+					if (versionOK==1 && autoRun==0 )
+					{
+						mainFrame.frame.setVisible(true);
+						mainFrame.btnR2Save.setVisible(false);
+						mainFrame.tableQueResult.getTableHeader().addMouseListener(actListenserSelected);
+						mainFrame.texFmodel.addActionListener(actListenerQueryByFmodel);
+						mainFrame.texFnum.addActionListener(actListenerQueryByFnumber);
+						mainFrame.btnQuery.addActionListener(actListenerBtnQuery);
+						
+						mainFrame.btnGenerate.addActionListener(actListenerGenerate);
+						mainFrame.btnR2Save.addActionListener(actListenerBtnSave);
 					}
 				} 
 				catch (Exception e) 
@@ -86,5 +95,10 @@ public class StdCostCalculate
 				}
 			}
 		});
-	}    
+	}
+	public StdCostCalculate() 
+	{
+			
+			
+	}
 }

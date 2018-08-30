@@ -1,20 +1,18 @@
-package bd.View;
+package bd.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.DAO.StateSQl;
-import bd.connection.GetDBConnect;
+import bd.View.StdCostCalculate;
 
-public class SetDevelopeRequestValue {
+public class DevelopeRequest {
 	/* 
 	 * product devolopment request 
 	 * */
 	public void setDevelopRequestValue(int firstitemid) throws SQLException 
 	{
-    	StateSQl mysql=new StateSQl();	
-    	String	sqlQuery = mysql.getSQLStatement("sqlProdDevRpt","",""
-    			,firstitemid,0,0.0,0.0,0.0,0.0);    	
+    	SQlStatement mysql=new SQlStatement();	
+    	String	sqlQuery = mysql.getSQLStatement("sqlProdDevRpt",0.0);    	
     	ResultSet rs_code = conn.query("",sqlQuery);
     	
     	StdCostCalculate.mainFrame.txtDev0.setText("");    
@@ -93,7 +91,7 @@ public class SetDevelopeRequestValue {
 	}  
 		
 
-	private GetDBConnect conn=new GetDBConnect();
+	private DBConnect conn=new DBConnect();
 
 
 }

@@ -21,53 +21,59 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import bd.DAO.GetCoefficient;
+import bd.DAO.Coefficient;
 import net.miginfocom.swing.MigLayout;
+import java.awt.FlowLayout;
 
 public class MainFrame  {
 
 	public JFrame frame;
 	public JInternalFrame internalFrame; 
-	public JPanel top,center,bottom,panel_coffi,panel_code,panel_code_fnum,panel_reporHead;
-	public JPanel panel,panel_bottom,panel_DevReq;
+	public JPanel top,center,bottom,panel_coffi,panel_code,panel_code_fnum
+	,panel_reporHead, panel,panel_bottom,panel_DevReq;
 	
 	public JTabbedPane tabbedPane; 
 	
-	public JScrollPane scrollPane_report,scrollPane_coffi ,scrollpane_code_result;
-	public JScrollPane scrollPane_material,scrollPaneCostMake,scrollPane_energe;
-    public JScrollPane scrollPane_adi,scrollPane_model,scrollPane_bom;
-    public JScrollPane scrollPane_DevReq,scrollPane_tabledata;
+	public JScrollPane scrollPane_report,scrollPane_coffi ,scrollpane_code_result
+	,scrollPane_material,scrollPaneCostMake,scrollPane_energe
+	, scrollPane_adi,scrollPane_model,scrollPane_bom
+	, scrollPane_DevReq,scrollPane_tabledata;
 	
-	public JTable tableCalculate,tableMaterial,tableReport;
-	public JTable tableEnergy,tableAdi,tableModel,tableBOM,tableQueResult;
+	public JTable tableCalculate,tableMaterial,tableReport
+				,tableEnergy,tableAdi,tableModel,tableBOM,tableQueResult;
 	
 	public JLabel lblCompany,lblTitle,labModel, lblFnumber;
-	public JLabel lblK0,lblK1 ,lblK2 ,lblK3 ,lblK4 ,lblK5,lblK6,lblK7,lblK8,lblK10 ;
-	public JLabel lblK11,lblK12,lblK13,lblK14,lblK15,lblK16,lblK17,lblK18,lblK20,lblK21,lblK22;
-	public JLabel lblK141;
+	public JLabel lblK0,lblK1 ,lblK2 ,lblK3 ,lblK4 ,lblK5,lblK6
+	,lblK7,lblK8,lblK10 ,lblK11,lblK12,lblK13,lblK14,lblK15
+	,lblK16,lblK17,lblK18,lblK20,lblK21,lblK22,lblK141;
 	public JLabel lbl_billno,lbl_ProdName,lbl_ProdName0,lbl_Model0,lbl_Model,labItemname0,labItemname;
 	public JLabel lblTopciTitle,lblINFOR,lblstatus;
-    public JLabel lblDev0,lblDev1,lblDev2,lblDev3,lblDev4,lblDev5,lblDev6,lblDev7,lblDev8,lblDev9;
-    public JLabel lblDev10,lblDev11,lblDev12,lblDev13,lblDev14,lblDev15,lblDev16,lblDev17,lblDev18,lblDev19;
-    public JLabel lblDev20,lblDev21,lblDev22,lblDev23,lblDev24,lblDev25,lblDev26,lblDev27,lblDev28,lblDev29;
-    public JLabel lblDev30,lblDev31,lblDev32,lblDev33,lblDev34,lblDev35,lblDev36,lblDev37,lblDev38;
-    public JLabel lblComments,lblNewModel,lblNewModelSaleQty,lblHistSalQty;
+    public JLabel lblDev0,lblDev1,lblDev2,lblDev3,lblDev4,lblDev5
+    ,lblDev6,lblDev7,lblDev8,lblDev9,lblDev10,lblDev11,lblDev12
+    ,lblDev13,lblDev14,lblDev15,lblDev16,lblDev17,lblDev18,lblDev19
+    ,lblDev20,lblDev21,lblDev22,lblDev23,lblDev24,lblDev25,lblDev26
+    ,lblDev27,lblDev28,lblDev29,lblDev30,lblDev31,lblDev32,lblDev33
+    ,lblDev34,lblDev35,lblDev36,lblDev37,lblDev38;
+    public JLabel lblComments,lblNewModel,lblNewModelSaleQty
+    ,lblHistSalQty;
       
-	public JTextField texFmodel;
-	public JTextField textFK0,textFK1,textFK2,textFK3,textFK4,textFK5,textFK6,textFK7,textFK8,/*textFK9,*/textFK10;
-	public JTextField textFK11,textFK12,textFK13,textFK14,textFK15,textFK16,textFK17,textFK18,textFK20;
-	public JTextField textFK21,textFK22;
-	public JTextField textFK141/*,textFK151,textFK161,textFK171*/;
-	public JTextField txtDev0,txtDev1,txtDev2,txtDev3,txtDev4,txtDev5,txtDev6,txtDev7,txtDev8,txtDev9;
-    public JTextField txtDev10,txtDev11,txtDev12,txtDev13,txtDev14,txtDev15,txtDev16,txtDev17,txtDev18,txtDev19;
-    public JTextField txtDev20,txtDev21,txtDev22,txtDev23,txtDev24,txtDev25,txtDev26,txtDev27,txtDev28,txtDev29;
-    public JTextField txtDev30,txtDev31,txtDev32,txtNewModel,txtNewModelSalQty,txtHistSalQty;
+	public JTextField texFnum,texFmodel;
+	public JTextField textFK0,textFK1,textFK2,textFK3,textFK4,textFK5
+	,textFK6,textFK7,textFK8,/*textFK9,*/textFK10,textFK11,textFK12
+	,textFK13,textFK14,textFK15,textFK16,textFK17,textFK18,textFK20
+	,textFK21,textFK22,textFK141/*,textFK151,textFK161,textFK171*/;
+	public JTextField txtDev0,txtDev1,txtDev2,txtDev3,txtDev4,txtDev5
+	,txtDev6,txtDev7,txtDev8,txtDev9,txtDev10,txtDev11,txtDev12
+	,txtDev13,txtDev14,txtDev15,txtDev16,txtDev17,txtDev18,txtDev19
+	,txtDev20,txtDev21,txtDev22,txtDev23,txtDev24,txtDev25,txtDev26
+	,txtDev27,txtDev28,txtDev29,txtDev30,txtDev31,txtDev32;
+    public JTextField txtNewModel,txtNewModelSalQty,txtHistSalQty;
 	    
-    public JButton btnR2Save,btnQuery;
-    public JButton btnGenerate; 
-    public JTextField texFnum;
+    public JButton btnGenerate,btnR2Save,btnQuery;
     public JCheckBox chckbxNewCheckBox;
     public JTextArea textArea;
+    public JLabel lblVersionInfo;
+    public Coefficient k=new Coefficient();
 
     
     public  MainFrame() {
@@ -78,6 +84,8 @@ public class MainFrame  {
 	frame.getContentPane().setLayout(new BorderLayout());
 	
 	top = new JPanel();
+	FlowLayout flowLayout = (FlowLayout) top.getLayout();
+	flowLayout.setAlignOnBaseline(true);
 	top.setBackground(Color.LIGHT_GRAY);
 	top.setForeground(Color.WHITE);
 	top.setPreferredSize(new Dimension(800,50));
@@ -86,6 +94,11 @@ public class MainFrame  {
 	lblTopciTitle.setForeground(Color.BLUE);
 	lblTopciTitle.setFont(new Font("宋体", Font.BOLD, 27));
 	top.add(lblTopciTitle);
+	/**
+	 * version
+	 */
+	lblVersionInfo = new JLabel("1.0.0.0");
+	top.add(lblVersionInfo);
 	
 	bottom = new JPanel();
 	bottom.setForeground(Color.LIGHT_GRAY);
@@ -171,10 +184,9 @@ public class MainFrame  {
 	
 	textFK0 = new JTextField();
 	textFK0.setEditable(false);
-	GetCoefficient k0 = new GetCoefficient();
 	try
 	{
-		textFK0.setText(k0.CoeValue("k00"));
+		textFK0.setText(k.getK("k00"));
 	}
 	catch (SQLException ex) {}
 	panel_coffi.add(textFK0, "cell 1 0,alignx left");
@@ -186,10 +198,9 @@ public class MainFrame  {
 	textFK1.setEditable(false);
 	panel_coffi.add(textFK1, "cell 1 1,alignx left");
 	textFK1.setColumns(15);
- 	GetCoefficient k1 = new GetCoefficient();
  	try
  	{
- 		textFK1.setText(k1.CoeValue("k01"));
+ 		textFK1.setText(k.getK("k01"));
  	}
  	catch (SQLException ex) {}
 			
@@ -199,10 +210,9 @@ public class MainFrame  {
 	
 	textFK2 = new JTextField();
 	textFK2.setEditable(false);
-	GetCoefficient k2 = new GetCoefficient();
 	try
 	{
-		textFK2.setText(k2.CoeValue("k02"));
+		textFK2.setText(k.getK("k02"));
 	}
 	catch (SQLException ex) {}
 	panel_coffi.add(textFK2, "cell 1 2,alignx left");
@@ -213,10 +223,9 @@ public class MainFrame  {
 	
 	textFK3 = new JTextField();
 	textFK3.setEditable(false);
-	GetCoefficient k3 = new GetCoefficient();
 	try
 	{
-		textFK3.setText(k3.CoeValue("k03"));
+		textFK3.setText(k.getK("k03"));
 	}
 	catch (SQLException ex) {}
 	panel_coffi.add(textFK3, "cell 1 3,alignx left");
@@ -230,10 +239,9 @@ public class MainFrame  {
 	textFK4.setEditable(false);
 	panel_coffi.add(textFK4, "cell 1 4,alignx left");
 	textFK4.setColumns(15);
-	GetCoefficient k4 = new GetCoefficient();
 	try
 	{
-		textFK4.setText(k4.CoeValue("k04"));
+		textFK4.setText(k.getK("k04"));
 	}
 	catch (SQLException ex) {}
 	
@@ -244,10 +252,9 @@ public class MainFrame  {
 	textFK5.setEditable(false);
 	panel_coffi.add(textFK5, "cell 4 0,alignx left");
 	textFK5.setColumns(15);
-	GetCoefficient k5 = new GetCoefficient();
 	try
 	{
-		textFK5.setText(k5.CoeValue("k05"));
+		textFK5.setText(k.getK("k05"));
 	}
 	catch (SQLException ex) {}
 	
@@ -259,10 +266,9 @@ public class MainFrame  {
 	textFK6.setEditable(false);
 	panel_coffi.add(textFK6 , "cell 4 1,alignx left");
 	textFK6 .setColumns(15);
-	GetCoefficient k6 = new GetCoefficient();
 	try
 	{
-		textFK6.setText(k6.CoeValue("k06"));
+		textFK6.setText(k.getK("k06"));
 	}
 	catch (SQLException ex) {}
 	
@@ -273,10 +279,9 @@ public class MainFrame  {
 	textFK7.setEditable(false);
 	panel_coffi.add(textFK7, "cell 4 2,alignx left");
 	textFK7.setColumns(15);
-	GetCoefficient k7 = new GetCoefficient();
 	try
 	{
-		textFK7.setText(k7.CoeValue("k07"));
+		textFK7.setText(k.getK("k07"));
 	}
 	catch (SQLException ex) {}
 	
@@ -288,10 +293,9 @@ public class MainFrame  {
 	textFK8.setEditable(false);
 	panel_coffi.add(textFK8, "cell 4 3,alignx left");
 	textFK8.setColumns(15);
-	GetCoefficient k8 = new GetCoefficient();
 	try
 	{
-		textFK8.setText(k8.CoeValue("k08"));
+		textFK8.setText(k.getK("k08"));
 	}
 	catch (SQLException ex) {}
 	
@@ -302,10 +306,9 @@ public class MainFrame  {
 	textFK20.setEditable(false);
 	panel_coffi.add(textFK20, "cell 4 4,alignx left");
 	textFK20.setColumns(15);
-	GetCoefficient k20 = new GetCoefficient();
 	try
 	{
-		textFK20.setText(k20.CoeValue("k20"));
+		textFK20.setText(k.getK("k20"));
 	}
 	catch (SQLException ex) {}
 	
@@ -316,10 +319,9 @@ public class MainFrame  {
 	textFK21.setEditable(false);
 	panel_coffi.add(textFK21, "cell 4 5,alignx left");
 	textFK20.setColumns(15);
-	GetCoefficient k21 = new GetCoefficient();
 	try
 	{
-		textFK21.setText(k21.CoeValue("k21"));
+		textFK21.setText(k.getK("k21"));
 	}
 	catch (SQLException ex) {}
 	
@@ -330,10 +332,9 @@ public class MainFrame  {
 	textFK10.setEditable(false);
 	panel_coffi.add(textFK10, "cell 7 1,alignx left");
 	textFK10.setColumns(15);
-	GetCoefficient k10 = new GetCoefficient();
 	try
 	{
-		textFK10.setText(k10.CoeValue("k10"));
+		textFK10.setText(k.getK("k10"));
 	}
 	catch (SQLException ex) {}
 	
@@ -344,10 +345,9 @@ public class MainFrame  {
 	textFK11.setEditable(false);
 	panel_coffi.add(textFK11, "cell 7 2,alignx left");
 	textFK11.setColumns(15);
-	GetCoefficient k11 = new GetCoefficient();
 	try
 	{
-		textFK11.setText(k11.CoeValue("k11"));
+		textFK11.setText(k.getK("k11"));
 	}
 	catch (SQLException ex) {}
 	
@@ -357,10 +357,9 @@ public class MainFrame  {
 	textFK22.setEditable(false);
 	panel_coffi.add(textFK22, "cell 10 2,alignx left");
 	textFK22.setColumns(15);
-	GetCoefficient k22 = new GetCoefficient();
 	try
 	{
-		textFK22.setText(k22.CoeValue("k22"));
+		textFK22.setText(k.getK("k22"));
 	}
 	catch (SQLException ex) {}
 	
@@ -371,10 +370,9 @@ public class MainFrame  {
 	textFK12.setEditable(false);
 	panel_coffi.add(textFK12, "cell 7 3,alignx left");
 	textFK12.setColumns(15);
-	GetCoefficient k12 = new GetCoefficient();
 	try
 	{
-		textFK12.setText(k12.exchangerate());
+		textFK12.setText(k.getExRate());
 	}
 	catch (SQLException ex) {}
 			
@@ -385,10 +383,9 @@ public class MainFrame  {
 	textFK13.setEditable(false);
 	panel_coffi.add(textFK13, "cell 7 4,alignx left");
 	textFK13.setColumns(15);
-	GetCoefficient k13 = new GetCoefficient();
 	try
 	{
-		textFK13.setText(k13.CoeValue("k13"));
+		textFK13.setText(k.getK("k13"));
 	}
 	catch (SQLException ex) {}	
 	
@@ -399,10 +396,9 @@ public class MainFrame  {
 	textFK14.setEditable(false);
 	panel_coffi.add(textFK14, "cell 1 5,alignx left");
 	textFK14.setColumns(20);
-	GetCoefficient k14 = new GetCoefficient();
 	try
 	{
-		textFK14.setText(k14.CoeValue("k14"));
+		textFK14.setText(k.getK("k14"));
 	}
 	catch (SQLException ex) {}	
 	
@@ -413,10 +409,9 @@ public class MainFrame  {
 	textFK141.setEditable(false);
 	panel_coffi.add(textFK141, "cell 4 6,alignx left");
 	textFK141.setColumns(20);
-	GetCoefficient k141 = new GetCoefficient();
 	try
 	{
-		textFK141.setText(k141.CoeValue("k141"));
+		textFK141.setText(k.getK("k141"));
 	}		
 	catch (SQLException ex) {}	
 			
@@ -426,10 +421,9 @@ public class MainFrame  {
 	textFK15.setEditable(false);
 	panel_coffi.add(textFK15, "cell 1 6,alignx left");
 	textFK15.setColumns(20);
-	GetCoefficient k15 = new GetCoefficient();
 	try
 	{
-		textFK15.setText(k15.CoeValue("k15"));
+		textFK15.setText(k.getK("k15"));
 	}
 	catch (SQLException ex) {}	
 	
@@ -455,10 +449,9 @@ public class MainFrame  {
 	textFK18.setEditable(false);
 	panel_coffi.add(textFK18, "cell 10 3,alignx left");
 	textFK18.setColumns(20);
-	GetCoefficient k18= new GetCoefficient();
 	try
 	{
-		textFK18.setText(k18.CoeValue("k18"));
+		textFK18.setText(k.getK("k18"));
 	}
 	catch (SQLException ex) {}
 	
