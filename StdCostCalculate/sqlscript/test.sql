@@ -20,7 +20,7 @@
 
 select count(*) from t_bdlabourandmake
 select  datediff(day,getdate(),'2018-08-01') from BDStdCostProgVersion  
-update BDStdCostProgVersion  set version='1.0.0.4',v1=1
+--update BDStdCostProgVersion  set v1=1000
 select * from icclasstableinfo where fclasstypeid = '1007006'
 select * from sys.objects where name like '%action%' and type like 'U'
 /*
@@ -30,10 +30,8 @@ select * from sys.objects where name like '%action%' and type like 'U'
  */
 select * from icclassaction
 select * from icclassactionlist where fclasstypeid = 1007006
-select top 3 * from t_icitemcustom
 
-
-
+select top 3  right(fname,8) from t_icitem
 
 
 

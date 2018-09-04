@@ -1,5 +1,6 @@
 package bd.DAO;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -25,8 +26,10 @@ public class ProductInfo {
 	{
 		try
 		{
-			getItselfQtySaled();
-			getModelQtySaled();
+			getQtySaled();
+			getAmtNewJig();
+			getQtyAmortizeNewJig();
+			getAmtAmortizeNewJig();
 			getLen();
 			getWid();
 			getHgt();
@@ -185,6 +188,7 @@ public class ProductInfo {
 					+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
 					+ " and a.fnumber like '13.%' "
 					+ " and b.firstitemid = "+firstitemid
+					+ " and b.finterid = "+finterid
 					);
 		if(rs0.next()) 
 		{
@@ -199,11 +203,12 @@ public class ProductInfo {
 
 	public void getWid() throws SQLException
 	{
-		rs0= conn.query("","; select isnull(a.f_174,0) as wid"
+		rs0= conn.query("","; select isnull(a.f_177,0) as wid"
 						+ " from t_icitem a"
 						+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
 						+ " and a.fnumber like '13.%'"
 						+ " and b.firstitemid = "+firstitemid
+						+ " and b.finterid = "+finterid
 						);
 		if(rs0.next())
 		{
@@ -217,11 +222,12 @@ public class ProductInfo {
 	}
 	public void getHgt() throws SQLException
 	{
-		rs0= conn.query("","; select isnull(a.f_177 ,0) as height "
+		rs0= conn.query("","; select isnull(a.f_174 ,0) as height "
 						+ " from t_icitem a "
 						+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
 						+ " and a.fnumber like '13.%'"
 						+ " and b.firstitemid = "+firstitemid
+						+ " and b.finterid = "+finterid
 						);
 		if(rs0.next()) 
 		{
@@ -233,54 +239,109 @@ public class ProductInfo {
 		}
 		rs0.close();
 	}
+	
 	/*
-	 * ItselfSaledQTY
+	 * HistorySaledQTY about 13.*
 	 */
-	public void getItselfQtySaled() throws SQLException
+	public void getQtySaled() throws SQLException
 	{	
-		rs0 = conn.query("",";select isnull(sum(b.fqty),0)"
-				+ " from icsale a "
-				+ " join icsaleentry b on a.finterid = b.finterid "
-				+ " and a.fstatus > 0 and a.fcancellation = 0 and "
-				+ "b.fitemid = "+firstitemid);		
-		if (rs0.next())	
-		{
-			itselfQtySaled = rs0.getDouble(1); 	
-		}
-		else 
-		{
-			itselfQtySaled = 0.0; 
-		}
-		rs0.close();
-	}
-	/*
-	 * ModelSaledQTY
-	 */
-	public void getModelQtySaled() throws SQLException
-	{	
-		String cmdModelQtySaled = ";select isnull(sum(fqty),0) "
+
+		String cmdQtySaled = ";select isnull(sum(b.fqty),0) "
 				+ " from icsale a "
 				+ " join icsaleentry b "
-				+ " on a.finterid = b.finterid and a.fstatus > 0 and a.fcancellation = 0  "
-				+ " join t_icitem c on c.fitemid = b.fitemid and left(c.fmodel,5) like left('"
-				+model+"',5)"
-				+ " group by left(c.fmodel,5)";
-		rs0 = conn.query("",cmdModelQtySaled );
+				+ " on a.finterid = b.finterid and a.fstatus > 0 "
+				+ " and a.fcancellation = 0  "
+				+ " and b.fitemid in ("
+				+ " select t1.fitemid from "
+				+ " icbom t1 join icbomchild t2 on t1.finterid = t2.finterid and t1.fstatus >0"
+				+ " and t1.fcancellation =0  and t1.fusestatus = 1072"
+				+ " join BDBomMulExpose t3 on t3.fitemid = t2.fitemid"
+				+ " and t3.firstitemid="+firstitemid
+				+ " join t_icitem t4 on t4.fitemid = t3.fitemid "
+				+ " and  t4.fnumber like '13.%' )";
+		rs0 = conn.query("",cmdQtySaled );
 		if (rs0.next())	
 		{
-			modelQtySaled =rs0.getDouble(1);
+			saledQty =rs0.getDouble(1);
 		}	 	
 		else 
 		{
-			modelQtySaled = 0.0 ;
+			saledQty = 0.0 ;
 		}
 		rs0.close(); 
+		//System.out.println("history saled qty: "+saledQty);
+	}
+
+	/*
+	 * Get NewJig Amortize QTY t_icitemcustom f_179
+	 */
+	public void getQtyAmortizeNewJig() throws SQLException
+	{	
+		String cmdNewJigAmortizeQty = ";select isnull(b.f_179,0) "
+				+ " from BDBomMulExpose a "
+				+ " join t_icitem b "
+				+ " on a.fitemid = b.fitemid "
+				+ " and b.fnumber like '13.%'"
+				+ " and a.firstitemid = " +firstitemid;
+		rs0 = conn.query("",cmdNewJigAmortizeQty );
+		if (rs0.next())	
+		{
+			newJigAmortizeQty =rs0.getDouble(1);
+		}	 	
+		else 
+		{
+			newJigAmortizeQty = 0.0 ;
+		}
+		rs0.close();
+		//System.out.println(cmdNewJigAmortizeQty+"新开模具计划摊销数量："+newJigAmortizeQty);
+	}
+	/*
+	 * Get NewJig Amt 新开模具费用f_178 新开专用工装夹具费用 f_181
+	 */
+	public void getAmtNewJig() throws SQLException
+	{
+		String cmdNewJigAmt = ";select isnull((b.f_178+b.f_181),0)"
+				+ " from BDBomMulExpose a "
+				+ " join t_icitem b "
+				+ " on a.fitemid = b.fitemid "
+				+ " and b.fnumber like '13.%'"
+				+ " and a.firstitemid = " +firstitemid;;
+		rs0 = conn.query("",cmdNewJigAmt  );
+		if (rs0.next())	
+		{
+			newJigAmt =rs0.getDouble(1);
+		}	 	
+		else 
+		{
+			newJigAmt = 0.0 ;
+		}
+		rs0.close(); 
+		//System.out.println("新开模具费用："+cmdNewJigAmt+" value:"+newJigAmt);
+	}
+	
+	/*
+	 * Get NewJig Amortize AMT
+	 */
+	public void getAmtAmortizeNewJig() 
+	{	
+		
+		if (saledQty < newJigAmortizeQty && newJigAmortizeQty >0 )	
+		{
+			newJigAmortizeAmt =
+					Double.parseDouble(new BigDecimal(
+							newJigAmt/newJigAmortizeQty).toString());
+		}	 	
+		else 
+		{
+			newJigAmortizeAmt = 0.0 ;
+		} 
+		//System.out.println("新开模具费用摊销"+newJigAmortizeAmt);
 	}
 	
 	static public int firstitemid,finterid ;
 	static public String itemname,model,OEM ;
 	static public double length,width,height,gainrate,packagesize
-	,itselfQtySaled,modelQtySaled;
+	,saledQty,newJigAmortizeQty,newJigAmt,newJigAmortizeAmt;
 	private DBConnect conn=new DBConnect();
 	private ResultSet rs0;
 

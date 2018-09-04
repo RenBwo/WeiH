@@ -7,7 +7,7 @@ public class LabourAndMake {
 	/*
 	 * 制造费用与直接工资表 TABLE t_BDLabourAndMake
 	 */
-	public void createTableLaborAndMake()  throws SQLException
+	public void createTable()  throws SQLException
 	{
 		rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' and name like 't_BDLabourAndMake'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
@@ -60,7 +60,7 @@ public class LabourAndMake {
 	 * 制造费用与直接工资
 	 * 直接生产成本=直接人工+制造费用（人工）+设备电费与折旧+材料费用+工装模具费用
 	 */
-	public void costLabourAndMake(
+	public void set(
 				double k1,double k2,double k3,double EnergyPrice
 				) 	throws SQLException	
 		{

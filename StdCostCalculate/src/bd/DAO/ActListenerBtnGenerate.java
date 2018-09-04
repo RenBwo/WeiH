@@ -18,9 +18,9 @@ public class ActListenerBtnGenerate implements ActionListener
 	    try 
 	    {
 	    	stdCostReport.createTableRPT();
-	    	bom.createTableBOM();
-	    	directMaterial.createTableMaterial();
-	    	labourAndMake.createTableLaborAndMake();
+	    	bom.createTable();
+	    	directMaterial.createTable();
+	    	labourAndMake.createTable();
 	    	adiMaterial.updateAdiMatrialPrice();
 	    	machineInfo.updateMachineInfo();
 		
@@ -80,62 +80,77 @@ public class ActListenerBtnGenerate implements ActionListener
 	    			productInfo.getFirstItemID(fnumber);
 	    			productInfo.productInfoBeforeBOM(fnumber);
 	    			bom.clean();		
-		    		bom.bomExpose();
+		    		bom.set();
 		    		productInfo.productInfoAfterBOM();
 		    		machineInfo.getCapacity();
-	    			bomVerifyError=bom.verifyBOM();	
+	    			bomVerifyError=bom.verify();	
 	    			RoutVerifyErr=route.verifyRout();
 	    			RoutLWHVerifyErr=route.verifyRoutLWH();
-	    			directMaterial.costMaterial();
-	    			materialVerifyError=directMaterial.verifyMaterialPrice();
+	    			directMaterial.set();
+	    			materialVerifyError=directMaterial.verify();
 	    			adiVerifyError=adiMaterial.verifyAdiPrice();
 	    		
 	    			if (StdCostCalculate.mainFrame.textFK12.getText().equals(String.valueOf(0.0))) 
 	    			{
 	    				++sumFails ;
+	    				directMaterial.clean();
 			    		bom.clean();
-			    		System.out.println(" 没有有效的预算汇率,," );				    		
+			    		updateCompanyPricePolicy.set9k();
+			    		System.out.println(" 无效的预算汇率,," );				    		
 		    		}
 	    			else if (ProductInfo.firstitemid == 0) 
 	    			{
 			    		++sumFails ;
+	    				directMaterial.clean();
+			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("产品itemid 不存在, "+df.format(new Date()).toString() +" ," +fnumber);
 			    	}
 	    			else if (bomVerifyError > 0) 
 	    			{
 			    		++sumFails ;
+	    				directMaterial.clean();
 			    		bom.clean();
+			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("bom 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
 	    			else if (RoutVerifyErr > 0) 
 	    			{
 			    		++sumFails ;
+	    				directMaterial.clean();
 			    		bom.clean();
+			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("工艺路线 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
 			    	else if (RoutLWHVerifyErr > 0) 
 			    	{
 			    		++sumFails ;
+	    				directMaterial.clean();
 			    		bom.clean();
-			    		System.out.println("芯体数据不完整 长:"+ProductInfo.length+" 宽:"+ProductInfo.width
-			    				+" 高:"+ProductInfo.height+" ," +df.format(new Date()).toString() +" ,"+fnumber);
+			    		updateCompanyPricePolicy.set9k();
+			    		System.out.println("芯体数据不完整 长:"+ProductInfo.length+"米 宽:"+ProductInfo.width
+			    				+"米 高:"+ProductInfo.height+"米 ," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
 			    	else if (materialVerifyError > 0) 
 			    	{
 			    		++sumFails ;
+	    				directMaterial.clean();
+			    		bom.clean();
+			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("直接材料价格 不完整,"+df.format(new Date()).toString()  +" ,"+fnumber);
 			    	}
 			    	else if (adiVerifyError > 0) 
 			    	{
 			    		++sumFails ;
+	    				directMaterial.clean();
 			    		bom.clean();
+			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("辅料价格 不完整," +df.format(new Date()).toString() +" ,"+fnumber );
 			    	}
 			    	else 
 			    	{	
 			    		//System.out.println("2.直接成本计算 成功，下一步，计算人工与制造费用");
 			    		labourAndMake.clean();
-			    		labourAndMake.costLabourAndMake(Double.parseDouble(
+			    		labourAndMake.set(Double.parseDouble(
 			    				StdCostCalculate.mainFrame.textFK1.getText())
 			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK2.getText())
 			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK3.getText())
@@ -167,32 +182,34 @@ public class ActListenerBtnGenerate implements ActionListener
 			    	}
 	    			StdCostCalculate.mainFrame.lblstatus.setText("^^^^^^^"+k +" 个产品的标准成本报价已经生成，请到ERP查看！");
 	    		}					    		/* end for*/
-	    	    if (StdCostCalculate.autoRun ==1 )
-	    	    {
-	    	    	updateCompanyPricePolicy.clean(); //没有计算的，公司价格体系里价格设为 1000
-		    	 }
+	    	   
 	    		System.out.println( "全部计算结束, "+df.format(new Date()).toString()+","+k
 	    				+"个产品 "+ sumFails+"个不满足计算条件");
 	    	} 		    	/*end multiple*/
 /* 
 * start single 
 * */
-	    	else 
+	    	else if(k==0)
+	    	{
+	    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, " 请选择一个产品");
+	    		System.out.println(" 没有选择产品,," );
+	    	}
+	    	else
 	    	{
 	    		fnumber = fnumbers[0];
 	    		productInfo.getFirstItemID(fnumber);
     			productInfo.productInfoBeforeBOM(fnumber);
     			//System.out.println("prodInfo: "+ProductInfo.model);
     			bom.clean();		
-	    		bom.bomExpose();
+	    		bom.set();
 	    		productInfo.productInfoAfterBOM();
 	    		machineInfo.getCapacity();
-	    		bomVerifyError=bom.verifyBOM();	
+	    		bomVerifyError=bom.verify();	
 	    		RoutVerifyErr=route.verifyRout();
 	    		RoutLWHVerifyErr=route.verifyRoutLWH();
 	    		//System.out.println("1.取得参数 成功，下一步，计算材料成本，显示BOM和直接材料清单");
-	    		directMaterial.costMaterial( );
-	    		materialVerifyError=directMaterial.verifyMaterialPrice();
+	    		directMaterial.set( );
+	    		materialVerifyError=directMaterial.verify();
 	    		//System.out.println("验证直接材料价格是否完整");
 	    		adiVerifyError=adiMaterial.verifyAdiPrice();
 	    		//System.out.println("验证辅料价格是否完整");   	    
@@ -215,10 +232,12 @@ public class ActListenerBtnGenerate implements ActionListener
 	    		//System.out.println("2.直接材料成本计算 成功，下一步，验证计算条件");
 	    		if (StdCostCalculate.mainFrame.textFK12.getText().equals(String.valueOf(0.0))) 
 	    		{
+    				stdCostReport.clear();
+    				directMaterial.clean();
 	    			bom.clean();
 	    			StdCostCalculate.mainFrame.lblstatus.setText(" 没有有效的预算汇率！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, " 没有有效的预算汇率！");
-		    		System.out.println(" 没有有效的预算汇率,," );
+		    		System.out.println(" 无效的预算汇率,," );
 	    		}								
 		    	else if (ProductInfo.firstitemid == 0)	
 		    	{
@@ -228,6 +247,8 @@ public class ActListenerBtnGenerate implements ActionListener
 		    	}
 		    	else if (bomVerifyError > 0)
 		    	{
+    				stdCostReport.clear();
+    				directMaterial.clean();
 		    		bom.clean();
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" bom 不完整！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "BOM 不完整,请查看BOM");
@@ -235,21 +256,27 @@ public class ActListenerBtnGenerate implements ActionListener
 		    	}
 		    	else if (RoutVerifyErr > 0) 
 		    	{
+    				stdCostReport.clear();
+    				directMaterial.clean();
 		    		bom.clean();
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "工艺路线 不完整");
 			    	System.out.println("工艺路线 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    }
 		    	else if (RoutLWHVerifyErr > 0) 
 		    	{
+    				stdCostReport.clear();
+    				directMaterial.clean();
 		    		bom.clean();
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "芯体数据不完整 长:"+ProductInfo.length
-		    				+"宽:"+ProductInfo.width+"高:"+ProductInfo.height);
-			    	System.out.println("芯体数据不完整 长:"+ProductInfo.length+"宽:"+ProductInfo.width
-			    			+"高:"+ProductInfo.height+" ," +df.format(new Date()).toString() 
+		    				+"米，宽:"+ProductInfo.width+"米，高:"+ProductInfo.height+"米");
+			    	System.out.println("芯体数据不完整 长:"+ProductInfo.length+"米，宽:"+ProductInfo.width
+			    			+"米，高:"+ProductInfo.height+"米," +df.format(new Date()).toString() 
 			    			+" ,"+fnumber);
 			    }
 		    	else if (adiVerifyError > 0)
 		    	{
+    				stdCostReport.clear();
+    				directMaterial.clean();
 		    		bom.clean();
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" 辅料价格 不完整！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "有 "+ adiVerifyError 
@@ -259,6 +286,8 @@ public class ActListenerBtnGenerate implements ActionListener
 		    	}
 		    	else if (materialVerifyError  > 0)	
 		    	{
+    				stdCostReport.clear();
+    				directMaterial.clean();
 		    		bom.clean();
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" 直接材料 价格 不完整！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "有 直接材料 在过去一年没"
@@ -269,7 +298,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    	{
 		    		//System.out.println("3.符合计算条件，下一步，计算人工与制造费用");
 		    		labourAndMake.clean();
-		    		labourAndMake.costLabourAndMake(
+		    		labourAndMake.set(
 		    				Double.parseDouble(StdCostCalculate.mainFrame.textFK1.getText())
 		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK2.getText())
 		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK3.getText())
@@ -305,9 +334,9 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		stdCostReport.set(StdCostCalculate.mainFrame.tableReport
 		    				, StdCostCalculate.mainFrame.tableMaterial, StdCostCalculate.mainFrame.tableCalculate
 		    				, ProductInfo.packagesize, ProductInfo.gainrate);				    
-		    		StdCostCalculate.mainFrame.txtNewModel.setText(StdCostCalculate.mainFrame.textFK16.getText());
-		    		StdCostCalculate.mainFrame.txtNewModelSalQty.setText(StdCostCalculate.mainFrame.textFK17.getText());
-		    		StdCostCalculate.mainFrame.txtHistSalQty.setText(String.valueOf(ProductInfo.itselfQtySaled));
+		    		StdCostCalculate.mainFrame.txtNewJigAmt.setText(String.valueOf(ProductInfo.newJigAmt));
+		    		StdCostCalculate.mainFrame.txtNewJigPlanAmortizeQty.setText(String.valueOf(ProductInfo.newJigAmortizeQty));
+		    		StdCostCalculate.mainFrame.txtHistorySaledQty.setText(String.valueOf(ProductInfo.saledQty));
 		    		setDevelopeRequestValue.setDevelopRequestValue(ProductInfo.firstitemid);
 		    		StdCostCalculate.mainFrame.btnR2Save.doClick();
 		    		StdCostCalculate.mainFrame.lblstatus.setText("^^^^^^^"+fnumber +" 的标准成本报价已经生成"

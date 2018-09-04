@@ -54,8 +54,8 @@ public class MainFrame  {
     ,lblDev20,lblDev21,lblDev22,lblDev23,lblDev24,lblDev25,lblDev26
     ,lblDev27,lblDev28,lblDev29,lblDev30,lblDev31,lblDev32,lblDev33
     ,lblDev34,lblDev35,lblDev36,lblDev37,lblDev38;
-    public JLabel lblComments,lblNewModel,lblNewModelSaleQty
-    ,lblHistSalQty;
+    public JLabel lblComments,lblNewJigAmt,lblNewJigPlanAmortizeQty
+    ,lblHistorySaledQty;
       
 	public JTextField texFnum,texFmodel;
 	public JTextField textFK0,textFK1,textFK2,textFK3,textFK4,textFK5
@@ -67,7 +67,7 @@ public class MainFrame  {
 	,txtDev13,txtDev14,txtDev15,txtDev16,txtDev17,txtDev18,txtDev19
 	,txtDev20,txtDev21,txtDev22,txtDev23,txtDev24,txtDev25,txtDev26
 	,txtDev27,txtDev28,txtDev29,txtDev30,txtDev31,txtDev32;
-    public JTextField txtNewModel,txtNewModelSalQty,txtHistSalQty;
+    public JTextField txtNewJigAmt,txtNewJigPlanAmortizeQty,txtHistorySaledQty;
 	    
     public JButton btnGenerate,btnR2Save,btnQuery;
     public JCheckBox chckbxNewCheckBox;
@@ -427,6 +427,7 @@ public class MainFrame  {
 	}
 	catch (SQLException ex) {}	
 	
+	/*
 	lblK16 = new JLabel("新开模具费用K16");
 	panel_coffi.add(lblK16, "cell 6 5,alignx left");
 	
@@ -435,14 +436,14 @@ public class MainFrame  {
 	textFK16.setColumns(20);
  	textFK16.setText(String.valueOf(0));
 	
-	lblK17 = new JLabel("新模产品预测销量 K17");
+	lblK17 = new JLabel("新开模具计划摊销数量 K17");
 	panel_coffi.add(lblK17, "cell 6 6,alignx left");
 	
 	textFK17 = new JTextField();
 	panel_coffi.add(textFK17, "cell 7 6,alignx left");
 	textFK17.setColumns(20);
 	textFK17.setText(String.valueOf(2000));
-	
+	*/
 	lblK18 = new JLabel("制造费用_其他成本K18");
 	panel_coffi.add(lblK18, "cell 9 3,alignx left");
 	textFK18 = new JTextField();
@@ -527,21 +528,21 @@ public class MainFrame  {
 	panel_bottom.setPreferredSize(new Dimension(800,50));
 	panel.add(panel_bottom, BorderLayout.SOUTH);
 	panel_bottom.setLayout(new MigLayout("", "[100px][100px][130px][100px][100px][100px]", "[][]"));
-	lblNewModel = new JLabel("新开模具费用");
-	panel_bottom.add(lblNewModel,"cell 0 1,alignx right");
-	txtNewModel = new JTextField();
-	txtNewModel.setColumns(15);
-	panel_bottom.add(txtNewModel,"cell 1 1");		
-	lblNewModelSaleQty = new JLabel("新开模具预测销量");
-	panel_bottom.add(lblNewModelSaleQty,"cell 2 1 ,alignx right");
-	txtNewModelSalQty = new JTextField();
-	txtNewModelSalQty.setColumns(15);
-	panel_bottom.add(txtNewModelSalQty,"cell 3 1");
-	lblHistSalQty= new JLabel("历史销售数量");
-	panel_bottom.add(lblHistSalQty,"cell 4 1,alignx right");
-	txtHistSalQty = new JTextField();
-	txtHistSalQty.setColumns(15);
-	panel_bottom.add(txtHistSalQty,"cell 5 1");
+	lblNewJigAmt = new JLabel("新开模具费用");
+	panel_bottom.add(lblNewJigAmt,"cell 0 1,alignx right");
+	txtNewJigAmt = new JTextField();
+	txtNewJigAmt.setColumns(15);
+	panel_bottom.add(txtNewJigAmt,"cell 1 1");		
+	lblNewJigPlanAmortizeQty = new JLabel("新开模具计划摊销数量");
+	panel_bottom.add(lblNewJigPlanAmortizeQty,"cell 2 1 ,alignx right");
+	txtNewJigPlanAmortizeQty = new JTextField();
+	txtNewJigPlanAmortizeQty.setColumns(15);
+	panel_bottom.add(txtNewJigPlanAmortizeQty,"cell 3 1");
+	lblHistorySaledQty= new JLabel("历史销售数量");
+	panel_bottom.add(lblHistorySaledQty,"cell 4 1,alignx right");
+	txtHistorySaledQty = new JTextField();
+	txtHistorySaledQty.setColumns(15);
+	panel_bottom.add(txtHistorySaledQty,"cell 5 1");
 				
 	tableReport = new JTable();
 	tableReport.setEnabled(false);
@@ -812,7 +813,7 @@ public class MainFrame  {
 			},
 		new String[] {"foperid","fopersn","物料代码","物料名称","数量","工序","工序价格",
 				"工资系数","工件数量","设备名","功率","产能","产能单位","电费","月提折旧","折旧分摊",
-				"固定资产内码","固定资产编号","芯体长度（米）","芯体宽度（米）"
+				"固定资产内码","固定资产编号","芯体长度（米）","芯体高度（米）"
 				}
 			));
 	scrollPane_energe.setViewportView(tableEnergy);
@@ -828,7 +829,7 @@ public class MainFrame  {
 		new String[] {
 				"foperid","fopersn","零部件代码","零部件名","零件数量","工序","工价","工资系数"
 				,"工件数量","辅料名","用量","价格","辅料费用","一年采购发票平均单价",  "计划单价"
-				,"芯体长度","芯体宽度"
+				,"芯体长度","芯体高度"
 				}
 			));
 	scrollPane_adi.setViewportView(tableAdi);
@@ -841,7 +842,7 @@ public class MainFrame  {
 		},
 		new String[] {"foperid","fopersn","物料代码","物料名称","数量","工序","工序价格",
 				"工资系数","工件数量","工装模具名称","工装模具分摊费用","米重(kg/m)"
-				,"最大使用量(kg)","模具费用","芯体长度","芯体宽度"
+				,"最大使用量(kg)","模具费用","芯体长度","芯体高度"
 				}
 		));
 	scrollPane_model.setViewportView(tableModel);

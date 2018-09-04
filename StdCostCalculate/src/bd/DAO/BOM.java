@@ -7,7 +7,7 @@ public class BOM {
 	/*
 	* create BOM多级展开表 BDBomMulExpose
 	*/
-	public void createTableBOM() throws SQLException
+	public void createTable() throws SQLException
 	{ 
 		rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' and name like 'BDBomMulExpose'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
@@ -48,7 +48,7 @@ public class BOM {
 	/* 
   	 * BOM EXPOSE 
   	 */
-	public void bomExpose() throws SQLException
+	public void set() throws SQLException
 	{//conn.update("","TRUNcate table  BDBomMulExpose;");/*清除数据*/	 
 		 int level = 0;
 		 String cBomExpose = ";with recursive_cte as ("
@@ -127,7 +127,7 @@ public class BOM {
 	/*
 	 * BOM integrity Verify	 最终物料并且加工类型为自制的，说明BOM不完整
 	 */
-	public int verifyBOM() throws SQLException
+	public int verify() throws SQLException
 	{
 		String cmdverify =";select count(*) from BDBomMulExpose where enditem = 1 and maketype = 2"
 				+ " and firstitemid = "+ProductInfo.firstitemid +" and finterid = "+ProductInfo.finterid;

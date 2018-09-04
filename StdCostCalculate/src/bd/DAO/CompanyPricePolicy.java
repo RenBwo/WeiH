@@ -2,13 +2,11 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
-import bd.View.StdCostCalculate;
-
 public class CompanyPricePolicy {
 	/*
 	 * update company price policy
 	 */
-	public void update(double RMBPri,double USDPri) 
+	public void set(double RMBPri,double USDPri) 
 			throws SQLException
 	{
 		String upComPrcPly = " ; update icprcplyentry set "
@@ -35,22 +33,20 @@ public class CompanyPricePolicy {
 		conn.close();
 		//System.out.println("更新公司价格体系！"+upComPrcPly+upComPrcSpec);
 	}
+	
 	/*
-	 * 只用于自动计算
-	 * 没有计算的，在价格体系里把价格改为1000
+	 * 没有计算的，在价格体系里把价格改为9000
 	 */
-	public void clean() throws SQLException
+	public void set9k() throws SQLException
 	{
-		String cmdClean=";update icprcplyentry set "
-					+ " fprice = 1000 "
+		String set9k=";update icprcplyentry set "
+					+ " fprice = 9000 "
 				+ " from icprcplyentry "
 				+ " where finterid = 3 "
-				+ " and fitemid not in ("
-				+ " select fproditemid from t_bdStandCostRPT "
-				+ " where autoFlag = "+StdCostCalculate.autoFlag ;
-		System.out.println(cmdClean);
-		//conn.update("", cmdClean);
-		//conn.close();
+				+ " and fitemid ="+ ProductInfo.firstitemid;
+		//System.out.println(set9k);
+		conn.update("", set9k);
+		conn.close();
 	}
 	private DBConnect conn=new DBConnect();
 

@@ -23,7 +23,8 @@ public class StdCostCalculate
 	private  	static ActListenserSelected actListenserSelected=new ActListenserSelected();
 	private  	static ActListenerQueryByFmodel actListenerQueryByFmodel=new ActListenerQueryByFmodel();
     private  	static ActListenerQueryByFnumber actListenerQueryByFnumber=new ActListenerQueryByFnumber();
-    public 		static String programName="standCostCal",localVer="1.0.0.4"
+    private     static EnvForAuto envForAuto = new EnvForAuto();
+    public 		static String programName="standCostCal",localVer="1.0.1.4"
     		,autoFlag;
     public 		static int versionOK,autoRun;
     private 	static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -36,7 +37,7 @@ public class StdCostCalculate
 	public static void main(String[] args) 
 	{
 		
-		mainFrame.lblVersionInfo.setText("Version:"+localVer);
+		mainFrame.lblVersionInfo.setText("   版本: "+localVer);
 		autoFlag=dateFormat.format(new Date()).toString();
 		
 		if (args.length>0 && args[0].equals("auto"))
@@ -69,6 +70,7 @@ public class StdCostCalculate
 					}
 					if (versionOK==1 && autoRun==1 )
 					{
+						envForAuto.set();
 						mainFrame.frame.setVisible(false);
 						mainFrame.btnGenerate.addActionListener(actListenerGenerate);
 						mainFrame.btnR2Save.addActionListener(actListenerBtnSave);

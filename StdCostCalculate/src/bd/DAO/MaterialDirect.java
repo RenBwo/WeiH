@@ -9,7 +9,7 @@ public class MaterialDirect
 	/* 
 	* 直接材料成本表   	TABLE t_CostMaterialBD
 	*/
-	public void createTableMaterial() throws SQLException
+	public void createTable() throws SQLException
 	{ 
 		rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' and name like 't_CostMaterialBD'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
@@ -44,7 +44,7 @@ public class MaterialDirect
 	  *	 直接材料成本
 	  * 价格：1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税,否则，取物料计划价格 未含税 
 	  */
-	public void costMaterial() throws SQLException
+	public void set() throws SQLException
 	{ 	
 		/*清除数据*/
 		String command4 = " ;insert into t_CostMaterialBD(fproditemid,finterid,FLevel,FParentID,FItemID,fQtyPer,fQty"
@@ -75,12 +75,13 @@ public class MaterialDirect
 	/*
 	 * clean CostMaterial
 	 */
-	public void cleanCostMaterial() throws SQLException
+	public void clean() throws SQLException
 	{
 		String cmdDel=";delete from t_CostMaterialBD "
 					+ "where fproditemid ="
 					+ProductInfo.firstitemid
-					+" and datediff(day,createdate,getdate()) >2 ";
+					+" and ( finterid = "+ProductInfo.finterid
+					+" or datediff(day,createdate,getdate()) >2) ";
 		conn.update("",cmdDel);	
 		conn.close();
 	}
@@ -88,7 +89,7 @@ public class MaterialDirect
 	/*
 	 * verify direct_material price验证直接材料价格
 	 */
-	public int verifyMaterialPrice() throws SQLException
+	public int verify() throws SQLException
 	{	
 		String cmdverify =";select count(*) from t_CostMaterialBD where fproditemid= "
 				+ProductInfo.firstitemid 

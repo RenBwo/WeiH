@@ -87,7 +87,7 @@ public class SQlStatement {
 			/*其余工艺*/
 			+ " else round(t6.fcapacity/(case  when isnull(t4.fentryselfz0236,0)>0 then t4.fentryselfz0236 else 1 end),4) end) "
 			+ "),0) as fdepr, " 
-			+" t6.fassetInterId,t101.fassetnumber,"+ProductInfo.length+","+ProductInfo.width
+			+" t6.fassetInterId,t101.fassetnumber,"+ProductInfo.length+","+ProductInfo.height
 			+" from BDBomMulExpose t1  "
 			+" join t_icitem t2 on t1.fitemid = t2.fitemid and t1.firstitemid = "+ProductInfo.firstitemid+" and t1.finterid = "+ProductInfo.finterid
 			+" join t_Routing t3 on t3.finterid = t1.froutingid"
@@ -125,7 +125,7 @@ public class SQlStatement {
 				+ " then t6.fqty/"+ MachineInfo.capacity	
 				+ " when (t4.foperid = 40494 and t6.faidname like '%锌丝%' ) then t11.fqtyzn/1000*"+ProductInfo.length
 				+ " when (t4.foperid = 40142 and "+ProductInfo.length +"<=0.2 ) then t6.fqty/2 else t6.fqty end),0) as famtAdi, "
-	        + "w.avrprice,t110.fplanprice,"+ProductInfo.length+","+ProductInfo.width 
+	        + "w.avrprice,t110.fplanprice,"+ProductInfo.length+","+ProductInfo.height 
 	        + " from BDBomMulExpose 				t1  "
 			+ " join t_icitem 						t2 		on t1.fitemid = t2.fitemid and t1.firstitemid ="+ProductInfo.firstitemid
 			+ " and t1.finterid = "+ProductInfo.finterid
@@ -175,7 +175,7 @@ public class SQlStatement {
 			+ " else round(t6.famtperoper,10) end),0 ) as famtmodel "
 			+ ",t13.f_140,t11.cap/1000 ,"
 			+ "(case t4.foperid when 40494 then t11.famtmodel else t6.famtmodel end) as famtmodel0,"
-			+ProductInfo.length+","+ProductInfo.width		
+			+ProductInfo.length+","+ProductInfo.height		
 			+" from BDBomMulExpose t1  "
 			+" join t_icitem t2 on t1.fitemid = t2.fitemid and t1.firstitemid = "+ProductInfo.firstitemid+" and t1.finterid="+ProductInfo.finterid		
 			+" join t_Routing t3 on t3.finterid = t1.froutingid"		

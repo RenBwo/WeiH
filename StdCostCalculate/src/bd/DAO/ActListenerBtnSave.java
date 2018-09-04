@@ -35,9 +35,6 @@ public class ActListenerBtnSave implements ActionListener
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(15,2).toString())		/*管理费用 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(16,2).toString())		/*管理费用--土地摊销 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(17,2).toString())		/*新开模具工装费用 */
-					, ProductInfo.itselfQtySaled													/*产品自身历史销售数量 */	
-					, ProductInfo.modelQtySaled														/*产品型号历史销售数量 */
-					, 0.0																/*新开模具摊销数量 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(18,2).toString())		/*运输费用 （内贸） */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(18,5).toString())		/*运输费用（FOB青岛） */
 					, Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(0,2).toString())		/*标准成本=生产成本合计+期间费用合计（内贸)-运输费用 （内贸）*/
@@ -60,7 +57,6 @@ public class ActListenerBtnSave implements ActionListener
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK5.getText().toString())					/*产品不良系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK6.getText().toString())					/*财务费用系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK7.getText().toString())					/*管理费用系数 */
-					, ProductInfo.gainrate															/*产品利润率 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK10.getText().toString())					/*销售费用系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK11.getText().toString())					/*国内增值税率 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK22.getText().toString())					/*国内账期 */
@@ -75,7 +71,7 @@ public class ActListenerBtnSave implements ActionListener
 					-Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(18,5).toString())
 					);
 			bom.clean();
-			updateCompanyPricePolicy.update(
+			updateCompanyPricePolicy.set(
 					Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(22,2).toString())	
 					,Double.parseDouble(StdCostCalculate.mainFrame.tableReport.getValueAt(22,5).toString())	
 					);

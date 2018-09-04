@@ -53,7 +53,9 @@ public class Route
 				+ " or isnull(c.foperid,0) = 40494 or isnull(c.foperid,0) = 40495)";
 		rs0 = conn.query("",cmdLWH);
 		if(rs0.next() && (rs0.getInt(1) >0)
-			&& ( ProductInfo.length <=0||ProductInfo.width <=0 || ProductInfo.height <=0)) 
+			&& ( ProductInfo.length <=0.0000 ||ProductInfo.length > 2.00
+			||ProductInfo.width <=0.0000 ||ProductInfo.width > 0.10
+			|| ProductInfo.height <=0.0000 || ProductInfo.height > 1.50)) 
 		{
 		conn.close();
 		return 1;		

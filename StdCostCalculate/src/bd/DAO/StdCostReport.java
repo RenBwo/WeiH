@@ -59,8 +59,7 @@ public class StdCostReport {
   						 + ",fCostLand				decimal(20,4)"  //管理费用--土地摊销
   						 + ",fCostNewModel			decimal(20,4)"  //新模具工装费用 
   						 + ",QtyShare				decimal(20,4)" 	//新开模具摊销数量
-  						 + ",itselfQtySaled			decimal(20,4)" 	//历史销售数量，取已经审核的销售发票    						    						 
-  						 + ",modelQtySaled			decimal(20,4)" 	//型号历史销售数量，取已经审核的销售发票   						 
+  						 + ",modelQtySaled			decimal(20,4)" 	//历史销售数量，取已经审核的销售发票   						 
   						 + ",fCostTransportInland	decimal(20,4)" 	//运输费用 （内贸）  						 
   						 + ",fCostTransportFobQD	decimal(20,4)"  //运输费用（FOB青岛）
   						 
@@ -238,9 +237,7 @@ public class StdCostReport {
 				/*
 				 * 新开模具工装费用 
 				 */
-				tableReport.setValueAt(df4.format(Double.parseDouble(
-						StdCostCalculate.mainFrame.textFK16.getText())
-						/Double.parseDouble(StdCostCalculate.mainFrame.textFK17.getText())),17,2);
+				tableReport.setValueAt(df4.format(ProductInfo.newJigAmortizeAmt),17,2);
 				/*
 				 * 外贸项目
 				 */
@@ -382,10 +379,18 @@ public class StdCostReport {
 	public void clean() 
 			throws SQLException
 	{
-		String delHistPrice=" ; delete from t_bdStandCostRPT "
+		String cleanHistPrice=" ; delete from t_bdStandCostRPT "
 				+ " where fproditemid = "+ProductInfo.firstitemid
 				+ " and finterid < "+ProductInfo.finterid;
-		conn.update("",delHistPrice);
+		conn.update("",cleanHistPrice);
+		conn.close();
+	}
+	public void clear() 
+			throws SQLException
+	{
+		String clearPrice=" ; delete from t_bdStandCostRPT "
+				+ " where fproditemid = "+ProductInfo.firstitemid;
+		conn.update("",clearPrice);
 		conn.close();
 	}
 	/*
@@ -399,14 +404,13 @@ public class StdCostReport {
 		, double fCostHouse 			, double fCostProidInland		, double fCostProidFobQD	
 		, double fCostBadProd 			, double fCostFinance			, double fCostSail			
 		, double fCostManage 			, double fCostLand				, double fCostNewModel		
-		, double itselfQtySaled			, double modelQtySaled
-		, double QtyShare				, double fCostTransportInland	, double fCostTransportFobQD	
+		, double fCostTransportInland	, double fCostTransportFobQD	
 		, double fCostStandInland		, double fCostStandFobQD		, double fGainInland			
 		, double fGainFobQD				, double fCostTotalInland		, double fCostTotalFobQD		
 		, double fincrementTax		, double fPrice_China_InTax_Delay	, double fPrice_FobQD_Delay_USD		
 		, double fResPriceK0 			, double fAssureK1 				, double fMakePayK2	
 		, double fBadProdK4				, double fFinanceK5				, double fManageK6				
-		, double fSailK7				, double gainrate				, double fTaxRateK10	
+		, double fSailK7				, double fTaxRateK10	
 		, double fDelayDaysK11 			, double fDelayDaysK22			, double fExchangeRateK12 
 		, double fInterestRateK13 		, double fwashingK14
 			) throws SQLException
@@ -418,7 +422,7 @@ public class StdCostReport {
 				+ " ; update t_bdStandCostRPT set  "
 				+ " fid = @fid"
 				+ ", fclasstypeid = 200000013"
-				+ ", fBillno = '"+yyyymm+"'+convert(varchar(20),@fid)"			
+				+ ", fBillno = '"+yyyymm+"'+right('00000'+convert(varchar(20),@fid),5)"			
 				+ ", autoFlag= '"+StdCostCalculate.autoFlag+"'"
 				+ ", fCostProduce="  			+	fCostProduce				/*一.生产成本合计（1+2+3）*/
 		        + ", fCostMaterial = "			+	fCostMaterial 				/*1.直接材料成本*/
@@ -441,9 +445,8 @@ public class StdCostReport {
 				+ ", fCostManage = " 			+	fCostManage					/*管理费用 */
 				+ ", fCostLand = "  			+	fCostLand 					/*管理费用--土地摊销 */
 				+ ", fCostNewModel = "  		+	fCostNewModel				/*新开模具工装费用 */
-				//+ " ,QtyShare = "  				+？？						/*新开模具摊销数量 */	
-				+ ", itselfQtySaled = " 		+	itselfQtySaled				/*产品自身历史销售数量 */	
-				+ ", modelQtySaled = " 			+	modelQtySaled				/*产品型号历史销售数量 */
+				+ " ,QtyShare = "  				+ 	ProductInfo.newJigAmortizeQty	/*新开模具计划摊销数量 */	
+				+ ", modelQtySaled = " 			+	ProductInfo.saledQty		/*13裸包产品 的历史销售数量 */
 				+ ", fCostTransportInland = "  	+ 	fCostTransportInland 		/*运输费用 （内贸） */
 				+ ", fCostTransportFobQD = " 	+ 	fCostTransportFobQD			/*运输费用（FOB青岛） */
 				+ ", fCostStandInland="  		+	fCostStandInland			/*标准成本=生产成本合计+期间费用合计（内贸）*/
@@ -462,7 +465,7 @@ public class StdCostReport {
 				+ ", fFinanceK5 = " 			+	fFinanceK5					/*财务费用系数 */
 				+ ", fManageK6 = " 				+	fManageK6					/*管理费用系数 */
 				+ ", fSailK7 = " 				+ 	fSailK7						/*销售费用系数 */
-				+ ", fGainRateK9 = " 			+	gainrate					/*产品利润率 */
+				+ ", fGainRateK9 = " 			+	ProductInfo.gainrate		/*产品利润率 */
 				+ ", fTaxRateK10	 = " 		+	fTaxRateK10					/*国内增值税率 */
 				+ ", fDelayDaysK11 = " 			+	fDelayDaysK11				/*国内账期 */
 				+ ", fDelayDaysK22 = " 			+	fDelayDaysK22				/*国外账期 */
