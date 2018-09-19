@@ -48,7 +48,7 @@ public class ProductInfo {
 		String cmdGetFirstItemID=";select a.fitemid from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
 	  			+ " and b.fstatus = 1 and a.fnumber like '"+fnumber+ "'";
-   		rs0 = conn.query("",cmdGetFirstItemID);
+   		rs0 = conn.query(cmdGetFirstItemID);
 		if (rs0.next()) 
 		{
 			firstitemid = rs0.getInt(1);
@@ -66,9 +66,9 @@ public class ProductInfo {
 	{
 		String command5 = ";insert into t_bdStandCostRPT(fproditemid,fdate)"
 				+ " values( "+firstitemid+ ",getdate() )";
-		conn.update("",command5);
+		conn.update(command5);
 		
-		rs0 = conn.query("",";select max(finterid) from t_bdStandCostRPT where fproditemid ="
+		rs0 = conn.query(";select max(finterid) from t_bdStandCostRPT where fproditemid ="
 						+firstitemid);
 		if(rs0.next()) 
 		{
@@ -88,7 +88,7 @@ public class ProductInfo {
 		String cmdGetItemName=";select left(a.fname,30)  from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
 	  			+ " and b.fstatus = 1 and a.fitemid = "+firstitemid;
-   		rs0 = conn.query("",cmdGetItemName);
+   		rs0 = conn.query(cmdGetItemName);
 		if (rs0.next()) 
 		{
 			itemname = rs0.getString(1);
@@ -107,7 +107,7 @@ public class ProductInfo {
 		String cmdGetModel=";select a.fmodel from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
 	  			+ " and b.fstatus = 1 and a.fitemid="+firstitemid;
-   		rs0 = conn.query("",cmdGetModel);
+   		rs0 = conn.query(cmdGetModel);
 		if (rs0.next()) 
 		{
 			model = rs0.getString(1);
@@ -126,7 +126,7 @@ public class ProductInfo {
 		String cmdGetOEM=";select left(a.f_131,30) from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
 	  			+ " and b.fstatus = 1 and a.fitemid ="+firstitemid;
-   		rs0 = conn.query("",cmdGetOEM);
+   		rs0 = conn.query(cmdGetOEM);
 		if (rs0.next()) 
 		{
 			OEM = rs0.getString(1);
@@ -142,7 +142,7 @@ public class ProductInfo {
 	 */
 	public void getGainRate(String fnumber) throws SQLException
 	{
-		rs0 = conn.query("",";select isnull(round(f_101,6),0) from t_item_3015 "
+		rs0 = conn.query(";select isnull(round(f_101,6),0) from t_item_3015 "
 				+ " where '01.'+fnumber =  left('"+fnumber+"',5) ");		
 		if (rs0.next())	
 		{
@@ -162,7 +162,7 @@ public class ProductInfo {
 		String cmdGetPackageSize =";select a.fsize from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
 	  			+ " and b.fstatus = 1 and a.fitemid ="+firstitemid;
-   		rs0 = conn.query("",cmdGetPackageSize );
+   		rs0 = conn.query(cmdGetPackageSize );
 		if (rs0.next()) 
 		{
 			packagesize = rs0.getDouble(1);
@@ -183,7 +183,7 @@ public class ProductInfo {
 	 */
 	public void getLen() throws SQLException
 	{
-		rs0= conn.query("","; select isnull(a.f_173,0) as len"
+		rs0= conn.query("; select isnull(a.f_173,0) as len"
 					+ " from t_icitem a "
 					+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
 					+ " and a.fnumber like '13.%' "
@@ -203,7 +203,7 @@ public class ProductInfo {
 
 	public void getWid() throws SQLException
 	{
-		rs0= conn.query("","; select isnull(a.f_177,0) as wid"
+		rs0= conn.query("; select isnull(a.f_177,0) as wid"
 						+ " from t_icitem a"
 						+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
 						+ " and a.fnumber like '13.%'"
@@ -222,7 +222,7 @@ public class ProductInfo {
 	}
 	public void getHgt() throws SQLException
 	{
-		rs0= conn.query("","; select isnull(a.f_174 ,0) as height "
+		rs0= conn.query("; select isnull(a.f_174 ,0) as height "
 						+ " from t_icitem a "
 						+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
 						+ " and a.fnumber like '13.%'"
@@ -259,7 +259,7 @@ public class ProductInfo {
 				+ " and t3.firstitemid="+firstitemid
 				+ " join t_icitem t4 on t4.fitemid = t3.fitemid "
 				+ " and  t4.fnumber like '13.%' )";
-		rs0 = conn.query("",cmdQtySaled );
+		rs0 = conn.query(cmdQtySaled );
 		if (rs0.next())	
 		{
 			saledQty =rs0.getDouble(1);
@@ -283,7 +283,7 @@ public class ProductInfo {
 				+ " on a.fitemid = b.fitemid "
 				+ " and b.fnumber like '13.%'"
 				+ " and a.firstitemid = " +firstitemid;
-		rs0 = conn.query("",cmdNewJigAmortizeQty );
+		rs0 = conn.query(cmdNewJigAmortizeQty );
 		if (rs0.next())	
 		{
 			newJigAmortizeQty =rs0.getDouble(1);
@@ -306,7 +306,7 @@ public class ProductInfo {
 				+ " on a.fitemid = b.fitemid "
 				+ " and b.fnumber like '13.%'"
 				+ " and a.firstitemid = " +firstitemid;;
-		rs0 = conn.query("",cmdNewJigAmt  );
+		rs0 = conn.query(cmdNewJigAmt  );
 		if (rs0.next())	
 		{
 			newJigAmt =rs0.getDouble(1);

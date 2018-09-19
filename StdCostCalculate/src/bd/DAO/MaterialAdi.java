@@ -24,7 +24,7 @@ public class MaterialAdi {
 						+ " group by b.fitemid "
 				+ ") 								w	on w.fitemid = a.faidnumber ";
 		//System.out.println("升级辅料单价：" + sql0);
-		conn.update("",sql0);
+		conn.update(sql0);
 		conn.close();		
 	}
 
@@ -48,7 +48,7 @@ public class MaterialAdi {
 				+ "	on 		t4.fid = t5.fid "
 				+ " and 	isnull(t5.fprice,0) = 0 "
 				+ " and 	isnull(t5.fqty,0) <> 0 ";
-		rs0=conn.query("", cmdverify);
+		rs0=conn.query( cmdverify);
 		if(rs0.next() && rs0.getInt(1) > 0 ) 
 		{
 			return 1;

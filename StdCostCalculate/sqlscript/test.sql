@@ -34,4 +34,3 @@ select * from icclassactionlist where fclasstypeid = 1007006
 select top 3  right(fname,8) from t_icitem
 
 
-

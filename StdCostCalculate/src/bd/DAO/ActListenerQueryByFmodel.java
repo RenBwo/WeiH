@@ -15,14 +15,30 @@ public class ActListenerQueryByFmodel implements ActionListener
 	{
 		try 
 		{
-			String	sqlQuery = " ;select '0' as selected,a.fnumber,a.fmodel,a.fname,a.f_161,a.fsize"
-    			+ " from t_icitem a join icbom b on a.fitemid = b.fitemid "
+			if (StdCostCalculate.mainFrame.chckbxNewProduct.isSelected())
+			{
+				String	sqlQuery = ";select distinct '0' as selected,a.fnumber,a.fmodel,a.fname,a.f_161,a.fsize"
+		    			+ " from t_icitem a join icbom b on a.fitemid = b.fitemid "
+		    			+ " and b.fstatus = 1 and b.fusestatus = 1072 and a.fnumber like '01.%' "
+		    			+ " and a.fmodel like '%"+StdCostCalculate.mainFrame.texFmodel.getText()+"%' "
+		    			+ " and a.fnumber like '%"+StdCostCalculate.mainFrame.texFnum.getText()+"%' "
+		    			+ " join icprcplyentry c on c.fprice = 1000 and c.finterid = 3 "
+		    			+ " and  c.fitemid = a.fitemid "
+		    			+ " order by a.fnumber,a.fmodel";
+					rs_code = conn.query(sqlQuery);
+					rsmd_code 	= rs_code.getMetaData();
+			}
+			else
+			{
+				String	sqlQuery = " ;select '0' as selected,a.fnumber,a.fmodel,a.fname,a.f_161,a.fsize"
+				+ " from t_icitem a join icbom b on a.fitemid = b.fitemid "
     			+ " and b.fstatus = 1 and b.fusestatus = 1072 and a.fnumber like '01.%' "
     			+ " and a.fmodel  like '%"+StdCostCalculate.mainFrame.texFmodel.getText()+"%' "
     			+ " and a.fnumber like '%"+StdCostCalculate.mainFrame.texFnum.getText()+"%' "
     			+ " order by a.fnumber,a.fmodel";
-			ResultSet rs_code = conn.query("",sqlQuery);
-			ResultSetMetaData 	rsmd_code 	= rs_code.getMetaData();
+			rs_code = conn.query(sqlQuery);
+			rsmd_code 	= rs_code.getMetaData();
+			}
 			int 	numberOfColumns 	= rsmd_code.getColumnCount();
 			DefaultTableModel Model_code = (DefaultTableModel) StdCostCalculate.mainFrame.tableQueResult.getModel(); 
 			for (int z = Model_code.getRowCount();z>0 ;z--) 
@@ -47,6 +63,9 @@ public class ActListenerQueryByFmodel implements ActionListener
 		catch(SQLException e1) {}
 	}
 	private DBConnect conn=new DBConnect();
+	private ResultSet rs_code ;
+	private ResultSetMetaData 	rsmd_code ;
+
 	
 
 

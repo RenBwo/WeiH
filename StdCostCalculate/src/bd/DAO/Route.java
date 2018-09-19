@@ -17,7 +17,7 @@ public class Route
 				+ " and  maketype = 2 and isnull(froutingid,0) = 0 "
 				+ " and firstitemid = "+ProductInfo.firstitemid 
 				+" and finterid = "+ProductInfo.finterid;
-		rs0 = conn.query("",cmdverify);
+		rs0 = conn.query(cmdverify);
 		if(rs0.next() && rs0.getInt(1) >0) 
 		{
 			conn.close();
@@ -51,7 +51,7 @@ public class Route
 				+ " join t_routingoper c on c.finterid = b.finterid"
 				+ " and (isnull(c.foperid,0) = 40142 or isnull(c.foperid,0) = 40336"
 				+ " or isnull(c.foperid,0) = 40494 or isnull(c.foperid,0) = 40495)";
-		rs0 = conn.query("",cmdLWH);
+		rs0 = conn.query(cmdLWH);
 		if(rs0.next() && (rs0.getInt(1) >0)
 			&& ( ProductInfo.length <=0.0000 ||ProductInfo.length > 2.00
 			||ProductInfo.width <=0.0000 ||ProductInfo.width > 0.10

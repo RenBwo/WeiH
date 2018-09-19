@@ -27,16 +27,16 @@ public class DBConnect
     	}
 	}
     //methods
-	public ResultSet query(String k3,String sql) throws SQLException 
+	public ResultSet query(String sql) throws SQLException 
 	{		
-		database(k3);
+		database(test);
     	kingdee();
     	return state.executeQuery(sql);
     }
     	
-    public void update(String k3,String sql) throws SQLException 
+    public void update(String sql) throws SQLException 
     {    
-    	database(k3);
+    	database(test);
     	kingdee();
     	state.executeUpdate(sql);
     }
@@ -48,6 +48,5 @@ public class DBConnect
     Connection con;
 	public Statement state;
 	private String database;
-	
-
+	public static String test="test";
 }

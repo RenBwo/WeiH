@@ -9,7 +9,7 @@ public class LabourAndMake {
 	 */
 	public void createTable()  throws SQLException
 	{
-		rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' and name like 't_BDLabourAndMake'");
+		rs0 = conn.query(";select count(*) from sysobjects where type = 'u' and name like 't_BDLabourAndMake'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
    		{
 			//System.out.println("table_LabourAndMake exists ");
@@ -38,7 +38,7 @@ public class LabourAndMake {
    						 + ",finterid    	int"
    						 + ",createdate 	datetime"
    						 + ")";
-			conn.update("",command1);
+			conn.update(command1);
 			conn.close();
 			//System.out.println("create table_LabourAndMake success ");
    		}
@@ -53,7 +53,7 @@ public class LabourAndMake {
 	     	 " and ( finterid = "+ProductInfo.finterid
 	     	 +" or datediff(day,createdate,getdate()) >2)";
 			//System.out.println("清除历史数据:"+cleanLabourAndMake);
-	    conn.update("",cleanLabourAndMake);
+	    conn.update(cleanLabourAndMake);
 	    conn.close();
 	}
 	/* 
@@ -345,7 +345,7 @@ public class LabourAndMake {
 			+ ", #t_21,  #t_22, #t_23";	
 
 			//System.out.println("直接人工与制造费用明细:"+sql0+sql1+sql2+sql3+sql4+sql5);
-			conn.update("",sql0+sql1+sql2+sql3+sql4+sql5);
+			conn.update(sql0+sql1+sql2+sql3+sql4+sql5);
 			conn.close();
 		}
 		

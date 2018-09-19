@@ -2,6 +2,8 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
+import bd.View.StdCostCalculate;
+
 public class CompanyPricePolicy {
 	/*
 	 * update company price policy
@@ -29,7 +31,7 @@ public class CompanyPricePolicy {
 			+ " and a.flpricectrl = 1 "
 			+ " where a.fitemid ="+ ProductInfo.firstitemid
 			+ " and a.finterid = 3";
-		conn.update("",upComPrcPly+upComPrcSpec);
+		conn.update(upComPrcPly+upComPrcSpec);
 		conn.close();
 		//System.out.println("更新公司价格体系！"+upComPrcPly+upComPrcSpec);
 	}
@@ -45,7 +47,7 @@ public class CompanyPricePolicy {
 				+ " where finterid = 3 "
 				+ " and fitemid ="+ ProductInfo.firstitemid;
 		//System.out.println(set9k);
-		conn.update("", set9k);
+		conn.update(set9k);
 		conn.close();
 	}
 	private DBConnect conn=new DBConnect();

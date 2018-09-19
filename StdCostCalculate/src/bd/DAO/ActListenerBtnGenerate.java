@@ -31,7 +31,7 @@ public class ActListenerBtnGenerate implements ActionListener
         			+ " and b.fstatus = 1 and b.fusestatus = 1072 and a.fnumber like '01.%' "
         			+ " order by a.fnumber";
 	    	
-	    		ResultSet rs_auto = conn.query("",sqlauto);
+	    		ResultSet rs_auto = conn.query(sqlauto);
 	    		////System.out.println("auto "+sqlauto);
 
 	    		if(rs_auto.next()) 
@@ -161,10 +161,10 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		sqlLabourAndMake = mysqlstate.getSQLStatement("sqlLabourAndMake",powerprice);
 			    		//System.out.println("人工和制造费用:"+sqlLabourAndMake);			
 			    		sqlPriceRPTform =mysqlstate.getSQLStatement("sqlPriceRPTform",powerprice);
-			    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7});
+			    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7},-1,0,0);
 			    		data.myTableModel(StdCostCalculate.mainFrame.tableCalculate,sqlLabourAndMake
-			    				,new int[]{7,8,9,10,11,12,13});
-			    		data.myTableModel(StdCostCalculate.mainFrame.tableReport,sqlPriceRPTform,new int[]{});
+			    				,new int[]{7,8,9,10,11,12,13},-1,0,0);
+			    		data.myTableModel(StdCostCalculate.mainFrame.tableReport,sqlPriceRPTform,new int[]{},-1,0,0);
 
 			    		int a = StdCostCalculate.mainFrame.tableReport.getColumnCount();
 			    		if (a == 7) 
@@ -227,8 +227,8 @@ public class ActListenerBtnGenerate implements ActionListener
 	    		//System.out.println("人工与制造费用: "+sqlLabourAndMake );
 	    		sqlPriceRPTform =mysqlstate.getSQLStatement("sqlPriceRPTform",powerprice);
 		
-	    		data.myTableModel(StdCostCalculate.mainFrame.tableBOM,sqlBOM,new int[]{});
-	    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7});
+	    		data.myTableModel(StdCostCalculate.mainFrame.tableBOM,sqlBOM,new int[]{},-1,0,0);
+	    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7},-1,0,0);
 	    		//System.out.println("2.直接材料成本计算 成功，下一步，验证计算条件");
 	    		if (StdCostCalculate.mainFrame.textFK12.getText().equals(String.valueOf(0.0))) 
 	    		{
@@ -305,12 +305,12 @@ public class ActListenerBtnGenerate implements ActionListener
 		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK0.getText())
 		    				);
 		    		//System.out.println("4.制造费用与直接人工 成功，下一步，生成报价");			
-		    		data.myTableModel(StdCostCalculate.mainFrame.tableEnergy,sqlEnergy,new int[]{13,15});
-		    		data.myTableModel(StdCostCalculate.mainFrame.tableAdi,sqlAdi,new int[]{12});
-		    		data.myTableModel(StdCostCalculate.mainFrame.tableModel,sqlModel,new int[]{10});			
+		    		data.myTableModel(StdCostCalculate.mainFrame.tableEnergy,sqlEnergy,new int[]{13,15},-1,0,0);
+		    		data.myTableModel(StdCostCalculate.mainFrame.tableAdi,sqlAdi,new int[]{12},-1,0,0);
+		    		data.myTableModel(StdCostCalculate.mainFrame.tableModel,sqlModel,new int[]{10},-1,0,0);			
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableCalculate,sqlLabourAndMake
-		    				,new int[]{7,8,9,10,11,12,13});
-		    		data.myTableModel(StdCostCalculate.mainFrame.tableReport,sqlPriceRPTform,new int[]{});
+		    				,new int[]{7,8,9,10,11,12,13},1,7,13);
+		    		data.myTableModel(StdCostCalculate.mainFrame.tableReport,sqlPriceRPTform,new int[]{},-1,0,0);
 			
 		    		StdCostCalculate.mainFrame.lbl_ProdName.setText(fnumber); 
 		    		StdCostCalculate.mainFrame.lbl_Model.setText(ProductInfo.model);

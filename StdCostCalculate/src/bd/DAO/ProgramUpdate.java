@@ -287,7 +287,7 @@ public class ProgramUpdate extends JFrame
 		 {
 
 				cmdDelVersion=";delete BDStdCostProgVersion where programfile like '"+StdCostCalculate.programName+"'";
-				conn.update("",cmdDelVersion);
+				conn.update(cmdDelVersion);
 				cmdInsertVersion=";insert into BDStdCostProgVersion("
 						+ "version"
 						+ ",programfile"
@@ -298,7 +298,7 @@ public class ProgramUpdate extends JFrame
 				 		+ ",'"+StdCostCalculate.programName+"'"
 				 		+ ",'"+desc+"'"
 				 		+ ")";
-				 conn.update("",cmdInsertVersion);
+				 conn.update(cmdInsertVersion);
 				 conn.close();
 		 }
 		 catch (SQLException e)

@@ -36,7 +36,7 @@ public class VersionCompare {
 	{
 		try
 		{
-			rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' "
+			rs0 = conn.query(";select count(*) from sysobjects where type = 'u' "
 			 		+ " and name like 'BDStdCostProgVersion'");
 			 if (rs0.next() && rs0.getInt(1)<1)
 			 {
@@ -45,7 +45,7 @@ public class VersionCompare {
 						+ ",programfile varchar(101)"
 						+ ",description varchar(200)"
 						+ ")" ;
-			   	conn.update("",cmdCreateTableVerControl );
+			   	conn.update(cmdCreateTableVerControl );
 			   	conn.close();
 			 } 
 		}
@@ -65,7 +65,7 @@ public class VersionCompare {
 		cmdVerInfo = ";select distinct version from BDStdCostProgVersion  "
 				+ " where programfile like '"+StdCostCalculate.programName
 				+"' order by version desc";
-		rs0=conn.query("", cmdVerInfo);
+		rs0=conn.query(cmdVerInfo);
 		if (rs0.next())
 		{
 			versionFromDB=rs0.getString(1);

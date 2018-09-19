@@ -7,7 +7,7 @@ public class CurrentPeriod
 {
 	public void getYear() throws SQLException
 	{
-		rs0 = conn.query("",";select  fvalue from t_Systemprofile "
+		rs0 = conn.query(";select  fvalue from t_Systemprofile "
 				+ " where fkey like 'currentyear' and fcategory = 'GL'");
         if(rs0.next())
         {
@@ -22,7 +22,7 @@ public class CurrentPeriod
 
 	public void getMonth() throws SQLException
 	{
-		rs0 = conn.query("",";select fvalue from t_Systemprofile "
+		rs0 = conn.query(";select fvalue from t_Systemprofile "
 	    		+ " where fkey like 'currentperiod' and fcategory = 'GL'");
 	    if(rs0.next())
 	    {

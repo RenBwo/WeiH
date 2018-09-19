@@ -16,7 +16,7 @@ public class EnvForAuto
 				+ ";truncate table t_bdStandCostRPT"
 				+ ";update icmaxnum set fmaxnum = 0 "
 				+ " where FTableName like 't_bdStandCostRPT'";
-		conn.update("",cmdSetEnv);
+		conn.update(cmdSetEnv);
 		conn.close();
 	}
 

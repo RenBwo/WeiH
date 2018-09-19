@@ -11,7 +11,7 @@ public class MaterialDirect
 	*/
 	public void createTable() throws SQLException
 	{ 
-		rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' and name like 't_CostMaterialBD'");
+		rs0 = conn.query(";select count(*) from sysobjects where type = 'u' and name like 't_CostMaterialBD'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
 		{
 			//System.out.println("table_Material exists ");
@@ -34,7 +34,7 @@ public class MaterialDirect
 							 + ",finterid     	int"
 							 + ",createdate 	datetime"
 							 + ")";
-			conn.update("",command1);
+			conn.update(command1);
 			conn.close();
 			//System.out.println("create table_Material success ");
 		}
@@ -67,8 +67,8 @@ public class MaterialDirect
 			+ ") w 		on w.fitemid = a.fitemid "		
 			+ " where  b.ferpclsid = 1 ";
 		////System.out.println("材料成本： "+command4);
-		conn.update("",command4);
-		conn.update("",";update t_CostMaterialBD set fAmtMaterial = fprice*fqty where finterid ="+ProductInfo.finterid
+		conn.update(command4);
+		conn.update(";update t_CostMaterialBD set fAmtMaterial = fprice*fqty where finterid ="+ProductInfo.finterid
 					+ " and fproditemid="+ProductInfo.firstitemid);
 		conn.close();
 		}
@@ -82,7 +82,7 @@ public class MaterialDirect
 					+ProductInfo.firstitemid
 					+" and ( finterid = "+ProductInfo.finterid
 					+" or datediff(day,createdate,getdate()) >2) ";
-		conn.update("",cmdDel);	
+		conn.update(cmdDel);	
 		conn.close();
 	}
 
@@ -95,7 +95,7 @@ public class MaterialDirect
 				+ProductInfo.firstitemid 
 				+" and finterid = "+ProductInfo.finterid 
 				+" and isnull(fprice,0)=0 ";
-		rs0=conn.query("", cmdverify);
+		rs0=conn.query(cmdverify);
 		if(rs0.next() && rs0.getInt(1) > 0  ) 
 		{
 		conn.close();

@@ -36,7 +36,6 @@ public class StdCostCalculate
 	 */
 	public static void main(String[] args) 
 	{
-		
 		mainFrame.lblVersionInfo.setText("   版本: "+localVer);
 		autoFlag=dateFormat.format(new Date()).toString();
 		

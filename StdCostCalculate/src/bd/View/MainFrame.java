@@ -74,6 +74,7 @@ public class MainFrame  {
     public JTextArea textArea;
     public JLabel lblVersionInfo;
     public Coefficient k=new Coefficient();
+    public JCheckBox chckbxNewProduct;
 
     
     public  MainFrame() {
@@ -174,7 +175,7 @@ public class MainFrame  {
 	panel_code.add(panel_code_fnum,BorderLayout.NORTH);
 	panel_code.add(scrollpane_code_result,BorderLayout.SOUTH);
 	
-	chckbxNewCheckBox = new JCheckBox("New check box");
+	chckbxNewCheckBox = new JCheckBox("uiu");
 	scrollpane_code_result.setColumnHeaderView(chckbxNewCheckBox);
 	internalFrame.getContentPane().add(panel_code,BorderLayout.NORTH);
 	
@@ -470,16 +471,19 @@ public class MainFrame  {
 	panel_code_fnum.add(texFnum, "cell 4 1 2 1,alignx left");
 	texFnum.setColumns(30);
 	texFnum.setForeground(Color.BLUE);
+	
+	chckbxNewProduct = new JCheckBox("新产品（公司价格体系中价格是1000元的产品）");
+	panel_code_fnum.add(chckbxNewProduct, "cell 6 1");
 
 	btnQuery = new JButton("查找");
-	panel_code_fnum.add(btnQuery, "cell 6 1");
+	panel_code_fnum.add(btnQuery, "cell 8 1");
 	btnGenerate   = new JButton("生成报价");
 	btnGenerate .setForeground(Color.BLUE);
 	btnGenerate .setBackground(new Color(0, 255, 0));
-	panel_code_fnum.add(btnGenerate , "cell 7 1,alignx right");		
+	panel_code_fnum.add(btnGenerate , "cell 9 1,alignx right");		
 	
 	lblComments = new JLabel("New label");
-	panel_code_fnum.add(lblComments, "cell 10 1");
+	panel_code_fnum.add(lblComments, "cell 11 1");
 	
 	internalFrame.setVisible(true);
 	scrollPane_report = new JScrollPane();
@@ -790,12 +794,12 @@ public class MainFrame  {
 	tableCalculate = new JTable();
 	tableCalculate.setModel(new DefaultTableModel(
 		new Object[][] {
-			{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-			{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+			{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+			{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 			},
 		new String[] {"零部件代码", "零部件名", "数量", "工序名称", "工序价格", "工资系数", "工件数量", 
 			"工资", "保险", "制造费用-间接人工", "制造费用-电费", "制造费用-设备折旧分摊"
-			, "制造费用-辅料费用", "制造费用-工装模具费用"}
+			, "制造费用-辅料费用", "制造费用-工装模具费用","小计"}
 			));
 	scrollPaneCostMake.setViewportView(tableCalculate);
 	tableCalculate.setBackground(SystemColor.controlHighlight);

@@ -3,13 +3,15 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import bd.View.StdCostCalculate;
+
 public class BOM {
 	/*
 	* create BOM多级展开表 BDBomMulExpose
 	*/
 	public void createTable() throws SQLException
 	{ 
-		rs0 = conn.query("",";select count(*) from sysobjects where type = 'u' and name like 'BDBomMulExpose'");
+		rs0 = conn.query(";select count(*) from sysobjects where type = 'u' and name like 'BDBomMulExpose'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
 		{
 			//System.out.println("table_bom exists ");
@@ -40,7 +42,7 @@ public class BOM {
 					+ ",bomskip int"
 					+ ")" ;
 		
-			conn.update("",command1);
+			conn.update(command1);
 			conn.close();
 			//System.out.println("create table_bom success ");
 		}
@@ -49,7 +51,7 @@ public class BOM {
   	 * BOM EXPOSE 
   	 */
 	public void set() throws SQLException
-	{//conn.update("","TRUNcate table  BDBomMulExpose;");/*清除数据*/	 
+	{//conn.update(StdCostCalculate.test,"TRUNcate table  BDBomMulExpose;");/*清除数据*/	 
 		 int level = 0;
 		 String cBomExpose = ";with recursive_cte as ("
 		 		+ " select "+ ProductInfo.firstitemid+ " as firstitemid"
@@ -109,7 +111,7 @@ public class BOM {
 			 		+ " join t_icitem b on a.fitemid = b.fitemid and a.firstitemid = "+ProductInfo.firstitemid
 			 		+ " and a.finterid = "+ProductInfo.finterid;
 		//System.out.println("bomexpose:::: "+cBomExpose+cInBomEx+cDropTmp+upEndItem+upbomskip+upRoutingID+upMakeType);
-		conn.update("",cBomExpose+cInBomEx+cDropTmp+upEndItem+upbomskip+upRoutingID+upMakeType);		 
+		conn.update(cBomExpose+cInBomEx+cDropTmp+upEndItem+upbomskip+upRoutingID+upMakeType);		 
 		conn.close();
 	}
 
@@ -121,7 +123,7 @@ public class BOM {
 			String cCleanBom=";delete from BDBomMulExpose "			   		
    	 		+" where  firstitemid = "+ProductInfo.firstitemid 
    	 		+" and finterid = "+ProductInfo.finterid ;
-   			conn.update("",cCleanBom);
+   			conn.update(cCleanBom);
    			conn.close();
 	}
 	/*
@@ -131,7 +133,7 @@ public class BOM {
 	{
 		String cmdverify =";select count(*) from BDBomMulExpose where enditem = 1 and maketype = 2"
 				+ " and firstitemid = "+ProductInfo.firstitemid +" and finterid = "+ProductInfo.finterid;
-		rs0 = conn.query("",cmdverify);
+		rs0 = conn.query(cmdverify);
 		if(rs0.next() && rs0.getInt(1) >0) 
 		{conn.close();
 		return 1;
