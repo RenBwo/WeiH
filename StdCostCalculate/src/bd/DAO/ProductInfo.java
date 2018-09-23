@@ -244,8 +244,7 @@ public class ProductInfo {
 	 * HistorySaledQTY about 13.*
 	 */
 	public void getQtySaled() throws SQLException
-	{	
-
+	{
 		String cmdQtySaled = ";select isnull(sum(b.fqty),0) "
 				+ " from icsale a "
 				+ " join icsaleentry b "
@@ -323,8 +322,7 @@ public class ProductInfo {
 	 * Get NewJig Amortize AMT
 	 */
 	public void getAmtAmortizeNewJig() 
-	{	
-		
+	{
 		if (saledQty < newJigAmortizeQty && newJigAmortizeQty >0 )	
 		{
 			newJigAmortizeAmt =

@@ -42,30 +42,46 @@ public class MaterialDirect
 	}
 	 /*
 	  *	 直接材料成本
-	  * 价格：1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税,否则，取物料计划价格 未含税 
+	  * 价格：1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税,
+	  * 否则，2、取有效期内供应商价格体系的最高价格 源价格含税
+	  * 国内增值税：select round(f_101,6) from t_item_3015  where fnumber like 'k10'
+	  * 否则，3、取外购物料计划单价维护单 价格 未含税 
+	  * select * from icclasstype where fname_chs like '外购物料计划单价%'
 	  */
 	public void set() throws SQLException
 	{ 	
-		/*清除数据*/
-		String command4 = " ;insert into t_CostMaterialBD(fproditemid,finterid,FLevel,FParentID,FItemID,fQtyPer,fQty"
-			+ ",fitemsize,Fnumber,FbomInterID,fprice,createdate)"
-			+ " select a.firstitemid,"+ProductInfo.finterid+ ",a.FLevel,a.FParentID,a.FItemID,a.fQtyPer,a.fQty,a.fitemsize,b.Fnumber"
-			+ ",a.FbomInterID,isnull(w.avrprice,isnull(b.fplanprice,0)) as fprice "
-			+ ",getdate()"
-			+ " from BDBomMulExpose a "
-			+ " join		t_icitem b on a.fitemid  = b.fitemid and a.firstitemid = "
-			+ProductInfo.firstitemid+" and a.finterid = "
-			+ProductInfo.finterid
-			+ " left join (select b.fitemid ,sum(b.fstdamount) as funtaxamount, sum(b.fqty) as fqty"
-					+ ",case  when sum(b.fqty)>0 then round(sum(b.fstdamount)/sum(b.fqty),4) else 0 end as avrprice "
-					+ " from icpurchase a join icpurchaseentry b on a.FInterID = b.FInterID"
-					+ " and ( a.ftrantype = 75 or a.ftrantype = 76 ) "
-					+ " where a.fcheckdate > dateadd(year,-1,dateadd(day,datediff(day,0,getdate()),0)) "
-					+ " and isnull(b.fqty , 0)<> 0 and isnull(b.fstdamount ,0) <> 0 and a.fstatus = 1 "
-					+ " and a.frob =1 and (isnull(fheadselfi0252,0) =0 and isnull(fheadselfi0349,0 ) = 0) "
-					+ " group by b.fitemid "
-			+ ") w 		on w.fitemid = a.fitemid "		
-			+ " where  b.ferpclsid = 1 ";
+		String command4 = " ;insert into t_CostMaterialBD(fproditemid,finterid,FLevel"
+				+ ",FParentID,FItemID,fQtyPer,fQty,fitemsize,Fnumber,FbomInterID"
+				+ ",fprice,createdate)"
+				+ " select a.firstitemid,"+ProductInfo.finterid+ ",a.FLevel,a.FParentID"
+						+ ",a.FItemID,a.fQtyPer,a.fQty,a.fitemsize,b.Fnumber,a.FbomInterID"
+						+ ",isnull(w.avrprice,isnull("
+						+ "round(c.fprice/(select 1+round(f_101,6) from t_item_3015  where fnumber like 'k10'),4)"
+						+ ",isnull(d.fprice,0))) as fprice"
+						+ ",getdate()"
+						+ " from BDBomMulExpose a "
+						+ " join		t_icitem b on a.fitemid  = b.fitemid"
+						+ " and a.firstitemid = "+ProductInfo.firstitemid
+						+ " and a.finterid = "+ProductInfo.finterid
+						+ " left join (select b.fitemid ,sum(b.fstdamount) as funtaxamount"
+							+ ", sum(b.fqty) as fqty"
+							+ ",case  when sum(b.fqty)>0 then round(sum(b.fstdamount)/sum(b.fqty),4) "
+							+ "else 0 end as avrprice "
+							+ " from icpurchase a join icpurchaseentry b on a.FInterID = b.FInterID"
+							+ " and ( a.ftrantype = 75 or a.ftrantype = 76 ) "
+							+ " where a.fcheckdate > dateadd(year,-1,dateadd(day,datediff(day,0"
+							+ ",getdate()),0)) "
+							+ " and isnull(b.fqty , 0)<> 0 and isnull(b.fstdamount ,0) <> 0"
+							+ " and a.fstatus = 1 "
+							+ " and a.frob =1 and (isnull(fheadselfi0252,0) =0 and "
+							+ "isnull(fheadselfi0349,0 ) = 0) "
+							+ " group by b.fitemid "
+							+ ") w 		on w.fitemid = a.fitemid "
+						+ " left join (select  fitemid,max(fprice) as fprice from t_supplyentry "
+							+ " where fdisabledate >  getdate()  and fprice > 0 group by fitemid"
+							+ ") c on c.fitemid= a.fitemid "
+						+ " left join t_bos200000025entry d on d.fbase=a.fitemid and d.fdate2 > getdate()"		
+						+ " where  b.ferpclsid = 1 ";
 		////System.out.println("材料成本： "+command4);
 		conn.update(command4);
 		conn.update(";update t_CostMaterialBD set fAmtMaterial = fprice*fqty where finterid ="+ProductInfo.finterid

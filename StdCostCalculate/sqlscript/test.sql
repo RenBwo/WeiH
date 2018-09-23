@@ -30,7 +30,7 @@ select * from sys.objects where name like '%action%' and type like 'U'
  */
 select * from icclassaction
 select * from icclassactionlist where fclasstypeid = 1007006
+select 1+round(f_101,6) from t_item_3015 where fnumber like 'k10'
 
-select top 3  right(fname,8) from t_icitem
 
 

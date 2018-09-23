@@ -7,8 +7,6 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.View.StdCostCalculate;
-
 public class Coefficient 
 {
   	//标准成本核算系数

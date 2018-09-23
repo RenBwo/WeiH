@@ -3,8 +3,6 @@ package bd.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bd.View.StdCostCalculate;
-
 public class BOM {
 	/*
 	* create BOM多级展开表 BDBomMulExpose

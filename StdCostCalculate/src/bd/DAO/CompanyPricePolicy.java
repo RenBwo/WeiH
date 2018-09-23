@@ -2,8 +2,6 @@ package bd.DAO;
 
 import java.sql.SQLException;
 
-import bd.View.StdCostCalculate;
-
 public class CompanyPricePolicy {
 	/*
 	 * update company price policy
