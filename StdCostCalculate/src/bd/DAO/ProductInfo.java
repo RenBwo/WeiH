@@ -33,6 +33,7 @@ public class ProductInfo {
 			getLen();
 			getWid();
 			getHgt();
+			getVolumn();
 			conn.close();
 		}
 		catch (SQLException e)
@@ -239,6 +240,27 @@ public class ProductInfo {
 		}
 		rs0.close();
 	}
+	/*
+	 * volumn
+	 */
+	public void getVolumn() throws SQLException
+	{
+		rs0= conn.query("; select 1 from t_icitem a "
+						+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
+						+ " and a.fnumber in( '2.01.650','2.01.6501','2.01.6502')"
+						+ " and b.firstitemid = "+firstitemid
+						+ " and b.finterid = "+finterid
+						);
+		if(rs0.next()) 
+		{
+			volumn= length*width*height+0.000097356;
+		}
+		else
+		{
+			volumn= length*width*height;
+		}
+		rs0.close();
+	}
 	
 	/*
 	 * HistorySaledQTY about 13.*
@@ -338,7 +360,7 @@ public class ProductInfo {
 	
 	static public int firstitemid,finterid ;
 	static public String itemname,model,OEM ;
-	static public double length,width,height,gainrate,packagesize
+	static public double length,width,height,volumn,gainrate,packagesize
 	,saledQty,newJigAmortizeQty,newJigAmt,newJigAmortizeAmt;
 	private DBConnect conn=new DBConnect();
 	private ResultSet rs0;

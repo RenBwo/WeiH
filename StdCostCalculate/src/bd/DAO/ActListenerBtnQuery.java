@@ -25,7 +25,7 @@ public class ActListenerBtnQuery implements ActionListener
 		    			+ " join icprcplyentry c on c.fprice = 1000 and c.finterid = 3 "
 		    			+ " and  c.fitemid = a.fitemid "
 		    			+ " order by a.fnumber,a.fmodel";
-				System.out.println(sqlQuery);
+				//System.out.println(sqlQuery);
 				
 					rs_code = conn.query(sqlQuery);
 					rsmd_code 	= rs_code.getMetaData();

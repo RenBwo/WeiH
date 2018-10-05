@@ -78,7 +78,7 @@ public class TableData
 	    {
 	    	for(int i = 0 ; i<table0.getRowCount();i++)
 			{ 
-	    		System.out.println(numberOfColumns);
+	    		//System.out.println(numberOfColumns);
 				table0.setValueAt(sumRow(table0,i,indexFrom,indexTo)
 						,i, table0.getColumnCount()-1 );
 				;

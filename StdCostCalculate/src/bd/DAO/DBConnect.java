@@ -29,14 +29,14 @@ public class DBConnect
     //methods
 	public ResultSet query(String sql) throws SQLException 
 	{		
-		database(test);
+		database(testArg);
     	kingdee();
     	return state.executeQuery(sql);
     }
     	
     public void update(String sql) throws SQLException 
     {    
-    	database(test);
+    	database(testArg);
     	kingdee();
     	state.executeUpdate(sql);
     }
@@ -48,5 +48,6 @@ public class DBConnect
     Connection con;
 	public Statement state;
 	private String database;
-	public static String test="test";
+	//public static String testArg="";
+	public static String testArg="test";
 }

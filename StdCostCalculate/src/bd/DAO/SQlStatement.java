@@ -1,16 +1,15 @@
 package bd.DAO;
 
 public class SQlStatement {
-	String export,sqlMaterial,sqlLabourAndMake,sqlPriceRPTform,sqlEnergy,sqlAdi,sqlModel,sqlBOM,sqlProductDevRpt;
+	String export = "",sqlMaterial,sqlLabourAndMake,sqlPriceRPTform,sqlEnergy,sqlAdi,sqlModel,sqlBOM,sqlProductDevRpt;
 
 	public String getSQLStatement(String sqlname,double powerprice) 
 	{
-	export = "";
-
-	sqlMaterial = ";select a.fnumber,b.fname,b.fmodel,c.fname,a.fqtyper,a.fqty,a.fprice,a.famtmaterial"
-			+ ",w.avrprice,b.fplanprice "
-			+ " from t_CostMaterialBD a join t_icitem b on a.fitemid = b.fitemid"
-			+ " left join t_measureunit c on c.fmeasureunitid = b.funitid"
+		sqlMaterial = ";select a.fnumber,b.fname,b.fmodel,c.fname,a.fqtyper,a.fqty,a.fprice,a.famtmaterial"
+			+ ",w.avrprice,d.fprice,e.fprice "
+			+ " from t_CostMaterialBD 			a "
+			+ " join t_icitem 					b on a.fitemid = b.fitemid"
+			+ " left join t_measureunit 		c on c.fmeasureunitid = b.funitid"
 			+ " left join  (select b.fitemid,sum(b.fstdamount) as funtaxamount, sum(b.fqty) as fqty"
 					+ ",case  when sum(b.fqty)>0 then round(sum(b.fstdamount)/sum(b.fqty),4) else 0 end as avrprice "
 					+ " from icpurchase a join icpurchaseentry b on a.FInterID = b.FInterID"
@@ -18,7 +17,11 @@ public class SQlStatement {
 					+ " where a.fcheckdate > dateadd(year,-1,dateadd(day,datediff(day,0,getdate()),0)) "
 					+ " and isnull(b.fqty , 0)<> 0 and isnull(b.fstdamount ,0) <> 0 and a.fstatus = 1 "
 					+ " and a.frob =1 and (isnull(fheadselfi0252,0) =0 or isnull(fheadselfi0349,0 ) = 0) "
-					+ " group by b.fitemid) w 		on w.fitemid = a.fitemid "
+					+ " group by b.fitemid) 	w on w.fitemid = a.fitemid "
+			+ " left join (select  fitemid,max(fprice) as fprice from t_supplyentry "
+					+ " where fdisabledate >  getdate()  and fprice > 0 group by fitemid"
+					+ ") 						d on d.fitemid= a.fitemid "
+			+ " left join t_bos200000025entry 	e on e.fbase=a.fitemid and e.fdate2 > getdate()"		
 			+ " where a.fproditemid = "+ProductInfo.firstitemid+" and a.finterid = "+ProductInfo.finterid
 			+ " order by b.fnumber";
 
@@ -269,14 +272,47 @@ public class SQlStatement {
 			+ " join t_icitem g on g.fnumber = a.ftext8 "
 			+ " where g.fitemid = "+ProductInfo.firstitemid;
 	
-	if (sqlname =="sqlMaterial")  			{   export = "";export = sqlMaterial;		}
-	if (sqlname =="sqlLabourAndMake")  		{   export = "";export = sqlLabourAndMake;	}
-	if (sqlname =="sqlPriceRPTform")  		{   export = "";export = sqlPriceRPTform;	}
-	if (sqlname =="sqlEnergy")  			{   export = "";export = sqlEnergy;			}
-	if (sqlname =="sqlAdi")  				{   export = "";export = sqlAdi;			}
-	if (sqlname =="sqlModel")  				{   export = "";export = sqlModel;			}
-	if (sqlname =="sqlBOM")  				{   export = "";export = sqlBOM;			}
-	if (sqlname =="sqlProdDevRpt")  		{   export = "";export = sqlProductDevRpt;	}
+	if (sqlname =="sqlMaterial")  			
+	{   
+		export = "";
+		export = sqlMaterial;
+	}
+	if (sqlname =="sqlLabourAndMake")  		
+	{   
+		export = "";
+		export = sqlLabourAndMake;	
+	}
+	if (sqlname =="sqlPriceRPTform")  		
+	{   
+		export = "";
+		export = sqlPriceRPTform;	
+	}
+	if (sqlname =="sqlEnergy")  			
+	{   
+		export = "";
+		export = sqlEnergy;			
+	}
+	if (sqlname =="sqlAdi")  				
+	{   
+		export = "";
+		export = sqlAdi;			
+	}
+	if (sqlname =="sqlModel")  				
+	{   
+		export = "";
+		export = sqlModel;			
+	}
+	if (sqlname =="sqlBOM")  				
+	{   
+		export = "";
+		export = sqlBOM;			
+	}
+	if (sqlname =="sqlProdDevRpt")  		
+	{   
+		export = "";
+		export = sqlProductDevRpt;	
+	}
+	
 	//,,,,
 	 return export;
 		

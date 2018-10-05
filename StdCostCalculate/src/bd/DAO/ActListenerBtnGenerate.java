@@ -90,7 +90,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    			materialVerifyError=directMaterial.verify();
 	    			adiVerifyError=adiMaterial.verifyAdiPrice();
 	    		
-	    			if (StdCostCalculate.mainFrame.textFK12.getText().equals(String.valueOf(0.0))) 
+	    			if (StdCostCalculate.mainFrame.textExRate.getText().equals(String.valueOf(0.0))) 
 	    			{
 	    				++sumFails ;
 	    				directMaterial.clean();
@@ -155,6 +155,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK2.getText())
 			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK3.getText())
 			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK0.getText())
+			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText())
 			    				);
 			    		//System.out.println("3.制造费用与直接人工 成功，下一步，生成报价");
 			    		sqlMaterial = mysqlstate.getSQLStatement("sqlMaterial",powerprice );
@@ -230,7 +231,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    		data.myTableModel(StdCostCalculate.mainFrame.tableBOM,sqlBOM,new int[]{},-1,0,0);
 	    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7},-1,0,0);
 	    		//System.out.println("2.直接材料成本计算 成功，下一步，验证计算条件");
-	    		if (StdCostCalculate.mainFrame.textFK12.getText().equals(String.valueOf(0.0))) 
+	    		if (StdCostCalculate.mainFrame.textExRate.getText().equals(String.valueOf(0.0))) 
 	    		{
     				stdCostReport.clear();
     				directMaterial.clean();
@@ -303,6 +304,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK2.getText())
 		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK3.getText())
 		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK0.getText())
+		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText())
 		    				);
 		    		//System.out.println("4.制造费用与直接人工 成功，下一步，生成报价");			
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableEnergy,sqlEnergy,new int[]{13,15},-1,0,0);
@@ -311,7 +313,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableCalculate,sqlLabourAndMake
 		    				,new int[]{7,8,9,10,11,12,13},1,7,13);
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableReport,sqlPriceRPTform,new int[]{},-1,0,0);
-			
+		    		
 		    		StdCostCalculate.mainFrame.lbl_ProdName.setText(fnumber); 
 		    		StdCostCalculate.mainFrame.lbl_Model.setText(ProductInfo.model);
 		    		StdCostCalculate.mainFrame.labItemname.setText(ProductInfo.itemname);

@@ -53,7 +53,7 @@ public class MaterialDirect
 		String command4 = " ;insert into t_CostMaterialBD(fproditemid,finterid,FLevel"
 				+ ",FParentID,FItemID,fQtyPer,fQty,fitemsize,Fnumber,FbomInterID"
 				+ ",fprice,createdate)"
-				+ " select a.firstitemid,"+ProductInfo.finterid+ ",a.FLevel,a.FParentID"
+				+ " select a.firstitemid,a.finterid,a.FLevel,a.FParentID"
 						+ ",a.FItemID,a.fQtyPer,a.fQty,a.fitemsize,b.Fnumber,a.FbomInterID"
 						+ ",isnull(w.avrprice,isnull("
 						+ "round(c.fprice/(select 1+round(f_101,6) from t_item_3015  where fnumber like 'k10'),4)"

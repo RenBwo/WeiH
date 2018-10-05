@@ -61,7 +61,7 @@ public class LabourAndMake {
 	 * 直接生产成本=直接人工+制造费用（人工）+设备电费与折旧+材料费用+工装模具费用
 	 */
 	public void set(
-				double k1,double k2,double k3,double EnergyPrice
+				double k1,double k2,double k3,double PowerPrice,double GasPrice
 				) 	throws SQLException	
 		{
 			/* 直接人工		 */
@@ -104,9 +104,14 @@ public class LabourAndMake {
 					+ " and b.fusestatus = 1072 )   a0 	on a.sn  like a0.sn+'%')  " ;
 			//System.out.println("工艺路线，直接人工 : "+sql0);
 			
-			/*电费与折旧
-			 * 电费 = 零件数量*工件数量*(功率*0.4*电价/产能)
-			 * =t1.fqty*t4.fentryselfz0237* t6.fpower*0.4*工业电价/产能
+			/*能源费用（电费与燃气费，以下用电费代表能源费）与折旧
+			 * 钎焊焊接工艺40336 之钎焊炉设备的电费：=单位入炉产品体积用电量×入炉产品体积×电价 201809变更点
+			 * =（单位用电量FelectricPerV×电价+用气量FGasPerV×气价）×入炉产品体积
+			 * 
+			 * 其它设备的电费 = 零件数量×工件数量×(功率×0.4×电价/产能)
+			 * =零件数量*工件数量×功率×0.4×电价/产能
+			 * =t1.fqty×t4.fentryselfz0237×t6.fpower×0.4×工业电价/产能	
+			 * 		 
 			 * 钎焊焊接工艺40336产能： 	根据产品不同计算 CapacityIndividual()
 			 * 扁管压出工艺40494产能： 	根据产品不同计算 60*扁管压出速度/扁管长度（坯料尺寸）;
 			 * 扁管切断工艺 40495产能：	根据芯体长度不同计算 
@@ -116,6 +121,7 @@ public class LabourAndMake {
 			 * 						800mm <= l <1000mm	then 4200 pc/h
 			 * 						1000mm <= l 		then 2400 pc/h
 			 * 其余工艺产能：	 		根据工艺不同计算，标准产能/工资系数 fcapacity/t4.fentryselfz0236
+			 * 
 			 * 折旧：取最后一期折旧/同一固定资产编号下的设备数量
 			 * 固定资产编号:同一固定资产编号同一设备,取最后日期的FALTERID,如纯净水设备
 			 * */
@@ -127,23 +133,47 @@ public class LabourAndMake {
 			+ " t5.fname as opername,t4.fpiecerate,t4.fentryselfz0236 as frate, "
 			+ " t4.fentryselfz0237 as fmakeqty, "
 			+ "  t6.FmanName,"
+			/*
+			 * 电费
+			 */
 			+ " isnull("
-			+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
-			+ " and fname like '扁管盘料'),0) "
-			+ " when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0)"
-			+ " else t1.fqty end)" /*零部件数量*/
-			+ "*t4.fentryselfz0237*t6.fpower*0.4*"+EnergyPrice+ "/"
-			+ "(case t4.foperid when 40336 then " + MachineInfo.capacity			/*钎焊炉工艺 40336*/
-			+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+ ",4)" /*扁管压出工艺40494*/
-			+ " when 40495 then (case "									/*扁管切断工艺 40495*/
-					+ " when " +ProductInfo.length*1000 +" < 400 then 7800 "
-					+ " when " +ProductInfo.length*1000 +">=400 and "+ProductInfo.length*1000 +"< 600 then 6600"
-					+ " when " +ProductInfo.length*1000 +">=600 and "+ProductInfo.length*1000 +"< 800 then 5400"
-					+ " when " +ProductInfo.length*1000 +">=800 and "+ProductInfo.length*1000 +"< 1000 then 4200"
-					+ " else  2400 end  )" 								
-			+ " else round( t6.fcapacity/(case t4.fentryselfz0236 when 0 then 1 "
-			+ " else t4.fentryselfz0236 end),4) end) "					/*其余工艺*/
-			+ " ,0 ) as famtpower,  " 									/*电费*/
+			/*
+			 * 钎焊炉设备电费与气费
+			 */
+			+ "(case when (isnull(t6.FelectricPerV,0) > 0 or isnull(t6.FGasPerV,0) >0) "
+				+ "then (isnull(t6.FelectricPerV,0)*"+PowerPrice
+				+ "+isnull(t6.FGasPerV,0)*"+GasPrice+")*"
+				+ProductInfo.volumn
+				+ " else  "
+				+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
+					+ " and fname like '扁管盘料'),0) "
+			/*
+			 * 扁管盘料需要进行单位转换
+			 */
+			 	+ " when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0)"
+			/*
+			 * 其他零部件数量
+			 */
+			 	+ " else t1.fqty end)" 
+			 + "*t4.fentryselfz0237*t6.fpower*0.4*"+PowerPrice+ "/"
+			/*
+			 * 产能
+			 */
+			 	+ "(case t4.foperid when 40336 then " + MachineInfo.capacity			
+			/*钎焊炉工艺 40336*/
+			 		+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+ ",4)" /*扁管压出工艺40494*/
+			 		+ " when 40495 then (case "									/*扁管切断工艺 40495*/
+			 			+ " when " +ProductInfo.length*1000 +" < 400 then 7800 "
+			 			+ " when " +ProductInfo.length*1000 +">=400 and "+ProductInfo.length*1000 +"< 600 then 6600"
+			 			+ " when " +ProductInfo.length*1000 +">=600 and "+ProductInfo.length*1000 +"< 800 then 5400"
+			 			+ " when " +ProductInfo.length*1000 +">=800 and "+ProductInfo.length*1000 +"< 1000 then 4200"
+			 			+ " else  2400 end  )" 								
+			/*其余工艺*/
+					+ " else round( t6.fcapacity/(case t4.fentryselfz0236 when 0 then 1 "
+						+ " else t4.fentryselfz0236 end),4) "						
+				+ "end) end)"					
+			+ " ,0 ) as famtpower,  " 									
+			/*折旧*/
 			+ " isnull("
 			+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid"
 			+ " and fname like '扁管盘料'),0) "
@@ -160,7 +190,7 @@ public class LabourAndMake {
 					+ " else  2400 end )" 								
 			+ " else round( t6.fcapacity/(case t4.fentryselfz0236 when 0 then 1 "
 			+ " else t4.fentryselfz0236 end),4) end) "/*其余工艺*/
-			+ "),0) as fdepr " /*折旧*/
+			+ "),0) as fdepr " 
 			+ " into #t_machine "
 			+ " from BDBomMulExpose 				t1  "
 			+ " join t_icitem 						t2 		on t1.fitemid = t2.fitemid "
@@ -170,7 +200,7 @@ public class LabourAndMake {
 			+ " left join t_submessage 				t5 		on t5.finterid = t4.foperid"
 			+ "	and t5.fparentid = 61 "		
 			+ " left join (select b.fassetinterid,a.foperno,b.fmanname,b.fpower,b.fcapacity"
-				+ ",b.fdepreciation,b.funit" 
+				+ ",b.fdepreciation,b.funit,b.FelectricPerV,b.FGasPerV" 
 				+ " from t_CostCalculateBD	a join	t_costcalculatebd_entry0 b on a.fid = b.fid	"
 				+ ") 								t6		on t6.foperno = t4.foperid "
 			+ " left join (select a.fassetid,max(a.falterid) as falterid,b.fnum,b.fassetnumber"
@@ -188,11 +218,16 @@ public class LabourAndMake {
 				+" and a.finterid = "+ProductInfo.finterid+" and b.fbomskip = 1058 "
 				+ " and b.fusestatus = 1072 )   a0 	on a.sn  like a0.sn+'%')  ";	
 			//System.out.println("电费与折旧:"+sql1);
-			/*辅料 零部件数量*工作数量 *单价*用量
-			 * 芯体烘干喷漆 40142 用量：根据颜色不同，选择不同的用料；集流管长<=200MM，用量为普通产品的1/2
-			 * 扁管压出工艺40494 锌丝用量*扁管长度；其它辅料正常
-			 * 钎焊工艺40336：钎剂、液氮用量/小时产能；焊膏、纯净水每个产品平摊，手工录入
-			 * */
+			/*辅料费用 用量×单价
+			 * 用量：
+			 * 钎焊工艺40336：	钎剂、液氮用量/小时产能； 					201809取消
+			 * 钎焊工艺40336：	钎剂、液氮标准用量（m^3/m^3）×入炉产品体积 	201809增加
+			 * 焊膏、纯净水：		零部件数量×工件数量×标准用量（为每个产品平摊，手工录入)
+			 * 芯体烘干喷漆 40142 根据颜色不同，选择不同的用料,
+			 * 集流管长<=200MM，	零部件数量×工件数量×标准用量(为普通产品的1/2);
+			 * 扁管压出工艺40494 	零部件数量×工件数量×标准用量(为锌丝用量*扁管长度)；
+			 * 其他为： 			零部件数量×工件数量×标准用量
+			 */
 			String sql2 =" ;select t4.foperid,t4.fopersn,t2.fnumber ,t2.fname as assyname"
 			+ ",(case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
 				+ " and fname like '扁管盘料'),0) "
@@ -202,18 +237,42 @@ public class LabourAndMake {
 			+ ",t4.fentryselfz0237 as fmakeqty, "
 			+ " t8.faidname,isnull(t8.fprice,0) as fprice,"
 			+ " isnull("
-				+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
-					+ " and fname like '扁管盘料'),0) "
-					+ " when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) else t1.fqty end)"
-					+ "*t4.fentryselfz0237*t8.Fprice*(case "
-					+ " when (t4.foperid = 40336 and (t8.faidname like '%钎剂%' "
-					+ " or t8.faidname like'%液氮%'))"
-					+ " then t8.fqty/"+MachineInfo.capacity
-					+ " when (t4.foperid = 40494 and t8.faidname like '%锌丝%' )"
-					+ " then t11.fqtyzn/1000*"+ProductInfo.length
-					+ " when (t4.foperid = 40142 and "+ProductInfo.length + "<=0.2 ) then t8.fqty/2 else t8.fqty "
-					+ "end)"
-				+ ",0) as famtAdi "		
+			/*
+			 * 用量
+			 */
+			+ "(case "
+			/*
+			 * 钎剂、液氮
+			 */
+			+ " when (t4.foperid = 40336 and (t8.faidname like '%钎剂%' "
+			+ " or t8.faidname like'%液氮%'))"
+			+ " then t8.fqty*"+ProductInfo.volumn
+			+ " else "			
+			/*
+			 * 零部件数量×工件数量
+			 */
+			+ "(case isnull((select 1 from t_icitem where fitemid = t1.fitemid  "
+			+ "and fname like '扁管盘料'),0)  "
+			+ "when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) "
+			+ "else t1.fqty end)*t4.fentryselfz0237*"
+			/*
+			 * 锌丝用量
+			 */
+			+ "(case when (t4.foperid = 40494 and t8.faidname like '%锌丝%' )"
+			+ " then t11.fqtyzn/1000*"+ProductInfo.length
+			/*
+			 * 集流管长<=200MM 用量
+			 */
+			+ " when (t4.foperid = 40142 and "+ProductInfo.length+"<=0.2 ) then t8.fqty/2 "
+			/*
+			 * 其它
+			 */
+			+ " else t8.fqty  end)"
+			+ " end)"
+			/*
+			 * 单价
+			 */
+			+ "*t8.Fprice,0) as famtAdi "		
 			+ " into #t_adi "		
 			+ " from BDBomMulExpose 				t1  "
 			+ " join t_icitem 						t2 	on t1.fitemid = t2.fitemid"

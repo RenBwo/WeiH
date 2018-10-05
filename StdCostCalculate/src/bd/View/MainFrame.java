@@ -44,7 +44,7 @@ public class MainFrame  {
 	
 	public JLabel lblCompany,lblTitle,labModel, lblFnumber;
 	public JLabel lblK0,lblK1 ,lblK2 ,lblK3 ,lblK4 ,lblK5,lblK6
-	,lblK7,lblK8,lblK10 ,lblK11,lblK12,lblK13,lblK14,lblK15
+	,lblK7,lblK8,lblK10 ,lblK11,lblExRate,lblK12,lblK13,lblK14,lblK15
 	,lblK16,lblK17,lblK18,lblK20,lblK21,lblK22,lblK141;
 	public JLabel lbl_billno,lbl_ProdName,lbl_ProdName0,lbl_Model0,lbl_Model,labItemname0,labItemname;
 	public JLabel lblTopciTitle,lblINFOR,lblstatus;
@@ -60,6 +60,7 @@ public class MainFrame  {
 	public JTextField texFnum,texFmodel;
 	public JTextField textFK0,textFK1,textFK2,textFK3,textFK4,textFK5
 	,textFK6,textFK7,textFK8,/*textFK9,*/textFK10,textFK11,textFK12
+	,textExRate
 	,textFK13,textFK14,textFK15,textFK16,textFK17,textFK18,textFK20
 	,textFK21,textFK22,textFK141/*,textFK151,textFK161,textFK171*/;
 	public JTextField txtDev0,txtDev1,txtDev2,txtDev3,txtDev4,txtDev5
@@ -153,7 +154,7 @@ public class MainFrame  {
 	tableQueResult.setModel( new DefaultTableModel(
 					new Object[][] {{false, null, null, null, null, null},
 									{false, null, null, null, null, null},},
-					new String[]   {"选择", "物料代码", "规格型号", "物料名称", "适用车型", "体积"}) 
+					new String[]   {"选择", "物料代码", "规格型号", "物料名称", "适用车型", "体积(m³)"}) 
 		{
 		public static final long serialVersionUID = 1L;
 		@SuppressWarnings("rawtypes")
@@ -364,16 +365,16 @@ public class MainFrame  {
 	}
 	catch (SQLException ex) {}
 	
-	lblK12 = new JLabel("预算汇率美元/人民币 K12");
-	panel_coffi.add(lblK12, "cell 6 3,alignx left");
+	lblExRate = new JLabel("预算汇率美元/人民币");
+	panel_coffi.add(lblExRate, "cell 6 3,alignx left");
 	
-	textFK12 = new JTextField();
-	textFK12.setEditable(false);
-	panel_coffi.add(textFK12, "cell 7 3,alignx left");
-	textFK12.setColumns(15);
+	textExRate = new JTextField();
+	textExRate.setEditable(false);
+	panel_coffi.add(textExRate, "cell 7 3,alignx left");
+	textExRate.setColumns(15);
 	try
 	{
-		textFK12.setText(k.getExRate());
+		textExRate.setText(k.getExRate());
 	}
 	catch (SQLException ex) {}
 			
@@ -428,15 +429,21 @@ public class MainFrame  {
 	}
 	catch (SQLException ex) {}	
 	
+	
+	lblK12 = new JLabel("燃气价格 K12");
+	panel_coffi.add(lblK12, "cell 6 5,alignx left");
+	
+	textFK12 = new JTextField();
+	textFK12.setEditable(false);
+	panel_coffi.add(textFK12, "cell 7 5,alignx left");
+	textFK12.setColumns(20);
+	try
+	{
+		textFK12.setText(k.getK("k12"));	
+	}
+	catch (SQLException ex) {}
+ 
 	/*
-	lblK16 = new JLabel("新开模具费用K16");
-	panel_coffi.add(lblK16, "cell 6 5,alignx left");
-	
-	textFK16 = new JTextField();
-	panel_coffi.add(textFK16, "cell 7 5,alignx left");
-	textFK16.setColumns(20);
- 	textFK16.setText(String.valueOf(0));
-	
 	lblK17 = new JLabel("新开模具计划摊销数量 K17");
 	panel_coffi.add(lblK17, "cell 6 6,alignx left");
 	
@@ -779,12 +786,12 @@ public class MainFrame  {
 	tableMaterial = new JTable();
 	tableMaterial.setModel(new DefaultTableModel(
 		new Object[][] {
-			{null, null, null, null, null, null, null, null, null, null},
-			{null, null, null, null, null, null, null,null, null, null},
+			{null, null, null, null, null, null, null,null,null,null,null},
+			{null, null, null, null, null, null, null,null, null,null,null},
 			},
 		new String[] {
 			"物料长代码", "物料名称", "规格型号", "计量单位", "单位数量","数量", "材料单价", 
-			"材料金额","一年平均采购单价", "计划单价"
+			"材料金额","一年平均采购单价", "供应商价格体系单价","计划单价"
 			}
 			));
 	scrollPane_material.setViewportView(tableMaterial);

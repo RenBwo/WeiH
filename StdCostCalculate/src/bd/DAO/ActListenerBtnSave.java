@@ -60,7 +60,7 @@ public class ActListenerBtnSave implements ActionListener
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK10.getText().toString())					/*销售费用系数 */	
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK11.getText().toString())					/*国内增值税率 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK22.getText().toString())					/*国内账期 */
-					, Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText().toString())					/*国外账期 */
+					, Double.parseDouble(StdCostCalculate.mainFrame.textExRate.getText().toString())					/*国外账期 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK13.getText().toString())					/*预算汇率 */
 					, Double.parseDouble(StdCostCalculate.mainFrame.textFK14.getText().toString())					/*贷款利率 */
 					+Double.parseDouble(StdCostCalculate.mainFrame.textFK141.getText().toString())

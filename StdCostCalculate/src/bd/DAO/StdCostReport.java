@@ -367,7 +367,7 @@ public class StdCostReport {
 		 */
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				tableReport.getValueAt(20, 5).toString())
-				/Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText()
+				/Double.parseDouble(StdCostCalculate.mainFrame.textExRate.getText()
 						)*(1+Double.parseDouble(
 								StdCostCalculate.mainFrame.textFK13.getText())
 						*Double.parseDouble(
@@ -382,7 +382,7 @@ public class StdCostReport {
 				Double.parseDouble(StdCostCalculate.mainFrame.textFK13.getText()))
 		+";账期： "+df0.format(Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK11.getText()))+"天;"
-		+"预算汇率： "+StdCostCalculate.mainFrame.textFK12.getText(),22,6);
+		+"预算汇率： "+StdCostCalculate.mainFrame.textExRate.getText(),22,6);
 	}
 	/*
 	 * del history rpt
