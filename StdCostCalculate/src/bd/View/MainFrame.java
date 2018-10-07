@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.sql.SQLException;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -21,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import bd.DAO.Coefficient;
 import net.miginfocom.swing.MigLayout;
 import java.awt.FlowLayout;
 
@@ -74,7 +71,7 @@ public class MainFrame  {
     public JCheckBox chckbxNewCheckBox;
     public JTextArea textArea;
     public JLabel lblVersionInfo;
-    public Coefficient k=new Coefficient();
+    
     public JCheckBox chckbxNewProduct;
 
     
@@ -179,18 +176,12 @@ public class MainFrame  {
 	chckbxNewCheckBox = new JCheckBox("uiu");
 	scrollpane_code_result.setColumnHeaderView(chckbxNewCheckBox);
 	internalFrame.getContentPane().add(panel_code,BorderLayout.NORTH);
-	
 	lblK0 = new JLabel("工业电价k00");
 	lblK0.setFont(new Font("Dialog", Font.BOLD, 20));
 	panel_coffi.add(lblK0 , "cell 0 0,alignx left");
 	
 	textFK0 = new JTextField();
 	textFK0.setEditable(false);
-	try
-	{
-		textFK0.setText(k.getK("k00"));
-	}
-	catch (SQLException ex) {}
 	panel_coffi.add(textFK0, "cell 1 0,alignx left");
 	textFK0 .setColumns(15);
 	
@@ -200,36 +191,20 @@ public class MainFrame  {
 	textFK1.setEditable(false);
 	panel_coffi.add(textFK1, "cell 1 1,alignx left");
 	textFK1.setColumns(15);
- 	try
- 	{
- 		textFK1.setText(k.getK("k01"));
- 	}
- 	catch (SQLException ex) {}
-			
 	lblK2 = new JLabel("制造费用_间接人工系数k02");
 	lblK2.setForeground(Color.BLACK);
 	panel_coffi.add(lblK2, "cell 0 2,alignx left");
 	
 	textFK2 = new JTextField();
 	textFK2.setEditable(false);
-	try
-	{
-		textFK2.setText(k.getK("k02"));
-	}
-	catch (SQLException ex) {}
 	panel_coffi.add(textFK2, "cell 1 2,alignx left");
 	textFK2.setColumns(15);
 	
-	lblK3 = new JLabel("厂房折旧分摊金额K03");
+	lblK3 = new JLabel("厂房折旧分摊系数K03");
 	panel_coffi.add(lblK3, "cell 0 3,alignx left");
 	
 	textFK3 = new JTextField();
 	textFK3.setEditable(false);
-	try
-	{
-		textFK3.setText(k.getK("k03"));
-	}
-	catch (SQLException ex) {}
 	panel_coffi.add(textFK3, "cell 1 3,alignx left");
 	textFK3.setColumns(15);
 	
@@ -241,11 +216,6 @@ public class MainFrame  {
 	textFK4.setEditable(false);
 	panel_coffi.add(textFK4, "cell 1 4,alignx left");
 	textFK4.setColumns(15);
-	try
-	{
-		textFK4.setText(k.getK("k04"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK5 = new JLabel("财务费用系数K05");
 	panel_coffi.add(lblK5, "cell 3 0,alignx left");
@@ -254,11 +224,6 @@ public class MainFrame  {
 	textFK5.setEditable(false);
 	panel_coffi.add(textFK5, "cell 4 0,alignx left");
 	textFK5.setColumns(15);
-	try
-	{
-		textFK5.setText(k.getK("k05"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK6 = new JLabel("管理费用系数K06");
 	lblK6.setForeground(Color.BLACK);
@@ -268,11 +233,6 @@ public class MainFrame  {
 	textFK6.setEditable(false);
 	panel_coffi.add(textFK6 , "cell 4 1,alignx left");
 	textFK6 .setColumns(15);
-	try
-	{
-		textFK6.setText(k.getK("k06"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK7 = new JLabel("销售费用系数K07");
 	panel_coffi.add(lblK7, "cell 3 2,alignx left");
@@ -281,11 +241,6 @@ public class MainFrame  {
 	textFK7.setEditable(false);
 	panel_coffi.add(textFK7, "cell 4 2,alignx left");
 	textFK7.setColumns(15);
-	try
-	{
-		textFK7.setText(k.getK("k07"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK8 = new JLabel("内贸运输费用K08");
 	lblK8.setForeground(Color.BLACK);
@@ -295,11 +250,6 @@ public class MainFrame  {
 	textFK8.setEditable(false);
 	panel_coffi.add(textFK8, "cell 4 3,alignx left");
 	textFK8.setColumns(15);
-	try
-	{
-		textFK8.setText(k.getK("k08"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK20 = new JLabel("FOB青岛整柜费用 K20");
 	panel_coffi.add(lblK20, "cell 3 4,alignx left");
@@ -308,11 +258,6 @@ public class MainFrame  {
 	textFK20.setEditable(false);
 	panel_coffi.add(textFK20, "cell 4 4,alignx left");
 	textFK20.setColumns(15);
-	try
-	{
-		textFK20.setText(k.getK("k20"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK21 = new JLabel("FOB青岛整柜体积 K21");
 	panel_coffi.add(lblK21, "cell 3 5,alignx left");
@@ -321,11 +266,6 @@ public class MainFrame  {
 	textFK21.setEditable(false);
 	panel_coffi.add(textFK21, "cell 4 5,alignx left");
 	textFK20.setColumns(15);
-	try
-	{
-		textFK21.setText(k.getK("k21"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK10 = new JLabel("国内增值税率K10");
 	panel_coffi.add(lblK10, "cell 6 1,alignx left");
@@ -334,11 +274,6 @@ public class MainFrame  {
 	textFK10.setEditable(false);
 	panel_coffi.add(textFK10, "cell 7 1,alignx left");
 	textFK10.setColumns(15);
-	try
-	{
-		textFK10.setText(k.getK("k10"));
-	}
-	catch (SQLException ex) {}
 	
 	lblK11 = new JLabel("国内账期(天数)K11");
 	panel_coffi.add(lblK11, "cell 6 2,alignx left");
@@ -347,11 +282,7 @@ public class MainFrame  {
 	textFK11.setEditable(false);
 	panel_coffi.add(textFK11, "cell 7 2,alignx left");
 	textFK11.setColumns(15);
-	try
-	{
-		textFK11.setText(k.getK("k11"));
-	}
-	catch (SQLException ex) {}
+	
 	
 	lblK22 = new JLabel("国外账期(天数)K22");
 	panel_coffi.add(lblK22, "cell 9 2,alignx left");
@@ -359,11 +290,6 @@ public class MainFrame  {
 	textFK22.setEditable(false);
 	panel_coffi.add(textFK22, "cell 10 2,alignx left");
 	textFK22.setColumns(15);
-	try
-	{
-		textFK22.setText(k.getK("k22"));
-	}
-	catch (SQLException ex) {}
 	
 	lblExRate = new JLabel("预算汇率美元/人民币");
 	panel_coffi.add(lblExRate, "cell 6 3,alignx left");
@@ -372,11 +298,7 @@ public class MainFrame  {
 	textExRate.setEditable(false);
 	panel_coffi.add(textExRate, "cell 7 3,alignx left");
 	textExRate.setColumns(15);
-	try
-	{
-		textExRate.setText(k.getExRate());
-	}
-	catch (SQLException ex) {}
+	
 			
 	lblK13 = new JLabel("货款年利率K13");
 	panel_coffi.add(lblK13, "cell 6 4,alignx left");
@@ -385,11 +307,6 @@ public class MainFrame  {
 	textFK13.setEditable(false);
 	panel_coffi.add(textFK13, "cell 7 4,alignx left");
 	textFK13.setColumns(15);
-	try
-	{
-		textFK13.setText(k.getK("k13"));
-	}
-	catch (SQLException ex) {}	
 	
 	lblK14 = new JLabel("直接人工-清洗K14");
 	panel_coffi.add(lblK14, "cell 0 5,alignx left");
@@ -398,11 +315,6 @@ public class MainFrame  {
 	textFK14.setEditable(false);
 	panel_coffi.add(textFK14, "cell 1 5,alignx left");
 	textFK14.setColumns(20);
-	try
-	{
-		textFK14.setText(k.getK("k14"));
-	}
-	catch (SQLException ex) {}	
 	
 	lblK141 = new JLabel("制造费用-清洗K141");
 	panel_coffi.add(lblK141, "cell 3 6,alignx left");		
@@ -411,23 +323,13 @@ public class MainFrame  {
 	textFK141.setEditable(false);
 	panel_coffi.add(textFK141, "cell 4 6,alignx left");
 	textFK141.setColumns(20);
-	try
-	{
-		textFK141.setText(k.getK("k141"));
-	}		
-	catch (SQLException ex) {}	
 			
-	lblK15 = new JLabel("管理费用-土地摊销K15");
+	lblK15 = new JLabel("管理费用-土地摊销系数K15");
 	panel_coffi.add(lblK15, "cell 0 6,alignx left");		
 	textFK15 = new JTextField();
 	textFK15.setEditable(false);
 	panel_coffi.add(textFK15, "cell 1 6,alignx left");
 	textFK15.setColumns(20);
-	try
-	{
-		textFK15.setText(k.getK("k15"));
-	}
-	catch (SQLException ex) {}	
 	
 	
 	lblK12 = new JLabel("燃气价格 K12");
@@ -436,13 +338,8 @@ public class MainFrame  {
 	textFK12 = new JTextField();
 	textFK12.setEditable(false);
 	panel_coffi.add(textFK12, "cell 7 5,alignx left");
-	textFK12.setColumns(20);
-	try
-	{
-		textFK12.setText(k.getK("k12"));	
-	}
-	catch (SQLException ex) {}
- 
+	textFK12.setColumns(20);	
+	
 	/*
 	lblK17 = new JLabel("新开模具计划摊销数量 K17");
 	panel_coffi.add(lblK17, "cell 6 6,alignx left");
@@ -452,17 +349,12 @@ public class MainFrame  {
 	textFK17.setColumns(20);
 	textFK17.setText(String.valueOf(2000));
 	*/
-	lblK18 = new JLabel("制造费用_其他成本K18");
+	lblK18 = new JLabel("制造费用_其他成本系数K18");
 	panel_coffi.add(lblK18, "cell 9 3,alignx left");
 	textFK18 = new JTextField();
 	textFK18.setEditable(false);
 	panel_coffi.add(textFK18, "cell 10 3,alignx left");
 	textFK18.setColumns(20);
-	try
-	{
-		textFK18.setText(k.getK("k18"));
-	}
-	catch (SQLException ex) {}
 	
 	labModel = new JLabel("规格型号");
 	panel_code_fnum.add(labModel, "cell 0 1");
@@ -820,11 +712,11 @@ public class MainFrame  {
 	tableEnergy.setModel(new DefaultTableModel(
 		new Object[][] {
 			{null, null, null, null, null, null,null,null, null,null,
-				null, null,null,null, null, null, null, null, null,null},
+				null, null,null,null, null, null, null, null, null},
 			},
 		new String[] {"foperid","fopersn","物料代码","物料名称","数量","工序","工序价格",
 				"工资系数","工件数量","设备名","功率","产能","产能单位","电费","月提折旧","折旧分摊",
-				"固定资产内码","固定资产编号","芯体长度（米）","芯体高度（米）"
+				"固定资产内码","固定资产编号","芯体体积（m³）"
 				}
 			));
 	scrollPane_energe.setViewportView(tableEnergy);
@@ -834,13 +726,14 @@ public class MainFrame  {
 	tableAdi = new JTable();
 	tableAdi.setModel(new DefaultTableModel(
 		new Object[][] {
-			{null, null, null, null, null, null, null, null, null,null,
-				null, null, null, null,null,null,null },
+			{null, null, null, null, null, null, null, null
+				, null,null,null, null, null, null,null
+				,null,null},
 			},
 		new String[] {
 				"foperid","fopersn","零部件代码","零部件名","零件数量","工序","工价","工资系数"
-				,"工件数量","辅料名","用量","价格","辅料费用","一年采购发票平均单价",  "计划单价"
-				,"芯体长度","芯体高度"
+				,"工件数量","辅料名","用量","价格","辅料费用","一年采购发票平均单价","供应商价格体系单价"
+				,  "计划单价"	,"芯体体积(m³)"
 				}
 			));
 	scrollPane_adi.setViewportView(tableAdi);

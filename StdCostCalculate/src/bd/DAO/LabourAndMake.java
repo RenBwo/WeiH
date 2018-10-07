@@ -60,9 +60,7 @@ public class LabourAndMake {
 	 * 制造费用与直接工资
 	 * 直接生产成本=直接人工+制造费用（人工）+设备电费与折旧+材料费用+工装模具费用
 	 */
-	public void set(
-				double k1,double k2,double k3,double PowerPrice,double GasPrice
-				) 	throws SQLException	
+	public void set() 	throws SQLException	
 		{
 			/* 直接人工		 */
 			String sql0 = ";select d.foperid,d.fopersn,b.fnumber ,b.fname as assyname,"
@@ -77,7 +75,7 @@ public class LabourAndMake {
 			+ " when 1 then round(a.fqty*(100-a.fscrap)/100/a.fqtyper,0) else a.fqty end)"
 			+ "*d.fpiecerate*(case d.fentryselfz0236 when 0 then 1 else d.fentryselfz0236 "
 			+ " end)*d.fentryselfz0237 as amtpay,"
-			+k1 + "*(case isnull((select 1 from t_icitem where fitemid = a.fitemid "
+			+Coefficient.k01 + "*(case isnull((select 1 from t_icitem where fitemid = a.fitemid "
 					+ " and fname like '扁管盘料'),0) "
 			+ " when 1 then round(a.fqty*(100-a.fscrap)/100/a.fqtyper,0) else a.fqty end)"
 			+ "*d.fpiecerate*(case d.fentryselfz0236 when 0 then 1 else d.fentryselfz0236 "
@@ -86,7 +84,7 @@ public class LabourAndMake {
 			+ " and fname like '扁管盘料'),0) "
 			+ " when 1 then round(a.fqty*(100-a.fscrap)/100/a.fqtyper,0) else a.fqty end)"
 			+ "*d.fpiecerate*(case d.fentryselfz0236 when 0 then 1 else d.fentryselfz0236"
-			+ " end)*d.fentryselfz0237*(1+ "+k1+ ")*"+k2+ " as cost_worker "
+			+ " end)*d.fentryselfz0237*(1+ "+Coefficient.k01+ ")*"+Coefficient.k02+ " as cost_worker "
 			+ " into #t_costworker "
 			+ " from BDBomMulExpose 	a "
 			+ " join t_icitem 			b 	on a.fitemid = b.fitemid and a.firstitemid = "
@@ -141,8 +139,8 @@ public class LabourAndMake {
 			 * 钎焊炉设备电费与气费
 			 */
 			+ "(case when (isnull(t6.FelectricPerV,0) > 0 or isnull(t6.FGasPerV,0) >0) "
-				+ "then (isnull(t6.FelectricPerV,0)*"+PowerPrice
-				+ "+isnull(t6.FGasPerV,0)*"+GasPrice+")*"
+				+ "then (isnull(t6.FelectricPerV,0)*"+Coefficient.k00
+				+ "+isnull(t6.FGasPerV,0)*"+Coefficient.k12+")*"
 				+ProductInfo.volumn
 				+ " else  "
 				+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
@@ -155,7 +153,7 @@ public class LabourAndMake {
 			 * 其他零部件数量
 			 */
 			 	+ " else t1.fqty end)" 
-			 + "*t4.fentryselfz0237*t6.fpower*0.4*"+PowerPrice+ "/"
+			 + "*t4.fentryselfz0237*t6.fpower*0.4*"+Coefficient.k00+ "/"
 			/*
 			 * 产能
 			 */

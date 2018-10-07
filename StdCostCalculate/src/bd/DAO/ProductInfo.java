@@ -143,7 +143,7 @@ public class ProductInfo {
 	 */
 	public void getGainRate(String fnumber) throws SQLException
 	{
-		rs0 = conn.query(";select isnull(round(f_101,6),0) from t_item_3015 "
+		rs0 = conn.query(";select isnull(round(f_101,4)/100,0) from t_item_3015 "
 				+ " where '01.'+fnumber =  left('"+fnumber+"',5) ");		
 		if (rs0.next())	
 		{
@@ -241,7 +241,7 @@ public class ProductInfo {
 		rs0.close();
 	}
 	/*
-	 * volumn
+	 * volumn m^3
 	 */
 	public void getVolumn() throws SQLException
 	{

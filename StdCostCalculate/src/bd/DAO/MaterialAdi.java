@@ -9,13 +9,13 @@ public class MaterialAdi {
 	 * 	升级辅料单价
 	 * 价格：1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税,
 	 * 否则，2、取有效期内供应商价格体系的最高价格 源价格含税
-	 * 国内增值税：select round(f_101,6) from t_item_3015  where fnumber like 'k10'
+	 * 国内增值税：
 	 * 否则，3、取外购物料计划单价维护单 价格 未含税 
 	 * select * from icclasstype where fname_chs like '外购物料计划单价%'
 	 */
 	public void updateAdiMatrialPrice() throws SQLException {
 		String sql0 = "; update a set a.fprice = isnull(w.avrprice,isnull("
-				+ "round(c.fprice/(select 1+round(f_101,6) from t_item_3015 where fnumber like 'k10'),4)"
+				+ "round(c.fprice/(1+"+Coefficient.k10+"),4)"
 				+ ",isnull(d.fprice,0)))"
 				+ " from t_costcalculatebd_entry1 	a"
 				+ " join t_icitem 					b	on a.faidnumber  = b.fitemid "

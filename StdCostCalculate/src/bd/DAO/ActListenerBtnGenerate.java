@@ -150,18 +150,12 @@ public class ActListenerBtnGenerate implements ActionListener
 			    	{	
 			    		//System.out.println("2.直接成本计算 成功，下一步，计算人工与制造费用");
 			    		labourAndMake.clean();
-			    		labourAndMake.set(Double.parseDouble(
-			    				StdCostCalculate.mainFrame.textFK1.getText())
-			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK2.getText())
-			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK3.getText())
-			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK0.getText())
-			    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText())
-			    				);
+			    		labourAndMake.set();
 			    		//System.out.println("3.制造费用与直接人工 成功，下一步，生成报价");
-			    		sqlMaterial = mysqlstate.getSQLStatement("sqlMaterial",powerprice );
-			    		sqlLabourAndMake = mysqlstate.getSQLStatement("sqlLabourAndMake",powerprice);
+			    		sqlMaterial = mysqlstate.getSQLStatement("sqlMaterial" );
+			    		sqlLabourAndMake = mysqlstate.getSQLStatement("sqlLabourAndMake");
 			    		//System.out.println("人工和制造费用:"+sqlLabourAndMake);			
-			    		sqlPriceRPTform =mysqlstate.getSQLStatement("sqlPriceRPTform",powerprice);
+			    		sqlPriceRPTform =mysqlstate.getSQLStatement("sqlPriceRPTform");
 			    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7},-1,0,0);
 			    		data.myTableModel(StdCostCalculate.mainFrame.tableCalculate,sqlLabourAndMake
 			    				,new int[]{7,8,9,10,11,12,13},-1,0,0);
@@ -175,7 +169,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		StdCostCalculate.mainFrame.tableReport.setRowHeight(24);
 			    		stdCostReport.set(StdCostCalculate.mainFrame.tableReport
 			    				, StdCostCalculate.mainFrame.tableMaterial, StdCostCalculate.mainFrame.tableCalculate
-			    				, ProductInfo.packagesize, ProductInfo.gainrate);				    
+			    				);				    
 			    		StdCostCalculate.mainFrame.btnR2Save.doClick();
 			    		System.out.println("结束第 "+(x+1)+"/"+k
 			    				+" 个产品计算,"+df.format(new Date()).toString()
@@ -214,19 +208,19 @@ public class ActListenerBtnGenerate implements ActionListener
 	    		//System.out.println("验证直接材料价格是否完整");
 	    		adiVerifyError=adiMaterial.verifyAdiPrice();
 	    		//System.out.println("验证辅料价格是否完整");   	    
-	    		sqlBOM =mysqlstate.getSQLStatement("sqlBOM",powerprice);
+	    		sqlBOM =mysqlstate.getSQLStatement("sqlBOM");
 	    		//System.out.println("BOM："+sqlBOM );
-	    		sqlMaterial = mysqlstate.getSQLStatement("sqlMaterial",powerprice );
+	    		sqlMaterial = mysqlstate.getSQLStatement("sqlMaterial" );
 	    		//System.out.println("直接材料成本："+sqlMaterial);
-	    		sqlEnergy=mysqlstate.getSQLStatement("sqlEnergy",powerprice);
+	    		sqlEnergy=mysqlstate.getSQLStatement("sqlEnergy");
 	    		//System.out.println("电费与折旧明细: "+sqlEnergy);
-	    		sqlAdi =mysqlstate.getSQLStatement("sqlAdi",powerprice);
+	    		sqlAdi =mysqlstate.getSQLStatement("sqlAdi");
 	    		//System.out.println("辅料明细: "+sqlAdi);
-	    		sqlModel =mysqlstate.getSQLStatement("sqlModel",powerprice);
+	    		sqlModel =mysqlstate.getSQLStatement("sqlModel");
 	    		//System.out.println("工装模具明细: "+sqlModel);
-	    		sqlLabourAndMake = mysqlstate.getSQLStatement("sqlLabourAndMake",powerprice);
+	    		sqlLabourAndMake = mysqlstate.getSQLStatement("sqlLabourAndMake");
 	    		//System.out.println("人工与制造费用: "+sqlLabourAndMake );
-	    		sqlPriceRPTform =mysqlstate.getSQLStatement("sqlPriceRPTform",powerprice);
+	    		sqlPriceRPTform =mysqlstate.getSQLStatement("sqlPriceRPTform");
 		
 	    		data.myTableModel(StdCostCalculate.mainFrame.tableBOM,sqlBOM,new int[]{},-1,0,0);
 	    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7},-1,0,0);
@@ -299,13 +293,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    	{
 		    		//System.out.println("3.符合计算条件，下一步，计算人工与制造费用");
 		    		labourAndMake.clean();
-		    		labourAndMake.set(
-		    				Double.parseDouble(StdCostCalculate.mainFrame.textFK1.getText())
-		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK2.getText())
-		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK3.getText())
-		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK0.getText())
-		    				, Double.parseDouble(StdCostCalculate.mainFrame.textFK12.getText())
-		    				);
+		    		labourAndMake.set();
 		    		//System.out.println("4.制造费用与直接人工 成功，下一步，生成报价");			
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableEnergy,sqlEnergy,new int[]{13,15},-1,0,0);
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableAdi,sqlAdi,new int[]{12},-1,0,0);
@@ -335,7 +323,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		StdCostCalculate.mainFrame.tableReport.setRowHeight(24);
 		    		stdCostReport.set(StdCostCalculate.mainFrame.tableReport
 		    				, StdCostCalculate.mainFrame.tableMaterial, StdCostCalculate.mainFrame.tableCalculate
-		    				, ProductInfo.packagesize, ProductInfo.gainrate);				    
+		    				);				    
 		    		StdCostCalculate.mainFrame.txtNewJigAmt.setText(String.valueOf(ProductInfo.newJigAmt));
 		    		StdCostCalculate.mainFrame.txtNewJigPlanAmortizeQty.setText(String.valueOf(ProductInfo.newJigAmortizeQty));
 		    		StdCostCalculate.mainFrame.txtHistorySaledQty.setText(String.valueOf(ProductInfo.saledQty));
@@ -370,7 +358,6 @@ public class ActListenerBtnGenerate implements ActionListener
 	private int materialVerifyError
 	,bomVerifyError,adiVerifyError,RoutVerifyErr,RoutLWHVerifyErr
 	,k,sumFails;
-	double powerprice = Double.parseDouble(StdCostCalculate.mainFrame.textFK0.getText());
 	TableData data = new TableData();
 	TableFormat formReport = new TableFormat();
 	String sqlMaterial,sqlLabourAndMake,sqlPriceRPTform,sqlEnergy,sqlAdi,sqlModel,sqlBOM;

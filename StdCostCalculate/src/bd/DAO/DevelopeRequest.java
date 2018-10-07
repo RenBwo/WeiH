@@ -12,7 +12,7 @@ public class DevelopeRequest {
 	public void setDevelopRequestValue(int firstitemid) throws SQLException 
 	{
     	SQlStatement mysql=new SQlStatement();	
-    	String	sqlQuery = mysql.getSQLStatement("sqlProdDevRpt",0.0);    	
+    	String	sqlQuery = mysql.getSQLStatement("sqlProdDevRpt");    	
     	ResultSet rs_code = conn.query(sqlQuery);
     	
     	StdCostCalculate.mainFrame.txtDev0.setText("");    

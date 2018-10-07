@@ -104,8 +104,6 @@ public class StdCostReport {
 			JTable tableReport
 			,JTable tableMaterial
 			,JTable tableCalculate
-			,Double packagesize
-			,Double gainrate
 			)
 	{
 		df0 = new DecimalFormat("######0");
@@ -118,7 +116,7 @@ public class StdCostReport {
 				tableMaterial.getValueAt(tableMaterial.getRowCount() - 1,7
 						).toString())),1,2);
 		/*
-		 * 2.直接人工=工资 + 保险
+		 * 2.直接人工=工资 + 保险 + 清洗直接人工
 		 */
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				tableCalculate.getValueAt(tableCalculate.getRowCount() - 1,7
@@ -168,25 +166,26 @@ public class StdCostReport {
 		 * 3-6.制造费用--其他成本
 		 * 直接人工×制造费用其他百分比（K18） 20180919
 		 */
-		tableReport.setValueAt(df4.format(Double.parseDouble(
+		tableReport.setValueAt(df2.format(Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK18.getText())),9,3);
 		tableReport.setValueAt(df4.format(Double.parseDouble(
-				tableReport.getValueAt(2,2).toString())/100
+				tableReport.getValueAt(2,2).toString())
 				*Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK18.getText())),9,2);
 		/*
 		 * 3-7.厂房折旧 
 		 * 直接人工×厂房折旧百分比（K3） 20180919
 		 */
-		tableReport.setValueAt(df4.format(Double.parseDouble(
+		tableReport.setValueAt(df2.format(Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK3.getText())),10,3);
 		tableReport.setValueAt(df4.format(Double.parseDouble(
-				tableReport.getValueAt(2, 2).toString())/100
+				tableReport.getValueAt(2, 2).toString())
 				*Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK3.getText())),10,2);
 		
 		/*
 		 * 3.制造费用合计
+		 * 上述3-× ，再加上制造费用-清洗
 		 */
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				tableReport.getValueAt(4, 2).toString())
@@ -196,7 +195,8 @@ public class StdCostReport {
 				+ Double.parseDouble(tableReport.getValueAt(8, 2).toString())
 				+ Double.parseDouble(tableReport.getValueAt(9, 2).toString())
 				+ Double.parseDouble(tableReport.getValueAt(10,2).toString())
-				),3,2);
+				+ Double.parseDouble(StdCostCalculate.mainFrame.textFK141.getText())
+						),3,2);
 		/*
 		 * 一、生产成本合计=1.直接材料成本+2.直接人工+3.制造费用合计
 		 */
@@ -206,13 +206,10 @@ public class StdCostReport {
 				+Double.parseDouble(tableReport.getValueAt(3, 2).toString())
 				),0,2);
 		/*
-		 * 成品不良成本
+		 * 成品不良成本k4
 		 */
 		tableReport.setValueAt(df2.format(Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK4.getText())),12,3);
-		/*
-		 * 成品不良成本k4
-		 */
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				tableReport.getValueAt(0, 2).toString())
 				*Double.parseDouble(StdCostCalculate.mainFrame.textFK4.getText())
@@ -248,10 +245,10 @@ public class StdCostReport {
 		 * 管理费用--土地摊销
 		 * 直接人工×土地摊销百分比（K15） 20180919
 		 */
-		tableReport.setValueAt(df4.format(Double.parseDouble(
+		tableReport.setValueAt(df2.format(Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK15.getText())),16,3);
 		tableReport.setValueAt(df4.format(Double.parseDouble(
-				tableReport.getValueAt(2, 2).toString())/100
+				tableReport.getValueAt(2, 2).toString())
 				*Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK15.getText())),16,2);
 		/*
@@ -285,12 +282,12 @@ public class StdCostReport {
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK20.getText())
 				/Double.parseDouble(StdCostCalculate.mainFrame.textFK21.getText()
-						)*packagesize),18,5);
+						)*ProductInfo.packagesize),18,5);
 		tableReport.setValueAt("FOB青岛费用="+Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK20.getText())
 		+"（整柜 BY FCL,40HQ/GP,45HQ/GP）/"+Double.parseDouble(
 				StdCostCalculate.mainFrame.textFK21.getText())
-		+"立方米*单只产品体积 "+packagesize,18,6);
+		+"立方米*单只产品体积 "+ProductInfo.packagesize,18,6);
 		/*
 		 * 二、期间费用合计
 		 */
@@ -315,15 +312,15 @@ public class StdCostReport {
 		/*
 		 * 三、产品利润=（期间成本+生产成本）×利润率/（1-利润率）
 		 */
-		tableReport.setValueAt(df2.format(gainrate),19,3);
+		tableReport.setValueAt(df2.format(ProductInfo.gainrate),19,3);
 		tableReport.setValueAt(df4.format((Double.parseDouble(
 				tableReport.getValueAt(0, 2).toString())
 				+Double.parseDouble(tableReport.getValueAt(11,2).toString()))
-				*gainrate/(1-gainrate)),19,2);
+				*ProductInfo.gainrate/(1-ProductInfo.gainrate)),19,2);
 		tableReport.setValueAt(df4.format((Double.parseDouble(
 				tableReport.getValueAt(0, 5).toString())
 				+Double.parseDouble(tableReport.getValueAt(11,5).toString()))
-				*gainrate/(1-gainrate)),19,5);
+				*ProductInfo.gainrate/(1-ProductInfo.gainrate)),19,5);
 		/*
 		 * 四、核价=（一、生产成本合计 + 二、期间费用合计 + 三、产品利润）
 		 */
