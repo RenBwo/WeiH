@@ -20,7 +20,8 @@
 
 select count(*) from t_bdlabourandmake
 select  datediff(day,getdate(),'2018-08-01') from BDStdCostProgVersion  
---update BDStdCostProgVersion  set v1=1000
+--update BDStdCostProgVersion  set version='1.0.1.5'
+-- select * from BDStdCostProgVersion
 select * from icclasstableinfo where fclasstypeid = '1007006'
 select * from sys.objects where name like '%action%' and type like 'U'
 /*

@@ -48,6 +48,6 @@ public class DBConnect
     Connection con;
 	public Statement state;
 	private String database;
-	//public static String testArg="";
-	public static String testArg="test";
+	public static String testArg="";
+	//public static String testArg="test";
 }
