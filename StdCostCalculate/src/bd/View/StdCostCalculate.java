@@ -10,6 +10,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+//import java.util.Timer;
 
 import bd.DAO.*;
 
@@ -26,11 +27,11 @@ public class StdCostCalculate
 	private  	static ActListenerQueryByFmodel actListenerQueryByFmodel=new ActListenerQueryByFmodel();
     private  	static ActListenerQueryByFnumber actListenerQueryByFnumber=new ActListenerQueryByFnumber();
     private     static EnvForAuto envForAuto = new EnvForAuto();
-    public 		static String programName="standCostCal",localVer="1.0.1.5"
+    public 		static String programName="standCostCal",localVer="1.0.1.6"
     		,autoFlag;
     public 		static int versionOK,autoRun;
     private 	static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-	
+//	private 	Timer timer=new Timer();
 	
 	  
 	/**
@@ -60,8 +61,7 @@ public class StdCostCalculate
 			{
 				try 
 				{
-					currentPeriod.getYear();
-					currentPeriod.getMonth();
+					currentPeriod.get();
 					mainFrame.textFK0.setText(String.valueOf(new DecimalFormat("######0.0000").format(Coefficient.k00)));
 					mainFrame.textFK1.setText(String.valueOf(new DecimalFormat("######0.0000").format(Coefficient.k01)));
 					mainFrame.textFK2.setText(String.valueOf(new DecimalFormat("######0.0000").format(Coefficient.k02)));

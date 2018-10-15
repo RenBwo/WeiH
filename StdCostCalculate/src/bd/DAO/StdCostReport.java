@@ -140,14 +140,18 @@ public class StdCostReport {
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				tableCalculate.getValueAt(
 						tableCalculate.getRowCount() - 1,10).toString()
-				)),5,2);
+				)
+				+MachineInfo.amtPowerQHL
+				),5,2);
 		/*
 		 *  3-3.制造费用--辅料费
 		 */
 		tableReport.setValueAt(df4.format(Double.parseDouble(
 				tableCalculate.getValueAt(
 						tableCalculate.getRowCount() - 1,12).toString()
-				)),6,2);
+				)
+				+MaterialAdi.amtQianji+MaterialAdi.amtLN2
+				),6,2);
 		/*
 		 * 3-4.制造费用--设备折旧费
 		 */ 

@@ -4,14 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BOM {
+	public void get() throws SQLException
+	{
+		createTable();
+		set();
+		verify();
+	}
 	/*
 	* create BOM多级展开表 BDBomMulExpose
 	*/
-	public void createTable() throws SQLException
+	private void createTable() throws SQLException
 	{ 
 		rs0 = conn.query(";select count(*) from sysobjects where type = 'u' and name like 'BDBomMulExpose'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
 		{
+			clean();
 			//System.out.println("table_bom exists ");
 		}
 		else
@@ -48,7 +55,7 @@ public class BOM {
 	/* 
   	 * BOM EXPOSE 
   	 */
-	public void set() throws SQLException
+	private void set() throws SQLException
 	{//conn.update(StdCostCalculate.test,"TRUNcate table  BDBomMulExpose;");/*清除数据*/	 
 		 int level = 0;
 		 String cBomExpose = ";with recursive_cte as ("
@@ -127,21 +134,22 @@ public class BOM {
 	/*
 	 * BOM integrity Verify	 最终物料并且加工类型为自制的，说明BOM不完整
 	 */
-	public int verify() throws SQLException
+	private void verify() throws SQLException
 	{
 		String cmdverify =";select count(*) from BDBomMulExpose where enditem = 1 and maketype = 2"
 				+ " and firstitemid = "+ProductInfo.firstitemid +" and finterid = "+ProductInfo.finterid;
 		rs0 = conn.query(cmdverify);
 		if(rs0.next() && rs0.getInt(1) >0) 
 		{conn.close();
-		return 1;
+		verifyBom=1;
 		}
 		else
 		{ conn.close();
-		return 0;
+		verifyBom= 0;
 		}
 		
 	}
 	private ResultSet 	rs0;
 	private DBConnect conn =new DBConnect();
+	static public int verifyBom;
 }

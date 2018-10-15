@@ -5,6 +5,14 @@ import java.sql.SQLException;
 
 public class MaterialAdi {
 	
+	public void get() throws SQLException
+	{
+		updateAdiMaterialPrice();
+		verifyAdiPrice();
+		getAmtQianji();
+		getAmtLN2();
+	}
+	
 	/*
 	 * 	升级辅料单价
 	 * 价格：1 过去一年的采购发票蓝字平均不含税单价格  原始数据是未含税,
@@ -13,7 +21,7 @@ public class MaterialAdi {
 	 * 否则，3、取外购物料计划单价维护单 价格 未含税 
 	 * select * from icclasstype where fname_chs like '外购物料计划单价%'
 	 */
-	public void updateAdiMatrialPrice() throws SQLException {
+	private void updateAdiMaterialPrice() throws SQLException {
 		String sql0 = "; update a set a.fprice = isnull(w.avrprice,isnull("
 				+ "round(c.fprice/(1+"+Coefficient.k10+"),4)"
 				+ ",isnull(d.fprice,0)))"
@@ -41,7 +49,7 @@ public class MaterialAdi {
 	/*
 	 * verify adiMaterial's price
 	 */
-	public int verifyAdiPrice() throws SQLException 
+	private void verifyAdiPrice() throws SQLException 
 	{
 		String cmdverify=";select count(*) "
 				+ " from 	BDBomMulExpose 			t1"
@@ -61,14 +69,74 @@ public class MaterialAdi {
 		rs0=conn.query( cmdverify);
 		if(rs0.next() && rs0.getInt(1) > 0 ) 
 		{
-			return 1;
+			verifyAdiPrice= 1;
 		}
 		else
 		{
-			return 0;
+			verifyAdiPrice=0;
 		}
+	}
+	/*
+	 * 钎剂费用,按单位产品体积用量进行计算
+	 * 钎剂、液氮标准用量（m^3/m^3）×入炉产品体积×单价 
+	 */
+	private void getAmtQianji() throws SQLException
+	{
+		if (Route.hasQHL==true) 
+		{
+			rs0= conn.query(";select round(isnull(sum(fqty*fprice),0)* "+ProductInfo.volumn
+					+ ",6) from t_costcalculatebd_entry1 "
+					+ " where faidname like '%钎剂%' "
+					);
+				if(rs0.next()) 
+				{
+					amtQianji=rs0.getDouble(1);	
+				}
+				else
+				{
+					amtQianji=0.0;
+				}
+				rs0.close();
+		}
+		else
+		{
+			amtQianji=0.0;
+		}
+		//System.out.println("钎剂费用: "+amtQianji);
+		
+	}
+	/*
+	 * 液氮费用,按单位产品体积用量进行计算
+	 * 液氮标准用量（m^3/m^3）×入炉产品体积 
+	 */
+	private void getAmtLN2() throws SQLException
+	{
+		if (Route.hasQHL==true) 
+		{
+			rs0= conn.query(";select round(isnull(sum(fqty*fprice),0)* "+ProductInfo.volumn 
+					+",6) from t_costcalculatebd_entry1 "
+					+ " where faidname like '%液氮%' "
+					);
+				if(rs0.next()) 
+				{
+					amtLN2=rs0.getDouble(1);
+				}
+				else
+				{
+					amtLN2=0.0;
+				}
+				rs0.close();
+		}
+		else
+		{
+			amtLN2=0.0;
+		}
+		//System.out.println("液氮费用: "+amtLN2);
+		
 	}
 	private ResultSet rs0;
 	private DBConnect conn=new DBConnect();
+	public static double amtQianji,amtLN2;
+	public static int verifyAdiPrice;
 
 }

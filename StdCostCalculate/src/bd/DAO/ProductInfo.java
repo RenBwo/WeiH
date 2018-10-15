@@ -9,6 +9,7 @@ public class ProductInfo {
 	{
 		try
 		{
+			getFirstItemID(fnumber);
 			getFinterID();
 			getItemName();
 			getModel();
@@ -34,6 +35,7 @@ public class ProductInfo {
 			getWid();
 			getHgt();
 			getVolumn();
+			verifyLWH();
 			conn.close();
 		}
 		catch (SQLException e)
@@ -44,7 +46,7 @@ public class ProductInfo {
 	/*
 	 * fitemid
 	 */
-	public void getFirstItemID(String fnumber) throws SQLException
+	private void getFirstItemID(String fnumber) throws SQLException
 	{
 		String cmdGetFirstItemID=";select a.fitemid from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
@@ -63,7 +65,7 @@ public class ProductInfo {
 	/*
 	 * finterid
 	 */
-	public void getFinterID() throws SQLException
+	private void getFinterID() throws SQLException
 	{
 		String command5 = ";insert into t_bdStandCostRPT(fproditemid,fdate)"
 				+ " values( "+firstitemid+ ",getdate() )";
@@ -84,7 +86,7 @@ public class ProductInfo {
 	/*
 	 * fitmename
 	 */
-	public void getItemName() throws SQLException
+	private void getItemName() throws SQLException
 	{
 		String cmdGetItemName=";select left(a.fname,30)  from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
@@ -103,7 +105,7 @@ public class ProductInfo {
 	/*
 	 * fmodel
 	 */
-	public void getModel() throws SQLException
+	private void getModel() throws SQLException
 	{
 		String cmdGetModel=";select a.fmodel from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
@@ -122,7 +124,7 @@ public class ProductInfo {
 	/*
 	 * OEM
 	 */
-	public void getOEM() throws SQLException
+	private void getOEM() throws SQLException
 	{
 		String cmdGetOEM=";select left(a.f_131,30) from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
@@ -141,7 +143,7 @@ public class ProductInfo {
 	/*
 	 * GainRate
 	 */
-	public void getGainRate(String fnumber) throws SQLException
+	private void getGainRate(String fnumber) throws SQLException
 	{
 		rs0 = conn.query(";select isnull(round(f_101,4)/100,0) from t_item_3015 "
 				+ " where '01.'+fnumber =  left('"+fnumber+"',5) ");		
@@ -158,7 +160,7 @@ public class ProductInfo {
 	/*
 	 * unpackage product size
 	 */
-	public void getPackageSize() throws SQLException
+	private void getPackageSize() throws SQLException
 	{
 		String cmdGetPackageSize =";select a.fsize from t_icitem a "
 	  			+ " join icbom b  on a.fitemid = b.fitemid and b.fusestatus = 1072 "
@@ -182,7 +184,7 @@ public class ProductInfo {
 	 * 1.0.0.5 
 	 * 取13裸包产品的长宽高
 	 */
-	public void getLen() throws SQLException
+	private void getLen() throws SQLException
 	{
 		rs0= conn.query("; select isnull(a.f_173,0) as len"
 					+ " from t_icitem a "
@@ -202,7 +204,7 @@ public class ProductInfo {
 		rs0.close();
 	}
 
-	public void getWid() throws SQLException
+	private void getWid() throws SQLException
 	{
 		rs0= conn.query("; select isnull(a.f_177,0) as wid"
 						+ " from t_icitem a"
@@ -221,7 +223,7 @@ public class ProductInfo {
 		}
 		rs0.close();
 	}
-	public void getHgt() throws SQLException
+	private void getHgt() throws SQLException
 	{
 		rs0= conn.query("; select isnull(a.f_174 ,0) as height "
 						+ " from t_icitem a "
@@ -243,7 +245,7 @@ public class ProductInfo {
 	/*
 	 * volumn m^3
 	 */
-	public void getVolumn() throws SQLException
+	private void getVolumn() throws SQLException
 	{
 		rs0= conn.query("; select 1 from t_icitem a "
 						+ " join BDBomMulExpose b on a.fitemid = b.fitemid"
@@ -261,11 +263,39 @@ public class ProductInfo {
 		}
 		rs0.close();
 	}
+	/*
+	 * 长宽高验证
+	 * 钎焊焊接工艺40336产能： 	根据产品不同计算 
+	 * 扁管压出工艺40494产能： 	根据产品不同计算 60*扁管压出速度/扁管长度（坯料尺寸）
+	 * 扁管切断工艺 40495产能：	根据芯体长度不同计算
+	 * 400mm < l 			then 7800 pc/h
+	 * 400mm <= l <600mm	then 6600 pc/h
+	 * 600mm <= l <800mm	then 5400 pc/h
+	 * 800mm <= l <1000mm	then 4200 pc/h
+	 * 1000mm <= l 		then 2400 pc/h
+	 * 芯体烘干喷漆 40142 辅料用量：集流管长<=200MM，用量为普通产品的1/2
+	 * 这三个工艺要用芯体的长或宽或体积，不能为0
+	 */
+	private void verifyLWH() throws SQLException
+	{
+		if((Route.hasQHL==true||Route.hasPipe==true||Route.hasDry==true)
+			&& ( length <=0.0000 ||length > 2.00
+			||width <=0.0000 ||width > 0.10
+			|| height <=0.0000 || height > 1.50)) 
+		{
+			verifyLWH= 1;		
+		}
+		else 
+		{
+			verifyLWH= 0;		
+		}
 	
+	}
+
 	/*
 	 * HistorySaledQTY about 13.*
 	 */
-	public void getQtySaled() throws SQLException
+	private void getQtySaled() throws SQLException
 	{
 		String cmdQtySaled = ";select isnull(sum(b.fqty),0) "
 				+ " from icsale a "
@@ -296,7 +326,7 @@ public class ProductInfo {
 	/*
 	 * Get NewJig Amortize QTY t_icitemcustom f_179
 	 */
-	public void getQtyAmortizeNewJig() throws SQLException
+	private void getQtyAmortizeNewJig() throws SQLException
 	{	
 		String cmdNewJigAmortizeQty = ";select isnull(b.f_179,0) "
 				+ " from BDBomMulExpose a "
@@ -319,7 +349,7 @@ public class ProductInfo {
 	/*
 	 * Get NewJig Amt 新开模具费用f_178 新开专用工装夹具费用 f_181
 	 */
-	public void getAmtNewJig() throws SQLException
+	private void getAmtNewJig() throws SQLException
 	{
 		String cmdNewJigAmt = ";select isnull((b.f_178+b.f_181),0)"
 				+ " from BDBomMulExpose a "
@@ -343,7 +373,7 @@ public class ProductInfo {
 	/*
 	 * Get NewJig Amortize AMT
 	 */
-	public void getAmtAmortizeNewJig() 
+	private void getAmtAmortizeNewJig() 
 	{
 		if (saledQty < newJigAmortizeQty && newJigAmortizeQty >0 )	
 		{
@@ -358,7 +388,7 @@ public class ProductInfo {
 		//System.out.println("新开模具费用摊销"+newJigAmortizeAmt);
 	}
 	
-	static public int firstitemid,finterid ;
+	static public int firstitemid,finterid ,verifyLWH;
 	static public String itemname,model,OEM ;
 	static public double length,width,height,volumn,gainrate,packagesize
 	,saledQty,newJigAmortizeQty,newJigAmt,newJigAmortizeAmt;

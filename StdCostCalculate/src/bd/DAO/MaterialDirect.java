@@ -5,16 +5,22 @@ import java.sql.SQLException;
 
 public class MaterialDirect 
 {
-
+	public void get() throws SQLException
+	{
+		createTable();
+		set();
+		verify();
+	}
 	/* 
 	* 直接材料成本表   	TABLE t_CostMaterialBD
 	*/
-	public void createTable() throws SQLException
+	private void createTable() throws SQLException
 	{ 
 		rs0 = conn.query(";select count(*) from sysobjects where type = 'u' and name like 't_CostMaterialBD'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
 		{
 			//System.out.println("table_Material exists ");
+			clean();
 		}
 		else
 		{	
@@ -47,7 +53,7 @@ public class MaterialDirect
 	  * 否则，3、取外购物料计划单价维护单 价格 未含税 
 	  * select * from icclasstype where fname_chs like '外购物料计划单价%'
 	  */
-	public void set() throws SQLException
+	private void set() throws SQLException
 	{ 	
 		String command4 = " ;insert into t_CostMaterialBD(fproditemid,finterid,FLevel"
 				+ ",FParentID,FItemID,fQtyPer,fQty,fitemsize,Fnumber,FbomInterID"
@@ -104,7 +110,7 @@ public class MaterialDirect
 	/*
 	 * verify direct_material price验证直接材料价格
 	 */
-	public int verify() throws SQLException
+	private void verify() throws SQLException
 	{	
 		String cmdverify =";select count(*) from t_CostMaterialBD where fproditemid= "
 				+ProductInfo.firstitemid 
@@ -114,16 +120,17 @@ public class MaterialDirect
 		if(rs0.next() && rs0.getInt(1) > 0  ) 
 		{
 		conn.close();
-		return 1;
+		verifyMaterialDirect= 1;
 		}
 		else 
 		{
 			conn.close();
-			return 0;
+			verifyMaterialDirect= 0;
 		}
 	}
 	private DBConnect conn =new DBConnect();
 	private ResultSet 	rs0;
+	static public int verifyMaterialDirect;
 	
 
 }

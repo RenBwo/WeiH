@@ -4,14 +4,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LabourAndMake {
+	public void get() throws SQLException
+	{
+		createTable();
+		set();
+	}
 	/*
 	 * 制造费用与直接工资表 TABLE t_BDLabourAndMake
 	 */
-	public void createTable()  throws SQLException
+	private void createTable()  throws SQLException
 	{
 		rs0 = conn.query(";select count(*) from sysobjects where type = 'u' and name like 't_BDLabourAndMake'");
 		if(rs0.next() && rs0.getInt(1) >0 ) 
    		{
+			clean();
 			//System.out.println("table_LabourAndMake exists ");
    		}
 		else
@@ -60,7 +66,7 @@ public class LabourAndMake {
 	 * 制造费用与直接工资
 	 * 直接生产成本=直接人工+制造费用（人工）+设备电费与折旧+材料费用+工装模具费用
 	 */
-	public void set() 	throws SQLException	
+	private void set() 	throws SQLException	
 		{
 			/* 直接人工		 */
 			String sql0 = ";select d.foperid,d.fopersn,b.fnumber ,b.fname as assyname,"
@@ -136,13 +142,11 @@ public class LabourAndMake {
 			 */
 			+ " isnull("
 			/*
-			 * 钎焊炉设备电费与气费
+			 * 钎焊炉设备电费与气费在产品信息里计算，此处为0 因为有双芯体，
+			 * 13代码的芯体长宽高是双芯体合计数，所以不能在这里计算
 			 */
 			+ "(case when (isnull(t6.FelectricPerV,0) > 0 or isnull(t6.FGasPerV,0) >0) "
-				+ "then (isnull(t6.FelectricPerV,0)*"+Coefficient.k00
-				+ "+isnull(t6.FGasPerV,0)*"+Coefficient.k12+")*"
-				+ProductInfo.volumn
-				+ " else  "
+				+ "then 0 else  "
 				+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
 					+ " and fname like '扁管盘料'),0) "
 			/*
@@ -240,12 +244,12 @@ public class LabourAndMake {
 			 */
 			+ "(case "
 			/*
-			 * 钎剂、液氮
+			 * 钎剂、液氮 在辅料信息计算，因为有双芯体而裸包产品的长宽高是双芯体合计数，
+			 * 这里进行计算的话，就多算了。
 			 */
 			+ " when (t4.foperid = 40336 and (t8.faidname like '%钎剂%' "
 			+ " or t8.faidname like'%液氮%'))"
-			+ " then t8.fqty*"+ProductInfo.volumn
-			+ " else "			
+			+ " then 0 else "			
 			/*
 			 * 零部件数量×工件数量
 			 */

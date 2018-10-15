@@ -5,7 +5,12 @@ import java.sql.SQLException;
 
 public class CurrentPeriod 
 {
-	public void getYear() throws SQLException
+	public void get() throws SQLException
+	{
+		getYear();
+		getMonth();
+	}
+	private void getYear() throws SQLException
 	{
 		rs0 = conn.query(";select  fvalue from t_Systemprofile "
 				+ " where fkey like 'currentyear' and fcategory = 'GL'");
@@ -20,7 +25,7 @@ public class CurrentPeriod
         conn.close();
 	}
 
-	public void getMonth() throws SQLException
+	private void getMonth() throws SQLException
 	{
 		rs0 = conn.query(";select fvalue from t_Systemprofile "
 	    		+ " where fkey like 'currentperiod' and fcategory = 'GL'");

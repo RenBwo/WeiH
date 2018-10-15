@@ -14,7 +14,7 @@ public class DBConnect
     	state = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
 	}
     
-	public void database(String k3) 
+	private void database(String k3) 
 	{
 		if (k3.equals("test")) 
 		{ 

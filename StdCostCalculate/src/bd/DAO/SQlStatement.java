@@ -34,7 +34,7 @@ public class SQlStatement {
 			+" t6.fmanName,t6.fpower,"
 			
 			/*产能*/					
-			+"isnull((case t4.foperid when 40336 then " +  MachineInfo.capacity   
+			+"isnull((case t4.foperid when 40336 then " + MachineInfo.capacity   
 			/*钎焊炉工艺 40336*/
 			+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+",4)" 
 			/*扁管压出工艺40494*/
@@ -57,10 +57,7 @@ public class SQlStatement {
 			 * 钎焊炉设备电费与气费
 			 */
 			+ "(case when (isnull(t6.FelectricPerV,0) > 0 or isnull(t6.FGasPerV,0) >0) "
-				+ "then (isnull(t6.FelectricPerV,0)*"+Coefficient.k00
-				+ "+isnull(t6.FGasPerV,0)*"+Coefficient.k12+")*"
-				+ProductInfo.volumn
-				+ " else  "
+				+ "then 0 else  "
 				+ " (case isnull((select 1 from t_icitem where fitemid = t1.fitemid "
 					+ " and fname like '扁管盘料'),0) "
 			/*
@@ -75,7 +72,7 @@ public class SQlStatement {
 			/*
 			 * 产能
 			 */
-			 	+ "(case t4.foperid when 40336 then " + MachineInfo.capacity			
+			 	+ "(case t4.foperid when 40336 then " +MachineInfo.capacity			
 			/*钎焊炉工艺 40336*/
 			 		+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+ ",4)" /*扁管压出工艺40494*/
 			 		+ " when 40495 then (case "									/*扁管切断工艺 40495*/
@@ -98,7 +95,7 @@ public class SQlStatement {
 			+" when 1 then round(t1.fqty*(100-t1.fscrap)/100/t1.fqtyper,0) else t1.fqty end)"
 			+ "*t4.fentryselfz0237*t6.fdepreciation/( t101.fnum*30*8*"
 			/*钎焊炉工艺 40336*/
-			+ "(case t4.foperid when 40336 then " +  MachineInfo.capacity        
+			+ "(case t4.foperid when 40336 then " + MachineInfo.capacity        
 			/*扁管压出工艺40494*/
 			+ " when 40494 then round(t11.fpressrate*60/"+ProductInfo.length+",4)" 
 			/*扁管切断工艺 40495*/
@@ -152,8 +149,7 @@ public class SQlStatement {
 			 */
 			+ " when (t4.foperid = 40336 and (t6.faidname like '%钎剂%' "
 			+ " or t6.faidname like'%液氮%'))"
-			+ " then t6.fqty*"+ProductInfo.volumn
-			+ " else "			
+			+ " then 0 else "			
 			/*
 			 * 零部件数量×工件数量
 			 */

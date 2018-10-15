@@ -17,13 +17,6 @@ public class ActListenerBtnGenerate implements ActionListener
 	    sumFails = 0;
 	    try 
 	    {
-	    	stdCostReport.createTableRPT();
-	    	bom.createTable();
-	    	directMaterial.createTable();
-	    	labourAndMake.createTable();
-	    	adiMaterial.updateAdiMatrialPrice();
-	    	machineInfo.updateMachineInfo();
-		
 	    	if (StdCostCalculate.autoRun ==1 ) 
 	    	{
 	    		String	sqlauto = ";select a.fnumber"
@@ -71,24 +64,20 @@ public class ActListenerBtnGenerate implements ActionListener
 	    	}
 	    	System.out.println("开始计算标准成本 ,"+df.format(new Date()).toString()+",");
 	    	//lblstatus.setText("计算开始，请等待………………");
+	    	stdCostReport.createTableRPT();    	
 	    	// multiple items
 	    	if (k>1) 
 	    	{
 	    		for (int x=0;x<fnumbers.length;x++)
 	    		{
 	    			fnumber = fnumbers[x];
-	    			productInfo.getFirstItemID(fnumber);
 	    			productInfo.productInfoBeforeBOM(fnumber);
-	    			bom.clean();		
-		    		bom.set();
+	    			bom.get();
+	    			route.get();
 		    		productInfo.productInfoAfterBOM();
-		    		machineInfo.getCapacity();
-	    			bomVerifyError=bom.verify();	
-	    			RoutVerifyErr=route.verifyRout();
-	    			RoutLWHVerifyErr=route.verifyRoutLWH();
-	    			directMaterial.set();
-	    			materialVerifyError=directMaterial.verify();
-	    			adiVerifyError=adiMaterial.verifyAdiPrice();
+	    	    	machineInfo.get();
+	    			directMaterial.get();
+	    			adiMaterial.get();
 	    		
 	    			if (StdCostCalculate.mainFrame.textExRate.getText().equals(String.valueOf(0.0))) 
 	    			{
@@ -105,7 +94,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("产品itemid 不存在, "+df.format(new Date()).toString() +" ," +fnumber);
 			    	}
-	    			else if (bomVerifyError > 0) 
+	    			else if (BOM.verifyBom > 0) 
 	    			{
 			    		++sumFails ;
 	    				directMaterial.clean();
@@ -113,7 +102,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("bom 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
-	    			else if (RoutVerifyErr > 0) 
+	    			else if (Route.verifyRoute > 0) 
 	    			{
 			    		++sumFails ;
 	    				directMaterial.clean();
@@ -121,7 +110,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("工艺路线 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
-			    	else if (RoutLWHVerifyErr > 0) 
+			    	else if (ProductInfo.verifyLWH > 0) 
 			    	{
 			    		++sumFails ;
 	    				directMaterial.clean();
@@ -130,7 +119,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		System.out.println("芯体数据不完整 长:"+ProductInfo.length+"米 宽:"+ProductInfo.width
 			    				+"米 高:"+ProductInfo.height+"米 ," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
-			    	else if (materialVerifyError > 0) 
+			    	else if (MaterialDirect.verifyMaterialDirect > 0) 
 			    	{
 			    		++sumFails ;
 	    				directMaterial.clean();
@@ -138,7 +127,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		updateCompanyPricePolicy.set9k();
 			    		System.out.println("直接材料价格 不完整,"+df.format(new Date()).toString()  +" ,"+fnumber);
 			    	}
-			    	else if (adiVerifyError > 0) 
+			    	else if (MaterialAdi.verifyAdiPrice > 0) 
 			    	{
 			    		++sumFails ;
 	    				directMaterial.clean();
@@ -149,8 +138,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    	else 
 			    	{	
 			    		//System.out.println("2.直接成本计算 成功，下一步，计算人工与制造费用");
-			    		labourAndMake.clean();
-			    		labourAndMake.set();
+			    		labourAndMake.get();
 			    		//System.out.println("3.制造费用与直接人工 成功，下一步，生成报价");
 			    		sqlMaterial = mysqlstate.getSQLStatement("sqlMaterial" );
 			    		sqlLabourAndMake = mysqlstate.getSQLStatement("sqlLabourAndMake");
@@ -168,7 +156,8 @@ public class ActListenerBtnGenerate implements ActionListener
 			    		}
 			    		StdCostCalculate.mainFrame.tableReport.setRowHeight(24);
 			    		stdCostReport.set(StdCostCalculate.mainFrame.tableReport
-			    				, StdCostCalculate.mainFrame.tableMaterial, StdCostCalculate.mainFrame.tableCalculate
+			    				, StdCostCalculate.mainFrame.tableMaterial
+			    				, StdCostCalculate.mainFrame.tableCalculate
 			    				);				    
 			    		StdCostCalculate.mainFrame.btnR2Save.doClick();
 			    		System.out.println("结束第 "+(x+1)+"/"+k
@@ -192,21 +181,16 @@ public class ActListenerBtnGenerate implements ActionListener
 	    	else
 	    	{
 	    		fnumber = fnumbers[0];
-	    		productInfo.getFirstItemID(fnumber);
     			productInfo.productInfoBeforeBOM(fnumber);
     			//System.out.println("prodInfo: "+ProductInfo.model);
-    			bom.clean();		
-	    		bom.set();
+    			bom.get();
+	    		route.get();
 	    		productInfo.productInfoAfterBOM();
-	    		machineInfo.getCapacity();
-	    		bomVerifyError=bom.verify();	
-	    		RoutVerifyErr=route.verifyRout();
-	    		RoutLWHVerifyErr=route.verifyRoutLWH();
+		    	machineInfo.get();
 	    		//System.out.println("1.取得参数 成功，下一步，计算材料成本，显示BOM和直接材料清单");
-	    		directMaterial.set( );
-	    		materialVerifyError=directMaterial.verify();
+	    		directMaterial.get( );
 	    		//System.out.println("验证直接材料价格是否完整");
-	    		adiVerifyError=adiMaterial.verifyAdiPrice();
+	    		adiMaterial.get();
 	    		//System.out.println("验证辅料价格是否完整");   	    
 	    		sqlBOM =mysqlstate.getSQLStatement("sqlBOM");
 	    		//System.out.println("BOM："+sqlBOM );
@@ -240,7 +224,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, " 产品 " +fnumber +"itemid  不存在！");
 		    		System.out.println(" 产品 " +fnumber +" itemid 不存在！" );
 		    	}
-		    	else if (bomVerifyError > 0)
+		    	else if (BOM.verifyBom  > 0)
 		    	{
     				stdCostReport.clear();
     				directMaterial.clean();
@@ -249,7 +233,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "BOM 不完整,请查看BOM");
 		    		System.out.println("bom 不完整");
 		    	}
-		    	else if (RoutVerifyErr > 0) 
+		    	else if (Route.verifyRoute > 0) 
 		    	{
     				stdCostReport.clear();
     				directMaterial.clean();
@@ -257,7 +241,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "工艺路线 不完整");
 			    	System.out.println("工艺路线 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    }
-		    	else if (RoutLWHVerifyErr > 0) 
+		    	else if (ProductInfo.verifyLWH > 0) 
 		    	{
     				stdCostReport.clear();
     				directMaterial.clean();
@@ -268,18 +252,18 @@ public class ActListenerBtnGenerate implements ActionListener
 			    			+"米，高:"+ProductInfo.height+"米," +df.format(new Date()).toString() 
 			    			+" ,"+fnumber);
 			    }
-		    	else if (adiVerifyError > 0)
+		    	else if (MaterialAdi.verifyAdiPrice > 0)
 		    	{
     				stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" 辅料价格 不完整！");
-		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "有 "+ adiVerifyError 
+		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "有 "+ MaterialAdi.verifyAdiPrice 
 		    				+" 种辅料在过去一年没有采购价格并且没有计划单价,"
 		    				+ "请查看辅料明细");
 		    		System.out.println("辅料价格 不完整");
 		    	}
-		    	else if (materialVerifyError  > 0)	
+		    	else if (MaterialDirect.verifyMaterialDirect  > 0)	
 		    	{
     				stdCostReport.clear();
     				directMaterial.clean();
@@ -292,8 +276,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		    	else 
 		    	{
 		    		//System.out.println("3.符合计算条件，下一步，计算人工与制造费用");
-		    		labourAndMake.clean();
-		    		labourAndMake.set();
+		    		labourAndMake.get();
 		    		//System.out.println("4.制造费用与直接人工 成功，下一步，生成报价");			
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableEnergy,sqlEnergy,new int[]{13,15},-1,0,0);
 		    		data.myTableModel(StdCostCalculate.mainFrame.tableAdi,sqlAdi,new int[]{12},-1,0,0);
@@ -327,6 +310,9 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		StdCostCalculate.mainFrame.txtNewJigAmt.setText(String.valueOf(ProductInfo.newJigAmt));
 		    		StdCostCalculate.mainFrame.txtNewJigPlanAmortizeQty.setText(String.valueOf(ProductInfo.newJigAmortizeQty));
 		    		StdCostCalculate.mainFrame.txtHistorySaledQty.setText(String.valueOf(ProductInfo.saledQty));
+		    		StdCostCalculate.mainFrame.txtPowerAmt.setText(String.valueOf(MachineInfo.amtPowerQHL));
+		    		StdCostCalculate.mainFrame.txtLN2Amt.setText(String.valueOf(MaterialAdi.amtLN2));
+		    		StdCostCalculate.mainFrame.txtQianjiAmt.setText(String.valueOf(MaterialAdi.amtQianji));
 		    		setDevelopeRequestValue.setDevelopRequestValue(ProductInfo.firstitemid);
 		    		StdCostCalculate.mainFrame.btnR2Save.doClick();
 		    		StdCostCalculate.mainFrame.lblstatus.setText("^^^^^^^"+fnumber +" 的标准成本报价已经生成"
@@ -355,9 +341,7 @@ public class ActListenerBtnGenerate implements ActionListener
         		
 	private String fnumber;  
     private String[] fnumbers ;
-	private int materialVerifyError
-	,bomVerifyError,adiVerifyError,RoutVerifyErr,RoutLWHVerifyErr
-	,k,sumFails;
+	private int k,sumFails;
 	TableData data = new TableData();
 	TableFormat formReport = new TableFormat();
 	String sqlMaterial,sqlLabourAndMake,sqlPriceRPTform,sqlEnergy,sqlAdi,sqlModel,sqlBOM;

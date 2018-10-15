@@ -39,7 +39,7 @@ public class MainFrame  {
 	public JTable tableCalculate,tableMaterial,tableReport
 				,tableEnergy,tableAdi,tableModel,tableBOM,tableQueResult;
 	
-	public JLabel lblCompany,lblTitle,labModel, lblFnumber;
+	public JLabel lblCompany,lblTitle,labModel, lblFnumber,lblPowerAmt,lblLN2Amt,lblQianjiAmt;
 	public JLabel lblK0,lblK1 ,lblK2 ,lblK3 ,lblK4 ,lblK5,lblK6
 	,lblK7,lblK8,lblK10 ,lblK11,lblExRate,lblK12,lblK13,lblK14,lblK15
 	,lblK16,lblK17,lblK18,lblK20,lblK21,lblK22,lblK141;
@@ -54,7 +54,7 @@ public class MainFrame  {
     public JLabel lblComments,lblNewJigAmt,lblNewJigPlanAmortizeQty
     ,lblHistorySaledQty;
       
-	public JTextField texFnum,texFmodel;
+	public JTextField texFnum,texFmodel,txtPowerAmt,txtLN2Amt,txtQianjiAmt;
 	public JTextField textFK0,textFK1,textFK2,textFK3,textFK4,textFK5
 	,textFK6,textFK7,textFK8,/*textFK9,*/textFK10,textFK11,textFK12
 	,textExRate
@@ -446,6 +446,23 @@ public class MainFrame  {
 	txtHistorySaledQty = new JTextField();
 	txtHistorySaledQty.setColumns(15);
 	panel_bottom.add(txtHistorySaledQty,"cell 5 1");
+	
+	
+	lblPowerAmt= new JLabel("钎焊炉能源费用");
+	panel_bottom.add(lblPowerAmt,"cell 6 1,alignx right");
+	txtPowerAmt = new JTextField();
+	txtPowerAmt.setColumns(15);
+	panel_bottom.add(txtPowerAmt,"cell 7 1");	
+	lblLN2Amt= new JLabel("钎焊炉液氮费用");
+	panel_bottom.add(lblLN2Amt,"cell 8 1,alignx right");
+	txtLN2Amt = new JTextField();
+	txtLN2Amt.setColumns(15);
+	panel_bottom.add(txtLN2Amt,"cell 9 1");	
+	lblQianjiAmt= new JLabel("钎焊炉钎剂费用");
+	panel_bottom.add(lblQianjiAmt,"cell 10 1,alignx right");
+	txtQianjiAmt = new JTextField();
+	txtQianjiAmt.setColumns(15);
+	panel_bottom.add(txtQianjiAmt,"cell 11 1");
 				
 	tableReport = new JTable();
 	tableReport.setEnabled(false);
