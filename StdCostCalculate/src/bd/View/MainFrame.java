@@ -728,8 +728,9 @@ public class MainFrame  {
 	tableEnergy = new JTable();
 	tableEnergy.setModel(new DefaultTableModel(
 		new Object[][] {
-			{null, null, null, null, null, null,null,null, null,null,
-				null, null,null,null, null, null, null, null, null},
+			{null, null, null, null, null, null,null,
+				null, null,null,null, null,null,null, null, null,
+				null, null, null},
 			},
 		new String[] {"foperid","fopersn","物料代码","物料名称","数量","工序","工序价格",
 				"工资系数","工件数量","设备名","功率","产能","产能单位","电费","月提折旧","折旧分摊",
@@ -759,11 +760,13 @@ public class MainFrame  {
 	tableModel = new JTable();
 	tableModel.setModel(new DefaultTableModel(
 		new Object[][] {
-			{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+			{null, null, null, null, null, null, null, 
+				null, null,null, null, null, 
+				null, null, null, null, null},
 		},
 		new String[] {"foperid","fopersn","物料代码","物料名称","数量","工序","工序价格",
 				"工资系数","工件数量","工装模具名称","工装模具分摊费用","米重(kg/m)"
-				,"最大使用量(kg)","模具费用","芯体长度","芯体高度"
+				,"最大使用量(kg)","模具费用","芯体长度(米)","芯体宽度(米)","芯体高度"
 				}
 		));
 	scrollPane_model.setViewportView(tableModel);

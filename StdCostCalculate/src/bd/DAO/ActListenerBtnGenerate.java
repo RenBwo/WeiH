@@ -208,6 +208,7 @@ public class ActListenerBtnGenerate implements ActionListener
 		
 	    		data.myTableModel(StdCostCalculate.mainFrame.tableBOM,sqlBOM,new int[]{},-1,0,0);
 	    		data.myTableModel(StdCostCalculate.mainFrame.tableMaterial,sqlMaterial,new int[]{5,7},-1,0,0);
+	    		data.myTableModel(StdCostCalculate.mainFrame.tableAdi,sqlAdi,new int[]{12},-1,0,0);
 	    		//System.out.println("2.直接材料成本计算 成功，下一步，验证计算条件");
 	    		if (StdCostCalculate.mainFrame.textExRate.getText().equals(String.valueOf(0.0))) 
 	    		{
@@ -254,7 +255,7 @@ public class ActListenerBtnGenerate implements ActionListener
 			    }
 		    	else if (MaterialAdi.verifyAdiPrice > 0)
 		    	{
-    				stdCostReport.clear();
+		    		stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" 辅料价格 不完整！");

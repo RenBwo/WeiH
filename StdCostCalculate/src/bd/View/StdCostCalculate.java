@@ -27,7 +27,7 @@ public class StdCostCalculate
 	private  	static ActListenerQueryByFmodel actListenerQueryByFmodel=new ActListenerQueryByFmodel();
     private  	static ActListenerQueryByFnumber actListenerQueryByFnumber=new ActListenerQueryByFnumber();
     private     static EnvForAuto envForAuto = new EnvForAuto();
-    public 		static String programName="standCostCal",localVer="1.0.1.6"
+    public 		static String programName="standCostCal",localVer="1.0.1.8"
     		,autoFlag;
     public 		static int versionOK,autoRun;
     private 	static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
