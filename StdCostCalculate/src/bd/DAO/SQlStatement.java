@@ -324,6 +324,7 @@ public class SQlStatement {
 	
 	if (sqlname =="sqlMaterial")  			
 	{   
+		//System.out.println("sqlMaterial:::: "+sqlMaterial);
 		export = "";
 		export = sqlMaterial;
 	}

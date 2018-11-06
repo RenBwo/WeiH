@@ -35,6 +35,12 @@ select * from t_CostCalculateBD
 select * from t_costcalculatebd_entry1 
 
 
+select fbase,count(*) from t_bos200000025entry where  fdate2 > getdate() group by fbase
+delete from t_bos200000025entry where fbase = 317157 and fdate2 > getdate() and fid =1024 and fentryid = 14417
+
+
+
+
 
 
 
