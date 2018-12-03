@@ -19,9 +19,12 @@ public class SQlStatement {
 					+ " and a.frob =1 and (isnull(fheadselfi0252,0) =0 or isnull(fheadselfi0349,0 ) = 0) "
 					+ " group by b.fitemid) 	w on w.fitemid = a.fitemid "
 			+ " left join (select  fitemid,max(fprice) as fprice from t_supplyentry "
-					+ " where fdisabledate >  getdate()  and fprice > 0 group by fitemid"
+					+ " where fdisabledate >  getdate() and fprice > 0 group by fitemid"
 					+ ") 						d on d.fitemid= a.fitemid "
-			+ " left join t_bos200000025entry 	e on e.fbase=a.fitemid and e.fdate2 > getdate()"		
+			+ " left join (select distinct b.fbase,b.fprice"
+				+ " from t_bos200000025 a "
+				+ " join t_bos200000025entry b on a.fid = b.fid and a.fmulticheckstatus = 16"
+			+ " and b.fdate2> getdate()) 	e on e.fbase=a.fitemid "		
 			+ " where a.fproditemid = "+ProductInfo.firstitemid+" and a.finterid = "+ProductInfo.finterid
 			+ " order by b.fnumber";
 
@@ -203,7 +206,10 @@ public class SQlStatement {
 			+ " left join (select  fitemid,max(fprice) as fprice from t_supplyentry "
 				+ " where fdisabledate >  getdate()  and fprice > 0 group by fitemid"
 				+ ") t7 on t7.fitemid=  t6.faidnumber "
-			+ " left join t_bos200000025entry t8 on t8.fbase= t6.faidnumber and t8.fdate2 > getdate()"		
+			+ " left join (select distinct b.fbase,b.fprice "
+				+ " from t_bos200000025 a join t_bos200000025entry b "
+				+ " on a.fid = b.fid and a.fmulticheckstatus = 16 "
+				+ " and b.fdate2> getdate() ) t8 on t8.fbase= t6.faidnumber "		
 			+ " where t2.ferpclsid <> 1 "
 		    + " and t1.fqty > 0  "
 		    + " and  t1.sn not in (select a.sn  from BDBomMulExpose 	a  "

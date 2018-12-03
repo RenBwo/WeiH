@@ -1,2 +1,2 @@
---update BDStdCostProgVersion  set version='1.0.1.8'
+--update BDStdCostProgVersion  set version='1.0.2.0'
 select * from BDStdCostProgVersion

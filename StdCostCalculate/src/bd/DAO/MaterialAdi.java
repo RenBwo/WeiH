@@ -39,7 +39,10 @@ public class MaterialAdi {
 				+ " left join (select  fitemid,max(fprice) as fprice from t_supplyentry "
 					+ " where fdisabledate >  getdate()  and fprice > 0 group by fitemid"
 					+ ") c on c.fitemid=  a.faidnumber "
-				+ " left join t_bos200000025entry d on d.fbase= a.faidnumber and d.fdate2 > getdate()"		
+				+ " left join (select distinct b.fbase,b.fprice "
+				+ " from t_bos200000025 a "
+				+ " join t_bos200000025entry b on a.fid = b.fid and a.fmulticheckstatus = 16"
+				+ " and b.fdate2> getdate() ) d on d.fbase= a.faidnumber "		
 			;
 		//System.out.println("升级辅料单价：" + sql0);
 		conn.update(sql0);

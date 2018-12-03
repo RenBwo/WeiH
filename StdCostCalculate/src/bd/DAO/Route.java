@@ -58,6 +58,7 @@ public class Route
 		{
 			hasQHL=false;
 		}
+		//System.out.println("qhl:"+hasQHL);
 		
 	}
 	/*
@@ -82,6 +83,7 @@ public class Route
 		{
 			hasPipe=false;
 		}
+		//System.out.println("pipe:"+hasPipe);
 		
 	}/*
 	 * 有芯体烘干喷漆工艺
@@ -104,6 +106,7 @@ public class Route
 		{
 			hasDry=false;
 		}
+		//System.out.println("hasDry:"+hasDry);
 		
 	}
 

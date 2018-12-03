@@ -85,9 +85,12 @@ public class MaterialDirect
 						+ " left join (select  fitemid,max(fprice) as fprice from t_supplyentry "
 							+ " where fdisabledate >  getdate()  and fprice > 0 group by fitemid"
 							+ ") c on c.fitemid= a.fitemid "
-						+ " left join t_bos200000025entry d on d.fbase=a.fitemid and d.fdate2 > getdate()"		
+						+ " left join ( select distinct b.fbase,b.fprice"
+						+ " from t_bos200000025 a "
+						+ " join t_bos200000025entry b on a.fid = b.fid and a.fmulticheckstatus = 16"
+						+ " and b.fdate2> getdate() ) d on d.fbase=a.fitemid "		
 						+ " where  b.ferpclsid = 1 ";
-		////System.out.println("材料成本： "+command4);
+		//System.out.println("材料成本： "+command4);
 		conn.update(command4);
 		conn.update(";update t_CostMaterialBD set fAmtMaterial = fprice*fqty where finterid ="+ProductInfo.finterid
 					+ " and fproditemid="+ProductInfo.firstitemid);

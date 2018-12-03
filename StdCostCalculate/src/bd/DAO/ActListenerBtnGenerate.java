@@ -100,6 +100,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    				directMaterial.clean();
 			    		bom.clean();
 			    		updateCompanyPricePolicy.set9k();
+			    		stdCostReport.setProductStdCost(0);
 			    		System.out.println("bom 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
 	    			else if (Route.verifyRoute > 0) 
@@ -108,6 +109,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    				directMaterial.clean();
 			    		bom.clean();
 			    		updateCompanyPricePolicy.set9k();
+			    		stdCostReport.setProductStdCost(0);
 			    		System.out.println("工艺路线 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
 			    	else if (ProductInfo.verifyLWH > 0) 
@@ -116,6 +118,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    				directMaterial.clean();
 			    		bom.clean();
 			    		updateCompanyPricePolicy.set9k();
+			    		stdCostReport.setProductStdCost(0);
 			    		System.out.println("芯体数据不完整 长:"+ProductInfo.length+"米 宽:"+ProductInfo.width
 			    				+"米 高:"+ProductInfo.height+"米 ," +df.format(new Date()).toString() +" ,"+fnumber);
 			    	}
@@ -125,6 +128,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    				directMaterial.clean();
 			    		bom.clean();
 			    		updateCompanyPricePolicy.set9k();
+			    		stdCostReport.setProductStdCost(0);
 			    		System.out.println("直接材料价格 不完整,"+df.format(new Date()).toString()  +" ,"+fnumber);
 			    	}
 			    	else if (MaterialAdi.verifyAdiPrice > 0) 
@@ -133,6 +137,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    				directMaterial.clean();
 			    		bom.clean();
 			    		updateCompanyPricePolicy.set9k();
+			    		stdCostReport.setProductStdCost(0);
 			    		System.out.println("辅料价格 不完整," +df.format(new Date()).toString() +" ,"+fnumber );
 			    	}
 			    	else 
@@ -230,6 +235,8 @@ public class ActListenerBtnGenerate implements ActionListener
     				stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
+		    		updateCompanyPricePolicy.set9k();
+		    		stdCostReport.setProductStdCost(0);
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" bom 不完整！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "BOM 不完整,请查看BOM");
 		    		System.out.println("bom 不完整");
@@ -239,6 +246,8 @@ public class ActListenerBtnGenerate implements ActionListener
     				stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
+		    		updateCompanyPricePolicy.set9k();
+		    		stdCostReport.setProductStdCost(0);
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "工艺路线 不完整");
 			    	System.out.println("工艺路线 不完整," +df.format(new Date()).toString() +" ,"+fnumber);
 			    }
@@ -247,6 +256,8 @@ public class ActListenerBtnGenerate implements ActionListener
     				stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
+		    		updateCompanyPricePolicy.set9k();
+		    		stdCostReport.setProductStdCost(0);
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "芯体数据不完整 长:"+ProductInfo.length
 		    				+"米，宽:"+ProductInfo.width+"米，高:"+ProductInfo.height+"米");
 			    	System.out.println("芯体数据不完整 长:"+ProductInfo.length+"米，宽:"+ProductInfo.width
@@ -258,6 +269,8 @@ public class ActListenerBtnGenerate implements ActionListener
 		    		stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
+		    		updateCompanyPricePolicy.set9k();
+		    		stdCostReport.setProductStdCost(0);
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" 辅料价格 不完整！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "有 "+ MaterialAdi.verifyAdiPrice 
 		    				+" 种辅料在过去一年没有采购价格并且没有计划单价,"
@@ -269,6 +282,8 @@ public class ActListenerBtnGenerate implements ActionListener
     				stdCostReport.clear();
     				directMaterial.clean();
 		    		bom.clean();
+		    		updateCompanyPricePolicy.set9k();
+		    		stdCostReport.setProductStdCost(0);
 		    		StdCostCalculate.mainFrame.lblstatus.setText(" 产品 " +fnumber +" 直接材料 价格 不完整！");
 		    		JOptionPane.showMessageDialog(StdCostCalculate.mainFrame.frame, "有 直接材料 在过去一年没"
 		    				+ "有采购价格并且没有计划单价,请查看直接材料成本明细");
