@@ -1,3 +1,7 @@
+/*
+ * 监听器
+ * 选择框全部选择
+ */
 package bd.DAO;
 
 import java.awt.event.MouseAdapter;

@@ -32,7 +32,7 @@ public class ActListenerBtnQuery implements ActionListener
 			}
 			else
 			{
-				System.out.println(StdCostCalculate.mainFrame.chckbxNewProduct.isSelected());
+				//System.out.println(StdCostCalculate.mainFrame.chckbxNewProduct.isSelected());
 				String	sqlQuery = ";select '0' as selected,a.fnumber,a.fmodel,a.fname,a.f_161,a.fsize"
 		    			+ " from t_icitem a join icbom b on a.fitemid = b.fitemid "
 		    			+ " and b.fstatus = 1 and b.fusestatus = 1072 and a.fnumber like '01.%' "

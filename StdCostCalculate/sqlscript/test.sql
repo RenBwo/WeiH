@@ -59,53 +59,22 @@ delete from t_bos200000025entry where fbase = 317157 and fdate2 > getdate() and 
  join t_routingoper c 
  on c.finterid = b.finterid
  and isnull(c.foperid,0) = 40142
- 
- UPDATE  PORFQEntry 
- set FCustGoalUninclQGPric=(case b.FCurrencyID 						--客户含税目标价格（扣除质保金）
-									when 1 then round(a.FpricByCustom*(1-b.FuncountRateQulity/100),2)
-									else round(a.FpricByCustom*(1-b.FuncountRateQulity/100),4) end) 
-select distinct a.finterid,a.fcheckbox--,a.faceptcstgoaprice                                                                                           
---,a.facceptnowprice,a.fkeepnowprice,a.fcustgoaluninclqgpric,fpricbycustom 
-from porfqentry a join porfq b on a.finterid = b.finterid
-and b.fbillno like 'aq005902'
-and a.facceptnowprice  = 1   
+ --year
+update icprcplyentry set  fprice = 9000  from icprcplyentry 
+where finterid = 3  --and fprice <> 0 
+and fitemid not in (select b.fitemid 
+from t_icitem b join icbom c on c.fitemid= b.fitemid
+and c.fstatus = 1 and c.fusestatus = 1072 
+and b.fnumber like '01.%')
 
-update porfqentry set faceptcstgoaprice=(case fcheckbox when 1 then 1 else 0 end)
-,fkeepnowprice=(case facceptnowprice when 1 then 1 else 0 end)
-where finterid =6900 and fpricbycustom > 0 
-
-
-
- update IcPrcPlyEntry
- set FPrice=xx.FAuxTaxPriceDiscount
- 
- 
- --select  a.fprice,a.fcuryid,xx.FAuxTaxPriceDiscount,xx.fcurrencyid,a.* 
- from icprcplyentry a
- join 
- (select a.fcheckdate,b.fitemid,a.fcurrencyid,a.fcustid,b.FAuxTaxPriceDiscount
-from porfq a join porfqentry b on a.finterid = b.finterid
-join
-(select max(fcheckdate) as fcheckdate,fcustid from porfq 
-where  fstatus =  1 and fdate > '2018-06-01' and fbillno like 'aq005902'
-group by fcustid) y on a.fcheckdate=y.fcheckdate 
-and a.fcustid = y.fcustid ) xx 
-on xx.fcustid = a.FRelatedID and xx.fitemid = a.fitemid
-and xx.fcurrencyid = a.fcuryid
-and a.finterid = 4 
-and a.fenddate >= xx.fcheckdate
-and a.fprice <> xx.FAuxTaxPriceDiscount
-
-UPDATE ICPrcPlyEntrySpec 
-set flowprice=b.fprice
-from ICPrcPlyEntrySpec a 
-join icprcplyentry b on a.finterid = 4 and a.finterid = b.finterid 
-and a.fitemid = b.fitemid and a.FRelatedID = b.FRelatedID
-and b.fcuryid = a.flpricecuryid 
-join PORFQEntry c on c.finterid = 6963 and c.fitemid = a.fitemid
-join porfq d on d.finterid = c.finterid and d.fcustid = a.frelatedid
-
-
-
-
+update t_icitemstandard  
+set fstandardcost= 0 
+from t_icitemstandard a
+join t_icitemcore b on a.fitemid = b.fitemid and b.fnumber like '01.%' 
+where a.fstandardcost <> 0
+ and a.fitemid not in (
+select b.fitemid from t_icitem b 
+join icbom c on c.fitemid= b.fitemid 
+and c.fstatus = 1 and c.fusestatus = 1072
+and b.fnumber like '01.%')
 

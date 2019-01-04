@@ -1,3 +1,7 @@
+/*
+ * 监听器
+ * 生成报价按钮
+ */
 package bd.DAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +23,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    {
 	    	if (StdCostCalculate.autoRun ==1 ) 
 	    	{
+	    		updateCompanyPricePolicy.set0OutScope();
 	    		String	sqlauto = ";select a.fnumber"
 	    			+ " from t_icitem a join icbom b on a.fitemid = b.fitemid  "
         			+ " and b.fstatus = 1 and b.fusestatus = 1072 and a.fnumber like '01.%' "
@@ -79,7 +84,7 @@ public class ActListenerBtnGenerate implements ActionListener
 	    			directMaterial.get();
 	    			adiMaterial.get();
 	    		
-	    			if (StdCostCalculate.mainFrame.textExRate.getText().equals(String.valueOf(0.0))) 
+	    			if (Double.parseDouble(StdCostCalculate.mainFrame.textExRate.getText())==0) 
 	    			{
 	    				++sumFails ;
 	    				directMaterial.clean();

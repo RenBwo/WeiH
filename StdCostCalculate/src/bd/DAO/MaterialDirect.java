@@ -76,7 +76,7 @@ public class MaterialDirect
 							+ " and ( a.ftrantype = 75 or a.ftrantype = 76 ) "
 							+ " where a.fcheckdate > dateadd(year,-1,dateadd(day,datediff(day,0"
 							+ ",getdate()),0)) "
-							+ " and isnull(b.fqty , 0)<> 0 and isnull(b.fstdamount ,0) <> 0"
+							+ " and isnull(b.fqty,0)<> 0 and isnull(b.fstdamount ,0) <> 0 "
 							+ " and a.fstatus = 1 "
 							+ " and a.frob =1 and (isnull(fheadselfi0252,0) =0 and "
 							+ "isnull(fheadselfi0349,0 ) = 0) "
