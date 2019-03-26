@@ -1,0 +1,9 @@
+1.安装说明
+	解压 BDStdCostSetup.zip，运行BDStdCostSetup.exe
+	
+2.升级说明
+2.1 修改 StdCostCalculate.java 的localVer="******"
+2.2 运行 update BDStdCostProgVersion  set version='******'
+2.3 把最新版本放到 192.168.200.20电脑的 D:\WEAVER\ecology\BDStdCostCalUpdte 位置
+2.4 做完上面三步后， 系统运行时会自动升级。
+	
