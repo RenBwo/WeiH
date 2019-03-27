@@ -23,11 +23,11 @@ public class StdCostCalculate
     private  	static ActListenerBtnGenerate actListenerGenerate=new ActListenerBtnGenerate(); 
     private  	static ActListenerBtnSave actListenerBtnSave=new ActListenerBtnSave(); 
     private  	static ActListenerBtnQuery actListenerBtnQuery=new  ActListenerBtnQuery();
-	private  	static ActListenserSelected actListenserSelected=new ActListenserSelected();
-	private  	static ActListenerQueryByFmodel actListenerQueryByFmodel=new ActListenerQueryByFmodel();
+	 private  	static ActListenserSelected actListenserSelected=new ActListenserSelected();
+	 private  	static ActListenerQueryByFmodel actListenerQueryByFmodel=new ActListenerQueryByFmodel();
     private  	static ActListenerQueryByFnumber actListenerQueryByFnumber=new ActListenerQueryByFnumber();
-    private     static EnvForAuto envForAuto = new EnvForAuto();
-    public 		static String programName="standCostCal",localVer="1.0.2.1"
+    private   static EnvForAuto envForAuto = new EnvForAuto();
+    public 	static String programName="standCostCal",localVer="1.0.2.2"
     		,autoFlag;
     public 		static int versionOK,autoRun;
     private 	static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
